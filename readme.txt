@@ -4,8 +4,8 @@
   1)使用一键式脚本build.sh编译、链接并打包压缩，如果编译失败请自行解决编译问题；
   2)如果编译成功会在bin/目录下生成可执行二进制文件"ecs"；
   3)使用如下格式调用并调试程序，例如：
-	"./ecs /xxx/data.txt /xxx/input.txt /xxx/output.txt"
-	其中data.txt是历史数据文件，input.txt是输入文件(用例文件)，output.txt是输出文件;
+	"./ecs /xxx/TrainData.txt /xxx/input.txt /xxx/output.txt"
+	其中TrainData.txt是历史数据文件，input.txt是输入文件(用例文件)，output.txt是输出文件;
 	ps 以上步骤用于本地调试编译是否有问题
   4)将SDK中的源代码(predict.cpp/predict.h)替换或新增其他文件后压缩成zip或者tar.gz格式，即可上传答案。
   上传答案的目录格式为：

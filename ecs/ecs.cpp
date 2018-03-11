@@ -6,8 +6,8 @@
 int main(int argc, char *argv[])
 {
     print_time("Begin");
-	char *data[MAX_DATA_NUM];
-    char *info[MAX_INFO_NUM];
+	char *data[MAX_DATA_NUM] = {0};
+    char *info[MAX_INFO_NUM] = {0};
 	int data_line_num;
     int info_line_num;
 

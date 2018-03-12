@@ -29,7 +29,7 @@ int read_flavors_info(char * info[MAX_INFO_NUM]) {
 void read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 	char vm_id[32], vm_name[32], date_time[32];
 	for(int i = 0; i < data_num; ++i) {
-		sscanf(data[i], "%s %s %s", vm_id, vm_name, date_time);
+		sscanf(data[i], "%s %s %[^\n]", vm_id, vm_name, date_time);
 		if(flavors_info.find(vm_name) != flavors_info.end()) {
 			flavor f(vm_id, date_time, &flavors_info[vm_name]);
 			flavors[vm_name].push_back(f);

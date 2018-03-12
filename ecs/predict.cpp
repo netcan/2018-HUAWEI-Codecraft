@@ -31,7 +31,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 					else
 						solution_server[i][vm_name] = 1;
 					break;
-				} else if(i == servers.size() - 1) {
+				} else if(i == servers.size() - 1) { // new server
 					solution_server.emplace_back();
 					servers.emplace_back();
 				}

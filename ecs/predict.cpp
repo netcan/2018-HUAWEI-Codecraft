@@ -40,6 +40,14 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	}
 }
 
+bool solution_flavor_cmp(std::pair<string, int>& a, std::pair<string, int>& b) {
+	if(target == CPU) {
+		return flavors_info[a.first].mem_size < flavors_info[b.first].mem_size;
+	} else {
+		return flavors_info[a.first].cpu_count < flavors_info[b.first].cpu_count;
+	}
+}
+
 char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
 	char buffer[20 * 20];
 	char *pr = result, *pb = buffer;
@@ -48,9 +56,14 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 		flavor_count += flv.second;
 
 	snprintf(buffer, sizeof(buffer), "%d\n", flavor_count);
+	std::vector<std::pair<string, int>> sfv;
+	for(const auto & sf: solution_flavor)
+		sfv.push_back(std::pair<string, int>(sf.first, sf.second));
+
+	std::sort(sfv.begin(), sfv.end(), solution_flavor_cmp);
 
 	pb = buffer; while(*pb && (*pr++ = *pb++));
-	for(const auto & flv: solution_flavor) {
+	for(const auto & flv: sfv) {
 		snprintf(buffer, sizeof(buffer), "%s %d\n", flv.first.c_str(), flv.second);
 		pb = buffer; while(*pb && (*pr++ = *pb++));
 	}
@@ -69,6 +82,20 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 	}
 
 	return result;
+}
+
+void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
+#ifdef _DEBUG
+	int r = 0, R;
+	for(const auto& sf: solution_flavor)
+		r += (target == CPU?
+		      flavors_info[sf.first].cpu_count:
+		      flavors_info[sf.first].mem_size) * sf.second;
+	R = int(solution_server.size()) * (target == CPU?
+	                              server::cpu_count:
+	                              server::mem_size);
+	printf("ratio = %.2f\n", r * 1.0/R);
+#endif
 }
 
 
@@ -93,6 +120,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	read_flavors(data, data_num);
 	interval_predict(solution_flavor);
 	deploy_server(solution_flavor, solution_server);
+	show_ratio(solution_flavor, solution_server);
 
 	// 需要输出的内容
 

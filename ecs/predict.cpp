@@ -28,8 +28,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 					servers[i] -= flv;
 					if(solution_server[i].find(vm_name) != solution_server[i].end())
 						++solution_server[i][vm_name];
-					else
-						solution_server[i][vm_name] = 1;
+					else solution_server[i][vm_name] = 1;
 					break;
 				} else if(i == servers.size() - 1) { // new server
 					solution_server.emplace_back();
@@ -40,13 +39,6 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	}
 }
 
-bool solution_flavor_cmp(std::pair<string, int>& a, std::pair<string, int>& b) {
-	if(target == CPU) {
-		return flavors_info[a.first].mem_size < flavors_info[b.first].mem_size;
-	} else {
-		return flavors_info[a.first].cpu_count < flavors_info[b.first].cpu_count;
-	}
-}
 
 char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
 	char buffer[20 * 20];
@@ -60,7 +52,10 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 	for(const auto & sf: solution_flavor)
 		sfv.push_back(std::pair<string, int>(sf.first, sf.second));
 
-	std::sort(sfv.begin(), sfv.end(), solution_flavor_cmp);
+	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
+		if(target == CPU) return flavors_info[lhs.first].mem_size < flavors_info[rhs.first].mem_size;
+		else return flavors_info[lhs.first].cpu_count < flavors_info[rhs.first].cpu_count;
+	});
 
 	pb = buffer; while(*pb && (*pr++ = *pb++));
 	for(const auto & flv: sfv) {

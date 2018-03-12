@@ -3,3 +3,4 @@
 /ecs.tar.gz
 .idea
 .ipynb_checkpoints
+*.swp

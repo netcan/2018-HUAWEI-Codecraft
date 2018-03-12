@@ -6,8 +6,7 @@
  > Created Time: 2018-03-11 -- 16:05
  ****************************************************************************/
 
-#ifndef ECS_DATETIME_H
-#define ECS_DATETIME_H
+#pragma once
 
 #include <cstdio>
 #include <string>
@@ -67,6 +66,7 @@ struct datetime {
 
 	datetime(): date(0, 0, 0),
 	            time(0, 0, 0) {}
+	explicit  datetime(const Date& date, const Time time = Time(0, 0, 0)): date(date), time(time) {}
 
     explicit datetime(const char *time_str): date(0, 0, 0),
                                              time(0, 0, 0) {
@@ -85,4 +85,3 @@ struct datetime {
 
 
 
-#endif //ECS_DATETIME_H

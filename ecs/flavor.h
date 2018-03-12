@@ -6,37 +6,53 @@
  > Created Time: 2018-03-11 -- 17:28
  ****************************************************************************/
 
-#ifndef ECS_FLAVOR_H
-#define ECS_FLAVOR_H
+#pragma once
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 #include "predict.h"
 #include "datetime.h"
 
-using std::string;
-using std::vector;
 
 struct flavor_info {
-	string vm_name;
-	int cpu_count, mem_size;
+	std::string vm_name;
+	int cpu_count,
+			mem_size; // mem_size: MB
 	bool operator<(const flavor_info &b) const {
 		return this->vm_name < b.vm_name;
 	}
 	bool operator==(const flavor_info &b) const {
 		return this->vm_name == b.vm_name;
 	}
-
+	flavor_info() = default;
+	flavor_info(const char *vm_name, int cpu_count = 0, int mem_size = 0):
+			vm_name(vm_name), cpu_count(cpu_count), mem_size(mem_size) {}
 };
 
 struct flavor {
 	string vm_id;
 	datetime create_at;
-	flavor_info *info;
+	const flavor_info * const info;
+
+
+	flavor(const char *vm_id, const char *create_at, const flavor_info * const info = NULL):
+			vm_id(vm_id), create_at(create_at), info(info) {}
+	flavor(const datetime & date_time): create_at(date_time), info(NULL) {}
+
+	bool operator<(const flavor &b) const {
+		return this->create_at.date < b.create_at.date;
+	}
+	bool operator==(const flavor &b) const {
+		return this->create_at.date == b.create_at.date;
+	}
+
 };
 
 int read_flavors_info(char * info[MAX_INFO_NUM]);
+void read_flavors(char *data[MAX_DATA_NUM], int data_num);
+int get_interval_flavors_count(string vm_name, const Date start_date, int during_days);
 
-extern vector<flavor_info> flavors_info;
+extern std::map<string, flavor_info> flavors_info; // vm_name -> info
+extern std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
 
-#endif //ECS_FLAVOR_H

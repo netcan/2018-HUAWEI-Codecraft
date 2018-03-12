@@ -23,7 +23,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 		int vm_count = sf.second;
 		const flavor_info& flv = flavors_info[vm_name];
 		for (int f_count = 0; f_count < vm_count; ++f_count) {
-			for(int i = 0; i < servers.size(); ++i) { // first fit
+			for(size_t i = 0; i < servers.size(); ++i) { // first fit
 				if (flv <= servers[i]) {
 					servers[i] -= flv;
 					if(solution_server[i].find(vm_name) != solution_server[i].end())
@@ -31,7 +31,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 					else
 						solution_server[i][vm_name] = 1;
 					break;
-				} else {
+				} else if(i == servers.size() - 1) {
 					solution_server.emplace_back();
 					servers.emplace_back();
 				}
@@ -58,8 +58,8 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 	snprintf(buffer, sizeof(buffer), "\n%ld\n", solution_server.size());
 	pb = buffer; while(*pb && (*pr++ = *pb++));
 
-	for(int i = 0; i < solution_server.size(); ++i) {
-		snprintf(buffer, sizeof(buffer), "%d", i + 1);
+	for(size_t i = 0; i < solution_server.size(); ++i) {
+		snprintf(buffer, sizeof(buffer), "%ld", i + 1);
 		pb = buffer; while(*pb && (*pr++ = *pb++));
 		for(const auto & flv: solution_server[i]) {
 			snprintf(buffer, sizeof(buffer), " %s %d", flv.first.c_str(), flv.second);

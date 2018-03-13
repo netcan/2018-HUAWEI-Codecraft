@@ -9,7 +9,7 @@
 #include "flavor.h"
 
 using std::string;
-std::map<string, flavor_info> flavors_info;
+std::map<string, flavor_info> predict_flavors_info;
 std::map<string, std::vector<flavor>> flavors;
 
 int read_flavors_info(char * info[MAX_INFO_NUM]) {
@@ -21,7 +21,7 @@ int read_flavors_info(char * info[MAX_INFO_NUM]) {
 		flavor_info f_inf;
 		sscanf(info[line], "%s %d %d", vm_name, &f_inf.cpu_count, &f_inf.mem_size);
 		f_inf.vm_name = vm_name;
-		flavors_info[vm_name] = f_inf;
+		predict_flavors_info[vm_name] = f_inf;
 	}
 	return ++line;
 }
@@ -30,8 +30,8 @@ void read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 	char vm_id[32], vm_name[32], date_time[32];
 	for(int i = 0; i < data_num; ++i) {
 		sscanf(data[i], "%s %s %[^\n]", vm_id, vm_name, date_time);
-		if(flavors_info.find(vm_name) != flavors_info.end()) {
-			flavor f(vm_id, date_time, &flavors_info[vm_name]);
+		if(predict_flavors_info.find(vm_name) != predict_flavors_info.end()) {
+			flavor f(vm_id, date_time, &predict_flavors_info[vm_name]);
 			flavors[vm_name].push_back(f);
 		}
 	}
@@ -50,7 +50,7 @@ string get_interval_popular_flavor(const Date start_date, int during_days) { // 
 	flavor flavor_end_date(datetime(start_date + during_days));
 	int popular_count = 0, count = 0;
 	string popular_vm_name;
-	for(const auto& flv: flavors_info) {
+	for(const auto& flv: predict_flavors_info) {
 		string vm_name = flv.first;
 		for (std::vector<flavor>::iterator f_it = std::lower_bound(
 				flavors[vm_name].begin(), flavors[vm_name].end(), flavor(datetime(start_date))
@@ -59,8 +59,8 @@ string get_interval_popular_flavor(const Date start_date, int during_days) { // 
 			popular_count = count;
 			popular_vm_name = vm_name;
 		} else if(count == popular_count) {
-			if(flv.second.mem_size < flavors_info[popular_vm_name].mem_size ||
-			   flv.second.cpu_count < flavors_info[popular_vm_name].cpu_count)
+			if(flv.second.mem_size < predict_flavors_info[popular_vm_name].mem_size ||
+			   flv.second.cpu_count < predict_flavors_info[popular_vm_name].cpu_count)
 				popular_vm_name = vm_name;
 		}
 	}

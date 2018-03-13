@@ -9,7 +9,7 @@ char result[20 * 20 * 10000];
 
 void interval_predict(std::map<string, int>& solution_flavor) {
 	int during_days = predict_interval.second.date - predict_interval.first.date;
-	for(const auto &f: flavors_info) { // predict per vm
+	for(const auto &f: predict_flavors_info) { // predict per vm
 		int	s = get_interval_flavors_count(
 				f.first, predict_interval.first.date + (-during_days), during_days
 		);
@@ -23,8 +23,8 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	for(const auto & sf: solution_flavor) sfv.push_back(sf);
 
 	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
-		const auto & flv_inf_lhs = flavors_info[lhs.first],
-					flv_inf_rhs = flavors_info[rhs.first];
+		const auto & flv_inf_lhs = predict_flavors_info[lhs.first],
+					flv_inf_rhs = predict_flavors_info[rhs.first];
 		if(target == CPU) {
 			if(flv_inf_lhs.cpu_count == flv_inf_rhs.cpu_count)
 				return flv_inf_lhs.mem_size < flv_inf_rhs.mem_size;
@@ -44,7 +44,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	for(const auto & sf: sfv) { // sfv是排过序了的版本
 		string vm_name = sf.first;
 		int vm_count = sf.second;
-		const flavor_info& flv = flavors_info[vm_name];
+		const flavor_info& flv = predict_flavors_info[vm_name];
 		for (int f_count = 0; f_count < vm_count; ++f_count) {
 			for(size_t i = 0; i < servers.size(); ++i) { // first fit
 				if (flv <= servers[i]) {
@@ -63,7 +63,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	// sfv是排过序了的
 
 	string fill_vm_name = sfv[rand() % sfv.size()].first;
-	const auto & flv = flavors_info[fill_vm_name];
+	const auto & flv = predict_flavors_info[fill_vm_name];
 
 	for (size_t i = 0; i < servers.size(); ++i) {
 		while (flv <= servers[i]) {
@@ -114,8 +114,8 @@ void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<str
 	int r = 0, R;
 	for(const auto& sf: solution_flavor)
 		r += (target == CPU?
-		      flavors_info[sf.first].cpu_count:
-		      flavors_info[sf.first].mem_size) * sf.second;
+		      predict_flavors_info[sf.first].cpu_count:
+		      predict_flavors_info[sf.first].mem_size) * sf.second;
 	R = int(solution_server.size()) * (target == CPU?
 	                              server::cpu_count:
 	                              server::mem_size);

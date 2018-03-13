@@ -3,6 +3,7 @@
 #include "server.h"
 #include "flavor.h"
 #include "datetime.h"
+#include <ctime>
 #include <algorithm>
 #include <numeric>
 #include <cstdio>

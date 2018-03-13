@@ -52,6 +52,7 @@ struct flavor {
 int read_flavors_info(char * info[MAX_INFO_NUM]);
 void read_flavors(char *data[MAX_DATA_NUM], int data_num);
 int get_interval_flavors_count(string vm_name, const Date start_date, int during_days);
+string get_interval_popular_flavor(const Date start_date, int during_days); // return popular flavor's name
 
 extern std::map<string, flavor_info> flavors_info; // vm_name -> info
 extern std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors

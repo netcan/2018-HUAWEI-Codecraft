@@ -9,26 +9,39 @@ char result[20 * 20 * 10000];
 
 void interval_predict(std::map<string, int>& solution_flavor) {
 	int during_days = predict_interval.second.date - predict_interval.first.date;
-	for(const auto &f: flavors_info)
-		solution_flavor[f.first] = get_interval_flavors_count(f.first, predict_interval.first.date + (-during_days), during_days);
+	for(const auto &f: flavors_info) { // predict per vm
+		int	s = get_interval_flavors_count(
+				f.first, predict_interval.first.date + (-during_days), during_days
+		);
+		solution_flavor[f.first] = s;
+	}
 }
 
 
 void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
 	std::vector<std::pair<string, int>> sfv;
-	for(const auto & sf: solution_flavor)
-		sfv.push_back(std::pair<string, int>(sf.first, sf.second));
+	for(const auto & sf: solution_flavor) sfv.push_back(sf);
 
 	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
-		if(target == CPU) return flavors_info[lhs.first].mem_size < flavors_info[rhs.first].mem_size;
-		else return flavors_info[lhs.first].cpu_count < flavors_info[rhs.first].cpu_count;
+		const auto & flv_inf_lhs = flavors_info[lhs.first],
+					flv_inf_rhs = flavors_info[rhs.first];
+		if(target == CPU) {
+			if(flv_inf_lhs.cpu_count == flv_inf_rhs.cpu_count)
+				return flv_inf_lhs.mem_size < flv_inf_rhs.mem_size;
+			return flv_inf_lhs.cpu_count < flv_inf_rhs.cpu_count;
+		}
+		else {
+			if(flv_inf_lhs.mem_size == flv_inf_rhs.mem_size)
+				return flv_inf_lhs.cpu_count < flv_inf_rhs.cpu_count;
+			return flv_inf_lhs.mem_size < flv_inf_rhs.mem_size;
+		}
 	});
 
 	std::vector<server> servers;
 	solution_server.emplace_back();
 	servers.emplace_back();
 
-	for(const auto & sf: sfv) {
+	for(const auto & sf: sfv) { // sfv是排过序了的版本
 		string vm_name = sf.first;
 		int vm_count = sf.second;
 		const flavor_info& flv = flavors_info[vm_name];
@@ -47,6 +60,21 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 			}
 		}
 	}
+	// sfv是排过序了的
+
+	string fill_vm_name = sfv[rand() % sfv.size()].first;
+	const auto & flv = flavors_info[fill_vm_name];
+
+	for (size_t i = 0; i < servers.size(); ++i) {
+		while (flv <= servers[i]) {
+			servers[i] -= flv;
+			++solution_flavor[fill_vm_name];
+			if (solution_server[i].find(fill_vm_name) != solution_server[i].end())
+				++solution_server[i][fill_vm_name];
+			else solution_server[i][fill_vm_name] = 1;
+		}
+	}
+
 }
 
 
@@ -99,6 +127,8 @@ void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<str
 //你要完成的功能总入口
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename)
 {
+	srand(time(0));
+
 	int line = 0;
 	std::map<string, int> solution_flavor; // vm_name: count
 	std::vector<std::map<string, int>> solution_server;

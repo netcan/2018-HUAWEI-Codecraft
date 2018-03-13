@@ -39,10 +39,30 @@ void read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 
 int get_interval_flavors_count(string vm_name, const Date start_date, int during_days) {
 	int ret = 0;
-	flavor flavor_end(datetime(start_date + during_days));
+	flavor flavor_end_date(datetime(start_date + during_days));
 	for(std::vector<flavor>::iterator f_it = std::lower_bound(
 		flavors[vm_name].begin(), flavors[vm_name].end(), flavor(datetime(start_date))
-	); f_it < flavors[vm_name].end() && *f_it < flavor_end; ++f_it, ++ret);
+	); f_it < flavors[vm_name].end() && *f_it < flavor_end_date; ++f_it, ++ret);
 	return ret;
 }
 
+string get_interval_popular_flavor(const Date start_date, int during_days) { // return popular flavor's name
+	flavor flavor_end_date(datetime(start_date + during_days));
+	int popular_count = 0, count = 0;
+	string popular_vm_name;
+	for(const auto& flv: flavors_info) {
+		string vm_name = flv.first;
+		for (std::vector<flavor>::iterator f_it = std::lower_bound(
+				flavors[vm_name].begin(), flavors[vm_name].end(), flavor(datetime(start_date))
+		); f_it < flavors[vm_name].end() && *f_it < flavor_end_date; ++f_it, ++count);
+		if (count > popular_count) {
+			popular_count = count;
+			popular_vm_name = vm_name;
+		} else if(count == popular_count) {
+			if(flv.second.mem_size < flavors_info[popular_vm_name].mem_size ||
+			   flv.second.cpu_count < flavors_info[popular_vm_name].cpu_count)
+				popular_vm_name = vm_name;
+		}
+	}
+	return popular_vm_name;
+}

@@ -15,10 +15,20 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 
 
 void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
+	std::vector<std::pair<string, int>> sfv;
+	for(const auto & sf: solution_flavor)
+		sfv.push_back(std::pair<string, int>(sf.first, sf.second));
+
+	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
+		if(target == CPU) return flavors_info[lhs.first].mem_size < flavors_info[rhs.first].mem_size;
+		else return flavors_info[lhs.first].cpu_count < flavors_info[rhs.first].cpu_count;
+	});
+
 	std::vector<server> servers;
 	solution_server.emplace_back();
 	servers.emplace_back();
-	for(const auto & sf: solution_flavor) {
+
+	for(const auto & sf: sfv) {
 		string vm_name = sf.first;
 		int vm_count = sf.second;
 		const flavor_info& flv = flavors_info[vm_name];
@@ -48,17 +58,9 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 		flavor_count += flv.second;
 
 	snprintf(buffer, sizeof(buffer), "%d\n", flavor_count);
-	std::vector<std::pair<string, int>> sfv;
-	for(const auto & sf: solution_flavor)
-		sfv.push_back(std::pair<string, int>(sf.first, sf.second));
-
-	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
-		if(target == CPU) return flavors_info[lhs.first].mem_size < flavors_info[rhs.first].mem_size;
-		else return flavors_info[lhs.first].cpu_count < flavors_info[rhs.first].cpu_count;
-	});
 
 	pb = buffer; while(*pb && (*pr++ = *pb++));
-	for(const auto & flv: sfv) {
+	for(const auto & flv: solution_flavor) {
 		snprintf(buffer, sizeof(buffer), "%s %d\n", flv.first.c_str(), flv.second);
 		pb = buffer; while(*pb && (*pr++ = *pb++));
 	}
@@ -89,7 +91,7 @@ void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<str
 	R = int(solution_server.size()) * (target == CPU?
 	                              server::cpu_count:
 	                              server::mem_size);
-	printf("ratio = %.2f\n", r * 1.0/R);
+	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
 #endif
 }
 
@@ -117,7 +119,6 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	deploy_server(solution_flavor, solution_server);
 	show_ratio(solution_flavor, solution_server);
 
-	// 需要输出的内容
 
 	// 直接调用输出文件的方法输出到指定文件中(ps请注意格式的正确性，如果有解，第一行只有一个数据；第二行为空；第三行开始才是具体的数据，数据之间用一个空格分隔开)
 	write_result(get_result(solution_flavor, solution_server), filename);

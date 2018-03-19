@@ -1,5 +1,6 @@
 /build
 /bin
+__pycache__
 /ecs.tar.gz
 .idea
 .ipynb_checkpoints

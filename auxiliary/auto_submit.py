@@ -19,9 +19,9 @@ def submit():
         'ad_ctt': '%25E4%25BA%2591%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8-%25E4%25BA%25A7%25E5%2593%2581',
         'ad_tm': '%25E4%25BA%2591%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8',
         '_dmpa_id': '1214701a4914d204c9471856828631500689209192.1520407064.0.1520408147..',
-        'SessionID': 'edd6b583-3edf-4444-b6a4-400a2c5ab849',
-        'LAT': '20180315135841',
-        '.HAPApp': 'AD730AA94DD038B9809BE548EF90D2F98AF4DD72B77D4C903673DC4D8FCB8844A8AA459963CFC87F5271001B57007FCA5A9BA97FB40521386719F61DB368BA71A1C65030DA33594297FC623B497E8AEBF2CB48644C7896F8BF0C9B14384CDA9CCEA9979D',
+        'SessionID': '65b24dff-42ed-42c9-9cd8-c4e8e59437b4',
+        'LAT': '20180317123905',
+        '.HAPApp': '2F9797C9F19F3C672BFAA010184060B3E7462EB2D26AF1A05DE9D572B2E5CFE0B43B5FA07A2135B893EED3A67CF4205F2B9B882DE7194E5AC4C9EC19ABA3A98EE79E054E655E9C349BF2426C12414115997764CD4D156D11E4486C146767B5F159AE5E30',
     }
 
     headers = {
@@ -35,14 +35,14 @@ def submit():
         'Cache-Control': 'no-cache',
         'X-Requested-With': 'XMLHttpRequest',
         'Connection': 'keep-alive',
-        'Referer': 'http://codecraft.devcloud.huaweicloud.com/home/mycenter?m=2',
+        'Referer': 'http://codecraft.devcloud.huaweicloud.com/home/mycenter',
         'DNT': '1',
     }
 
     data = [
         ('repositoryId', '195412'),
         ('__RequestVerificationToken',
-         'co31A5ktNcUw9HbJF3DiYDwgjsy9lFfRdm6bwto2Fh95crsA3D6HaPDpH_xl4mVS7oXaib1Db3-LPJBgtHev8-2IeBZR9lW0ftX6u-lnuqxtwAhy0'),
+         'xJ3if_w6hF2u6HW--hCiu-rtmTeMynMGjp6ASHiHURNW5bcyK72DsbhBFTE_zkq6h2qwnn-hw05d2IxopJ4YyCq011zznMeQLlK0jdhVvQT5kJ_00'),
     ]
 
     response = requests.post('http://codecraft.devcloud.huaweicloud.com/OtherSystem/DevCloudProjectSubmit',
@@ -66,9 +66,9 @@ def get_score():
         'ad_ctt': '%25E4%25BA%2591%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8-%25E4%25BA%25A7%25E5%2593%2581',
         'ad_tm': '%25E4%25BA%2591%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8',
         '_dmpa_id': '1214701a4914d204c9471856828631500689209192.1520407064.0.1520408147..',
-        'SessionID': 'edd6b583-3edf-4444-b6a4-400a2c5ab849',
-        'LAT': '20180315135841',
-        '.HAPApp': 'AD730AA94DD038B9809BE548EF90D2F98AF4DD72B77D4C903673DC4D8FCB8844A8AA459963CFC87F5271001B57007FCA5A9BA97FB40521386719F61DB368BA71A1C65030DA33594297FC623B497E8AEBF2CB48644C7896F8BF0C9B14384CDA9CCEA9979D',
+        'SessionID': '65b24dff-42ed-42c9-9cd8-c4e8e59437b4',
+        'LAT': '20180317123905',
+        '.HAPApp': '2F9797C9F19F3C672BFAA010184060B3E7462EB2D26AF1A05DE9D572B2E5CFE0B43B5FA07A2135B893EED3A67CF4205F2B9B882DE7194E5AC4C9EC19ABA3A98EE79E054E655E9C349BF2426C12414115997764CD4D156D11E4486C146767B5F159AE5E30',
     }
 
     headers = {
@@ -80,21 +80,11 @@ def get_score():
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Cache-Control': 'no-cache',
-        'Referer': 'http://codecraft.devcloud.huaweicloud.com/home/mycenter?m=2',
+        'Referer': 'http://codecraft.devcloud.huaweicloud.com/home/mycenter',
         'Connection': 'keep-alive',
     }
 
-    params = (
-        ('m', '2'),
-    )
-
-    response = requests.get('http://codecraft.devcloud.huaweicloud.com/home/mycenter', headers=headers, params=params,
-                            cookies=cookies)
-
-    # NB. Original query string below. It seems impossible to parse and
-    # reproduce query strings 100% accurately so the one below is given
-    # in case the reproduced version is not "correct".
-    # response = requests.get('http://codecraft.devcloud.huaweicloud.com/home/mycenter?m=2', headers=headers, cookies=cookies)
+    response = requests.get('http://codecraft.devcloud.huaweicloud.com/home/mycenter', headers=headers, cookies=cookies)
 
     html = fromstring(response.text)
     return html.cssselect('.my-race-td3')[1].text_content()

@@ -13,7 +13,7 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 		int	s = get_interval_flavors_count(
 				f.first, predict_interval.first.date + (-during_days), during_days
 		);
-		solution_flavor[f.first] = s;
+		solution_flavor[f.first] = s + 4;
 	}
 }
 
@@ -62,7 +62,10 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	}
 	// sfv是排过序了的
 
+	// 填充操作
+
 	string fill_vm_name = sfv[rand() % sfv.size()].first;
+//	string fill_vm_name = sfv[0].first;
 	const auto & flv = predict_flavors_info[fill_vm_name];
 
 	for (size_t i = 0; i < servers.size(); ++i) {

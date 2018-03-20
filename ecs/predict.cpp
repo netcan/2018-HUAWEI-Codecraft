@@ -65,7 +65,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	// +C，提高希尔系数（精度）
 	for(const auto &sf: sfv) {
 		string vm_name = sf.first;
-		int c = 4;
+		int c = 5;
 		const auto & flv = predict_flavors_info[vm_name];
 		for(int i = 0; i < servers.size(); ++i) {
 			while(flv <= servers[i] && c) {
@@ -80,8 +80,8 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 
 	// 填充操作
 
-	string fill_vm_name = sfv[rand() % sfv.size()].first;
-//	string fill_vm_name = sfv[0].first;
+//	string fill_vm_name = sfv[Rand.Random_Int(0, sfv.size() - 1)].first;
+	string fill_vm_name = sfv[0].first;
 	const auto & flv = predict_flavors_info[fill_vm_name];
 
 	for (size_t i = 0; i < servers.size(); ++i) {

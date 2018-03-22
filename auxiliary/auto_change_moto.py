@@ -1,3 +1,5 @@
+# author: netcan
+
 from datetime import datetime
 from codecraft_login import login
 from lxml.html import fromstring

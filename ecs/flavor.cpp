@@ -39,10 +39,15 @@ void read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 
 int get_interval_flavors_count(string vm_name, const Date start_date, int during_days) {
 	int ret = 0;
+	if(start_date + during_days <= flavors[vm_name].begin()->create_at.date)
+		return -1;
+
 	flavor flavor_end_date(datetime(start_date + during_days));
 	for(std::vector<flavor>::iterator f_it = std::lower_bound(
 		flavors[vm_name].begin(), flavors[vm_name].end(), flavor(datetime(start_date))
 	); f_it < flavors[vm_name].end() && *f_it < flavor_end_date; ++f_it, ++ret);
+
+//	printf("%d-%d-%d -> %d-%d-%d: %d\n", start_date.year, start_date.month, start_date.day, t.year, t.month, t.day, ret);
 	return ret;
 }
 

@@ -3,12 +3,12 @@
 enum {
 	CPU, MEM
 } target;
+int during_days = 0;
 
 std::pair<datetime, datetime> predict_interval;
 char result[20 * 20 * 10000];
 
 void interval_predict(std::map<string, int>& solution_flavor) {
-	int during_days = predict_interval.second.date - predict_interval.first.date;
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		int	s = get_interval_flavors_count(
 				f.first, predict_interval.first.date + (-during_days), during_days
@@ -17,6 +17,36 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 	}
 }
 
+void linear_regression_predict(std::map<string, int>& solution_flavor) {
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		std::vector<int> Y_count;
+		std::vector<int> X;
+		int cnt = 0, x = 1;
+		for(Date d = predict_interval.first.date + (-during_days);
+		    (cnt = get_interval_flavors_count(f.first, d, during_days))!= -1;
+		    d += -during_days) {
+			Y_count.push_back(cnt);
+			X.push_back(x++);
+		}
+		std::reverse(Y_count.begin(), Y_count.end());
+		for(size_t i = 1; i < Y_count.size(); ++i)
+			Y_count[i] = Y_count[i - 1] + Y_count[i];
+		LinearReg.train(X, Y_count);
+		solution_flavor[f.first] = int(lround(LinearReg.predict(x) - LinearReg.predict(x-1)));
+
+#ifdef _DEBUG
+		printf("%s predict_x=%d\n", f.first.c_str(), x);
+		for(size_t i = 0; i < X.size(); ++i)
+			printf("(%d, %d) ", X[i], Y_count[i] - (i > 0?Y_count[i-1]:0));
+		puts("");
+		LinearReg.print_coefficient();
+		for(size_t i = 0; i < X.size(); ++i)
+			printf("(%d, %ld) ", X[i], lround(LinearReg.predict(X[i])) - lround(i > 0 ? LinearReg.predict(X[i-1]) : 0));
+		puts("\n-----------------");
+#endif
+	}
+
+}
 
 void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
 	std::vector<std::pair<string, int>> sfv;
@@ -79,7 +109,6 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	}
 
 	// 填充操作
-
 //	string fill_vm_name = sfv[Rand.Random_Int(0, sfv.size() - 1)].first;
 	string fill_vm_name = sfv[0].first;
 	const auto & flv = predict_flavors_info[fill_vm_name];
@@ -162,9 +191,13 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 	predict_interval.first = datetime(info[line++]);
 	predict_interval.second = datetime(info[line]);
+	during_days = predict_interval.second.date - predict_interval.first.date;
 
 	read_flavors(data, data_num);
+
 	interval_predict(solution_flavor);
+//	linear_regression_predict(solution_flavor);
+
 	deploy_server(solution_flavor, solution_server);
 	show_ratio(solution_flavor, solution_server);
 

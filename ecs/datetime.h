@@ -14,17 +14,18 @@ using std::string;
 
 struct Date {
 	int year, month, day;
-	Date(int year = 0, int month = 0, int day = 0):
+	explicit Date(int year = 0, int month = 0, int day = 0):
 			year(year), month(month), day(day) {}
 	bool operator<(const Date &b) const {
-		return this->year < b.year ||
-		       this->month < b.month ||
-		       this->day < b.day;
+		return jd(*this) < jd(b);
 	}
 	bool operator==(const Date &b) const {
 		return this->year == b.year &&
 		       this->month == b.month &&
 		       this->day == b.day;
+	}
+	bool operator<=(const Date &b) const {
+		return jd(*this) <= jd(b);
 	}
 	int operator-(const Date &b) const {
 		return jd(*this) - jd(b);

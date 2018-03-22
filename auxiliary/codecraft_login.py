@@ -1,3 +1,5 @@
+# author: netcan
+
 import requests
 import json
 from urllib.parse import unquote, urlparse, parse_qs

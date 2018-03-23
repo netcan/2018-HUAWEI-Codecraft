@@ -11,7 +11,7 @@ char result[20 * 20 * 10000];
 void interval_predict(std::map<string, int>& solution_flavor) {
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		int	s = get_interval_flavors_count(
-				f.first, predict_interval.first.date + (-during_days), during_days
+			f.first, predict_interval.first.date + (-during_days), during_days
 		);
 		solution_flavor[f.first] = s;
 	}
@@ -31,17 +31,21 @@ void linear_regression_predict(std::map<string, int>& solution_flavor) {
 		std::reverse(Y_count.begin(), Y_count.end());
 		for(size_t i = 1; i < Y_count.size(); ++i)
 			Y_count[i] = Y_count[i - 1] + Y_count[i];
-		LinearReg.train(X, Y_count);
-		solution_flavor[f.first] = int(lround(LinearReg.predict(x) - LinearReg.predict(x-1)));
+
+		LinearReg.train_gradient_decent(X, Y_count, 0.001, 300000);
+
+		solution_flavor[f.first] = int(lround(LinearReg.predict_gradient_decent(x) -
+		                                      LinearReg.predict_gradient_decent(x - 1)));
 
 #ifdef _DEBUG
 		printf("%s predict_x=%d\n", f.first.c_str(), x);
 		for(size_t i = 0; i < X.size(); ++i)
-			printf("(%d, %d) ", X[i], Y_count[i] - (i > 0?Y_count[i-1]:0));
+			printf("(%d, %d) ", X[i], Y_count[i] - (i > 0 ? Y_count[i-1] - 1: 0));
 		puts("");
 		LinearReg.print_coefficient();
 		for(size_t i = 0; i < X.size(); ++i)
-			printf("(%d, %ld) ", X[i], lround(LinearReg.predict(X[i])) - lround(i > 0 ? LinearReg.predict(X[i-1]) : 0));
+			printf("(%d, %ld) ", X[i], lround(LinearReg.predict_gradient_decent(X[i])) -
+			                           lround(i > 0 ? LinearReg.predict_gradient_decent(X[i-1]) : 0));
 		puts("\n-----------------");
 #endif
 	}
@@ -92,6 +96,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	}
 	// sfv是排过序了的
 
+	/*
 	// +C，提高希尔系数（精度）
 	for(const auto &sf: sfv) {
 		string vm_name = sf.first;
@@ -122,6 +127,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 			else solution_server[i][fill_vm_name] = 1;
 		}
 	}
+	 */
 
 }
 
@@ -175,8 +181,6 @@ void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<str
 //你要完成的功能总入口
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename)
 {
-	srand(time(0));
-
 	int line = 0;
 	std::map<string, int> solution_flavor; // vm_name: count
 	std::vector<std::map<string, int>> solution_server;
@@ -195,8 +199,8 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 	read_flavors(data, data_num);
 
-	interval_predict(solution_flavor);
-//	linear_regression_predict(solution_flavor);
+//	interval_predict(solution_flavor);
+	linear_regression_predict(solution_flavor);
 
 	deploy_server(solution_flavor, solution_server);
 	show_ratio(solution_flavor, solution_server);

@@ -1,16 +1,13 @@
 # author: netcan
 
 from datetime import datetime
-from codecraft_login import login
+from codecraft_login import login, s
 from lxml.html import fromstring
 import time
 
-s = None
-
-
 def change_moto(username, password, moto="每日100次开奖机会用完了"):
-    url = 'http://codecraft.devcloud.huaweicloud.com/User/UpdateTeamName'
     global s
+    url = 'http://codecraft.devcloud.huaweicloud.com/User/UpdateTeamName'
     if not s:
         s = login(username, password)
 
@@ -18,13 +15,14 @@ def change_moto(username, password, moto="每日100次开奖机会用完了"):
     rvt = rvt.cssselect('.myteam input[name=__RequestVerificationToken]')[0].value
 
     res = s.post(url, data=[
-        ('teamName', '\u56F4\u5899 \u7F16\u961F'),
+        ('teamName', '围墙 编队'),
         ('teamMoto', moto),
         ('__RequestVerificationToken', rvt)
     ], headers={
         'Referer': 'http://codecraft.devcloud.huaweicloud.com/home/mycenter',
         'DNT': '1',
     }).json()
+    print(res)
     if res['Code'] != 0:
         s = login(username, password)
     return res

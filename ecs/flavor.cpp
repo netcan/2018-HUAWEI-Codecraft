@@ -71,3 +71,15 @@ string get_interval_popular_flavor(const Date start_date, int during_days) { // 
 	}
 	return popular_vm_name;
 }
+
+std::vector<int> get_per_flavor_per_interval_count(std::string vm_name) {
+	std::vector<int> Y_count;
+	int cnt = 0;
+	for(Date d = predict_interval.first.date + (-during_days);
+	    (cnt = get_interval_flavors_count(vm_name, d, during_days))!= -1;
+	    d += -during_days) {
+		Y_count.push_back(cnt);
+	}
+	std::reverse(Y_count.begin(), Y_count.end());
+	return Y_count;
+}

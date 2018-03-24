@@ -17,37 +17,74 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 	}
 }
 
+
 void linear_regression_predict(std::map<string, int>& solution_flavor) {
+	linear_regression LinearReg;
 	for(const auto &f: predict_flavors_info) { // predict per vm
-		std::vector<int> Y_count;
+		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
 		std::vector<int> X;
-		int cnt = 0, x = 1;
-		for(Date d = predict_interval.first.date + (-during_days);
-		    (cnt = get_interval_flavors_count(f.first, d, during_days))!= -1;
-		    d += -during_days) {
-			Y_count.push_back(cnt);
+		int x = 1;
+		for(size_t i = 0; i < Y_count.size(); ++i) {
+			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
 			X.push_back(x++);
 		}
-		std::reverse(Y_count.begin(), Y_count.end());
-		for(size_t i = 1; i < Y_count.size(); ++i)
-			Y_count[i] = Y_count[i - 1] + Y_count[i];
 
-		LinearReg.train_gradient_decent(X, Y_count, 0.001, 300000);
+		LinearReg.train(X, Y_count);
 
-		solution_flavor[f.first] = int(lround(LinearReg.predict_gradient_decent(x) -
-		                                      LinearReg.predict_gradient_decent(x - 1)));
+		solution_flavor[f.first] = int(lround(LinearReg.predict(x) -
+		                                      LinearReg.predict(x - 1)));
 
 #ifdef _DEBUG
 		printf("%s predict_x=%d\n", f.first.c_str(), x);
 		for(size_t i = 0; i < X.size(); ++i)
-			printf("(%d, %d) ", X[i], Y_count[i] - (i > 0 ? Y_count[i-1] - 1: 0));
+			printf("(%d, %d) ", X[i], Y_count[i] - (i > 0 ? Y_count[i-1]: 0));
 		puts("");
 		LinearReg.print_coefficient();
 		for(size_t i = 0; i < X.size(); ++i)
-			printf("(%d, %ld) ", X[i], lround(LinearReg.predict_gradient_decent(X[i])) -
-			                           lround(i > 0 ? LinearReg.predict_gradient_decent(X[i-1]) : 0));
+			printf("(%d, %ld) ", X[i], lround(LinearReg.predict(X[i])) -
+			                           lround(i > 0 ? LinearReg.predict(X[i-1]) : 0));
 		puts("\n-----------------");
 #endif
+	}
+
+}
+void polynomial_regression_predict(std::map<string, int>& solution_flavor) {
+	polynomial_regression PolyReg(3);
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+		std::vector<int> X;
+		int x = 1;
+		for(size_t i = 0; i < Y_count.size(); ++i) {
+//			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
+			X.push_back(x++);
+		}
+
+		PolyReg.train(X, Y_count, 1e-3, 80000);
+		solution_flavor[f.first] = std::max(int(lround(PolyReg.predict(x))), 0);
+
+#ifdef _DEBUG
+		printf("%s predict_x=%d\n", f.first.c_str(), x);
+		for(size_t i = 0; i < X.size(); ++i)
+			printf("(%d, %d) ", X[i], Y_count[i]);
+		puts("");
+		PolyReg.print_coefficient();
+		for(size_t i = 0; i < X.size(); ++i)
+			printf("(%d, %ld) ", X[i], lround(PolyReg.predict(X[i])));
+		puts("\n-----------------");
+#endif
+	}
+
+}
+
+void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
+	exponential_smoothing ExpSmooth;
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+//		for(size_t i = 0; i < Y_count.size(); ++i)
+//			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
+		ExpSmooth.train(Y_count);
+//		solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back();
+		solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back())));
 	}
 
 }
@@ -96,10 +133,10 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	}
 	// sfv是排过序了的
 
-	/*
 	// +C，提高希尔系数（精度）
-	for(const auto &sf: sfv) {
-		string vm_name = sf.first;
+//	for(const auto &sf: sfv) {
+	for(int i = 0; i < sfv.size(); ++i) {
+		string vm_name = sfv[i].first;
 		int c = 5;
 		const auto & flv = predict_flavors_info[vm_name];
 		for(int i = 0; i < servers.size(); ++i) {
@@ -110,7 +147,6 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 				--c;
 			}
 		}
-
 	}
 
 	// 填充操作
@@ -127,7 +163,6 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 			else solution_server[i][fill_vm_name] = 1;
 		}
 	}
-	 */
 
 }
 
@@ -199,8 +234,10 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 	read_flavors(data, data_num);
 
-//	interval_predict(solution_flavor);
-	linear_regression_predict(solution_flavor);
+	interval_predict(solution_flavor);
+//	linear_regression_predict(solution_flavor);
+//	polynomial_regression_predict(solution_flavor);
+//	exponential_smoothing_predict(solution_flavor);
 
 	deploy_server(solution_flavor, solution_server);
 	show_ratio(solution_flavor, solution_server);

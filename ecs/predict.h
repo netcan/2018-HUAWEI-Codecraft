@@ -4,7 +4,7 @@
 #include "flavor.h"
 #include "datetime.h"
 #include "random.h"
-#include "linear_regression.h"
+#include "prediction_model.h"
 #include <ctime>
 #include <cmath>
 #include <algorithm>
@@ -13,8 +13,12 @@
 #include <cstring>
 
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename);
+
 void interval_predict(std::map<string, int>& solution_flavor);
 void linear_regression_predict(std::map<string, int>& solution_flavor);
+void polynomial_regression_predict(std::map<string, int>& solution_flavor);
+void exponential_smoothing_predict(std::map<string, int>& solution_flavor);
+
 void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server);
 char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server);
 void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server);

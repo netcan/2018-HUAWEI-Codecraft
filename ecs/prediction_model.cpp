@@ -6,7 +6,6 @@
  > Created Time: 2018-03-22 -- 15:04
  ****************************************************************************/
 
-#include "linear_regression.h"
+#include "prediction_model.h"
 
 
-linear_regression LinearReg;

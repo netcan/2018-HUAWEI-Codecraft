@@ -186,40 +186,35 @@ public:
 class exponential_smoothing {
 private:
 	double at, bt;
-	int alpha; // max_weight之1
 	const int max_weight = 100000;
+	int alpha; // max_weight之1
 	template <class T1, class T2>
 	double weight_sum(int w, T1 a, T2 b) {
 		return (w * a + (max_weight - w) * b) * 1.0 / max_weight;
 	}
 public:
+	exponential_smoothing(double alpha): alpha(alpha * max_weight) {};
 	template <class T>
 	void train(const std::vector<T> &X) {
-		double min_sse = -1.0;
 		std::vector<double> S1(X.size()), S2(X.size()), F(X.size());
 
-		for(int test_alpha = 1; test_alpha < max_weight; ++test_alpha) {
-			F[0] = S1[0] = S2[0] = X[0];
-			double tmp_at = 2 * S1[0] - S2[0],
-					tmp_bt = alpha * (S1[0] - S2[0]) / (max_weight - alpha);
+		S1[0] = S2[0] = X[0];
+		double tmp_at = 2 * S1[0] - S2[0],
+				tmp_bt = alpha * (S1[0] - S2[0]) / (max_weight - alpha);
+		F[0] = tmp_at;
 
-			for(size_t t = 1; t < X.size(); ++t) {
-				S1[t] = weight_sum(test_alpha, X[t], S1[t-1]);
-				S2[t] = weight_sum(test_alpha, S1[t], S2[t-1]);
-				F[t] = tmp_at + tmp_bt;
-				tmp_at = 2 * S1[t] - S2[t];
-				tmp_bt = alpha * (S1[t] - S2[t]) / (max_weight - alpha);
-			}
-			double sse = SSE(F, X);
-			if(min_sse < 0 || min_sse > sse) {
-				alpha = test_alpha;
-				at = tmp_at;
-				bt = tmp_bt;
-				min_sse = sse;
-			}
+		for(size_t t = 1; t < X.size(); ++t) {
+			S1[t] = weight_sum(alpha, X[t], S1[t-1]);
+			S2[t] = weight_sum(alpha, S1[t], S2[t-1]);
+			F[t] = tmp_at + tmp_bt;
+			tmp_at = 2 * S1[t] - S2[t];
+			tmp_bt = alpha * (S1[t] - S2[t]) / (max_weight - alpha);
 		}
+
+		at = tmp_at, bt = tmp_bt;
 #ifdef _DEBUG
-		printf("alpha = %lf min_sse=%lf\n", alpha * 1.0 / max_weight, min_sse);
+		double sse = SSE(F, X);
+//		printf("alpha = %lf sse=%lf\n", alpha * 1.0 / max_weight, sse);
 #endif
 	}
 	template <class T>

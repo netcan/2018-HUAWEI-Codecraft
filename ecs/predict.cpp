@@ -49,7 +49,7 @@ void linear_regression_predict(std::map<string, int>& solution_flavor) {
 
 }
 void polynomial_regression_predict(std::map<string, int>& solution_flavor) {
-	polynomial_regression PolyReg(3);
+	polynomial_regression PolyReg(2);
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
 		std::vector<int> X;
@@ -59,7 +59,8 @@ void polynomial_regression_predict(std::map<string, int>& solution_flavor) {
 			X.push_back(x++);
 		}
 
-		PolyReg.train(X, Y_count, 1e-3, 80000);
+		PolyReg.train(X, Y_count, 1e-1, -1);
+//		solution_flavor[f.first] = std::max(int(lround(PolyReg.predict(x) - PolyReg.predict(x - 1))), 0);
 		solution_flavor[f.first] = std::max(int(lround(PolyReg.predict(x))), 0);
 
 #ifdef _DEBUG
@@ -76,14 +77,66 @@ void polynomial_regression_predict(std::map<string, int>& solution_flavor) {
 
 }
 
+double shell_coefficient(std::map<string, int>& predict_solution_flavor,
+                         std::map<string, int>& real_solution_flavor) {
+	assert(predict_solution_flavor.size() == real_solution_flavor.size());
+	double rmse = 0, rsy = 0, rsY = 0;
+	for(const auto &vm: predict_solution_flavor) {
+		const string & vm_name = vm.first;
+		int yi = predict_solution_flavor[vm_name],
+			Yi = real_solution_flavor[vm_name];
+		rmse += (yi - Yi) * (yi - Yi);
+		rsy += yi * yi;
+		rsY += Yi * Yi;
+	}
+	rmse /= predict_solution_flavor.size();
+	rsy /= predict_solution_flavor.size();
+	rsY /= predict_solution_flavor.size();
+	return sqrt(rmse) / (sqrt(rsy) + sqrt(rsY));
+}
+
+double cv_expontential_smoothing_predict() {
+	std::map<string, int> predict_solution_flavor, real_solution_flavor;
+	int best_alpha = 0;
+	double best_accuracy = -1;
+	const int max_alpha = 10000;
+	for(int alpha = 0; alpha <= max_alpha; ++alpha) {
+		exponential_smoothing ExpSmooth(alpha * 1.0 / max_alpha);
+		for (const auto &f: predict_flavors_info) { // predict per vm
+			std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+			real_solution_flavor[f.first] = Y_count.back(); Y_count.pop_back();
+//			for(size_t i = 0; i < Y_count.size(); ++i)
+//				Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
+
+			ExpSmooth.train(Y_count);
+//			predict_solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back();
+			predict_solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back())));
+		}
+		double sc = shell_coefficient(predict_solution_flavor,
+		                              real_solution_flavor);
+		if(best_accuracy < 0 || best_accuracy > sc) {
+			best_accuracy = sc;
+			best_alpha = alpha;
+		}
+#ifdef _DEBUG
+		printf("alpha = %lf, accuracy = %lf\n",
+		       alpha * 1.0 / max_alpha, sc);
+#endif
+	}
+	printf("best_alpha = %lf best_accuracy = %f\n", best_alpha * 1.0/ max_alpha, best_accuracy);
+	return best_alpha * 1.0 / max_alpha;
+}
+
 void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
-	exponential_smoothing ExpSmooth;
+//	exponential_smoothing ExpSmooth(cv_expontential_smoothing_predict());
+	exponential_smoothing ExpSmooth(0.60);
+//	exponential_smoothing ExpSmooth(0.99);
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
 //		for(size_t i = 0; i < Y_count.size(); ++i)
 //			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
 		ExpSmooth.train(Y_count);
-//		solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back();
+//		solution_flavor[f.first] = std::max(int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back(), 0);
 		solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back())));
 	}
 
@@ -113,7 +166,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	servers.emplace_back();
 
 	for(const auto & sf: sfv) { // sfv是排过序了的版本
-		string vm_name = sf.first;
+		const string& vm_name = sf.first;
 		int vm_count = sf.second;
 		const flavor_info& flv = predict_flavors_info[vm_name];
 		for (int f_count = 0; f_count < vm_count; ++f_count) {
@@ -197,6 +250,7 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 
 	return result;
 }
+
 
 void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
 #ifdef _DEBUG

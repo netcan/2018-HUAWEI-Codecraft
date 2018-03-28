@@ -27,6 +27,8 @@ def login(username, password):
         ('isAjax', 'true'),
         ('Submit', 'Login')
     ]).json()
+    print(res)
     ss.get(res['redirectUrl'])
 
     return ss
+

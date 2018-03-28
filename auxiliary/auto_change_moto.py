@@ -12,7 +12,10 @@ def change_moto(username, password, moto="每日100次开奖机会用完了"):
         s = login(username, password)
 
     rvt = fromstring(s.get('http://codecraft.devcloud.huaweicloud.com/home/mycenter').text)
-    rvt = rvt.cssselect('.myteam input[name=__RequestVerificationToken]')[0].value
+    try:
+        rvt = rvt.cssselect('.myteam input[name=__RequestVerificationToken]')[0].value
+    except IndexError:
+        s = login(username, password)
 
     res = s.post(url, data=[
         ('teamName', '围墙 编队'),

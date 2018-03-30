@@ -11,6 +11,7 @@
 #include <vector>
 #include <cstdio>
 #include <cmath>
+#include <string>
 #include <limits>
 #include <cassert>
 

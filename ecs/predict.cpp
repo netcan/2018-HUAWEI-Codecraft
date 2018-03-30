@@ -5,6 +5,8 @@ enum {
 } target;
 int during_days = 0;
 
+std::string init_f;
+
 std::pair<datetime, datetime> predict_interval;
 char result[20 * 20 * 10000];
 
@@ -15,6 +17,21 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 		);
 		solution_flavor[f.first] = s;
 	}
+}
+
+void xjb_predict(std::map<string, int>& solution_flavor) {
+	char *d[MAX_DATA_NUM]; int dln = read_file(d, MAX_DATA_NUM, init_f.c_str());
+	std::map<string, std::vector<flavor>> flvs = read_flavors(d, dln);
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		string vm_name = f.first;
+		int s = 0;
+		flavor flavor_end_date(datetime(predict_interval.first.date + during_days + 1));
+		for(std::vector<flavor>::iterator f_it = std::lower_bound(
+				flvs[vm_name].begin(), flvs[vm_name].end(), flavor(datetime(predict_interval.first.date))
+		); f_it < flvs[vm_name].end() && *f_it < flavor_end_date; ++f_it, ++s);
+		solution_flavor[f.first] = s;
+	}
+	release_buff(d, dln);
 }
 
 
@@ -77,14 +94,14 @@ void polynomial_regression_predict(std::map<string, int>& solution_flavor) {
 
 }
 
-double shell_coefficient(std::map<string, int>& predict_solution_flavor,
-                         std::map<string, int>& real_solution_flavor) {
+double shell_coefficient(const std::map<string, int>& predict_solution_flavor,
+                         const std::map<string, int>& real_solution_flavor) {
 	assert(predict_solution_flavor.size() == real_solution_flavor.size());
 	double rmse = 0, rsy = 0, rsY = 0;
 	for(const auto &vm: predict_solution_flavor) {
 		const string & vm_name = vm.first;
-		int yi = predict_solution_flavor[vm_name],
-			Yi = real_solution_flavor[vm_name];
+		int yi = const_cast<std::map<string, int> &>(predict_solution_flavor)[vm_name],
+			Yi = const_cast<std::map<string, int> &>(real_solution_flavor)[vm_name];
 		rmse += (yi - Yi) * (yi - Yi);
 		rsy += yi * yi;
 		rsY += Yi * Yi;
@@ -146,6 +163,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	std::vector<std::pair<string, int>> sfv;
 	for(const auto & sf: solution_flavor) sfv.push_back(sf);
 
+	// 排序
 	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
 		const auto & flv_inf_lhs = predict_flavors_info[lhs.first],
 					flv_inf_rhs = predict_flavors_info[rhs.first];
@@ -165,6 +183,7 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 	solution_server.emplace_back();
 	servers.emplace_back();
 
+	// first fit
 	for(const auto & sf: sfv) { // sfv是排过序了的版本
 		const string& vm_name = sf.first;
 		int vm_count = sf.second;
@@ -202,19 +221,38 @@ void deploy_server(std::map<string, int>& solution_flavor, std::vector<std::map<
 		}
 	}
 
+	std::map<std::string, int> ff_solution_flavor = solution_flavor;
+	std::vector<std::map<string, int>> ff_solution_server = solution_server;
+	std::vector<server> ff_servers = servers;
+
 	// 填充操作
 //	string fill_vm_name = sfv[Rand.Random_Int(0, sfv.size() - 1)].first;
-	string fill_vm_name = sfv[0].first;
-	const auto & flv = predict_flavors_info[fill_vm_name];
+	double best_deploy_ratio = -1;
+	for(auto fv: sfv) {
+		string fill_vm_name = fv.first;
+		const auto &flv = predict_flavors_info[fill_vm_name];
+		std::map<std::string, int> fill_solution_flavor = ff_solution_flavor;
+		std::vector<std::map<string, int>> fill_solution_server = ff_solution_server;
+		std::vector<server> fill_servers = ff_servers;
 
-	for (size_t i = 0; i < servers.size(); ++i) {
-		while (flv <= servers[i]) {
-			servers[i] -= flv;
-			++solution_flavor[fill_vm_name];
-			if (solution_server[i].find(fill_vm_name) != solution_server[i].end())
-				++solution_server[i][fill_vm_name];
-			else solution_server[i][fill_vm_name] = 1;
+		for (size_t i = 0; i < servers.size(); ++i) {
+			while (flv <= fill_servers[i]) {
+				fill_servers[i] -= flv;
+				++fill_solution_flavor[fill_vm_name];
+				if (fill_solution_server[i].find(fill_vm_name) != fill_solution_server[i].end())
+					++fill_solution_server[i][fill_vm_name];
+				else fill_solution_server[i][fill_vm_name] = 1;
+			}
 		}
+
+		double deploy_ratio = get_deploy_ratio(fill_solution_flavor, fill_solution_server);
+		if(best_deploy_ratio < 0 || deploy_ratio > best_deploy_ratio) {
+			best_deploy_ratio = deploy_ratio;
+			servers = fill_servers;
+			solution_flavor = fill_solution_flavor;
+			solution_server = fill_solution_server;
+		}
+		break;
 	}
 
 }
@@ -252,8 +290,7 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 }
 
 
-void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
-#ifdef _DEBUG
+double get_deploy_ratio(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>> &solution_server) {
 	int r = 0, R;
 	for(const auto& sf: solution_flavor)
 		r += (target == CPU?
@@ -262,8 +299,10 @@ void show_ratio(std::map<string, int>& solution_flavor, std::vector<std::map<str
 	R = int(solution_server.size()) * (target == CPU?
 	                              server::cpu_count:
 	                              server::mem_size);
+#ifdef _DEBUG
 	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
 #endif
+	return r * 1.0 / R;
 }
 
 
@@ -286,15 +325,16 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	predict_interval.second = datetime(info[line]);
 	during_days = predict_interval.second.date - predict_interval.first.date;
 
-	read_flavors(data, data_num);
+	flavors = std::move(read_flavors(data, data_num));
 
 	interval_predict(solution_flavor);
+//	xjb_predict(solution_flavor);
 //	linear_regression_predict(solution_flavor);
 //	polynomial_regression_predict(solution_flavor);
 //	exponential_smoothing_predict(solution_flavor);
 
 	deploy_server(solution_flavor, solution_server);
-	show_ratio(solution_flavor, solution_server);
+	get_deploy_ratio(solution_flavor, solution_server);
 
 
 	// 直接调用输出文件的方法输出到指定文件中(ps请注意格式的正确性，如果有解，第一行只有一个数据；第二行为空；第三行开始才是具体的数据，数据之间用一个空格分隔开)

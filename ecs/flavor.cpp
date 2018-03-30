@@ -26,8 +26,9 @@ int read_flavors_info(char * info[MAX_INFO_NUM]) {
 	return ++line;
 }
 
-void read_flavors(char *data[MAX_DATA_NUM], int data_num) {
+std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 	char vm_id[32], vm_name[32], date_time[32];
+	std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
 	for(int i = 0; i < data_num; ++i) {
 		sscanf(data[i], "%s %s %[^\n]", vm_id, vm_name, date_time);
 		if(predict_flavors_info.find(vm_name) != predict_flavors_info.end()) {
@@ -35,6 +36,7 @@ void read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 			flavors[vm_name].push_back(f);
 		}
 	}
+	return flavors;
 }
 
 int get_interval_flavors_count(string vm_name, const Date start_date, int during_days) {

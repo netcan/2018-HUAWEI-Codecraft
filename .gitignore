@@ -2,6 +2,8 @@
 /bin
 __pycache__
 /ecs.tar.gz
+/ecs.zip
+/ecs/data
 .idea
 .ipynb_checkpoints
 *.swp

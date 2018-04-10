@@ -11,7 +11,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-#include "predict.h"
+#include "lib_io.h"
 #include "datetime.h"
 
 
@@ -57,4 +57,5 @@ std::vector<int> get_per_flavor_per_interval_count(std::string vm_name);
 
 extern std::map<string, flavor_info> predict_flavors_info; // vm_name -> info
 extern std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
-
+extern std::pair<datetime, datetime> predict_interval;
+extern int during_days;

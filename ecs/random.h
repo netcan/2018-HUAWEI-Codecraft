@@ -20,6 +20,9 @@ public:
 	inline uint32_t Random_Int(uint32_t min, uint32_t max) { // [min, max]
 		return std::uniform_int_distribution<uint32_t>{min, max}(generator);
 	}
+	inline double Random_Real(double min, double max) { // [min, max)
+		return std::uniform_real_distribution<double>{min, max}(generator);
+	}
 };
 
 extern Random Rand;

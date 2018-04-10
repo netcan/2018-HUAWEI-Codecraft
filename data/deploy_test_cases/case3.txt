@@ -1,0 +1,21 @@
+56 128 1200
+
+CPU 
+
+15
+
+flavor1:8
+flavor2:49
+flavor3:44
+flavor4:11
+flavor5:29
+flavor6:2
+flavor7:10
+flavor8:17
+flavor9:48
+flavor10:42
+flavor11:42
+flavor12:12
+flavor13:27
+flavor14:12
+flavor15:20

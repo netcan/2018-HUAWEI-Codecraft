@@ -1,0 +1,14 @@
+60 150 1200
+
+MEM
+
+8
+
+flavor1:44
+flavor3:121
+flavor5:22
+flavor7:187
+flavor9:17
+flavor11:41
+flavor13:67
+flavor15:193

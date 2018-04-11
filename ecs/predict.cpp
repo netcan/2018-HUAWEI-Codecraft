@@ -195,7 +195,12 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 
 	// 退火
 	std::vector<std::pair<string, int>> sfv;
-	for(const auto & sf: solution_flavor) sfv.push_back(sf);
+
+//	for(const auto & sf: solution_flavor) sfv.push_back(sf);
+
+	for(const auto & sf: solution_flavor)
+		for(int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
+
 	std::vector<std::map<string, int>> SA_solution_server;
 	std::vector<server> servers = std::move(first_fit(sfv, SA_solution_server));
 	int servers_num = servers.size();
@@ -204,13 +209,13 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 
 	double last_deploy_ratio = get_deploy_ratio(solution_flavor, SA_solution_server),
 			cur_deploy_ratio = 0.0, best_deploy_ratio = -1;
-	bool action = 0; // 0交换位置，1加flavor
+	bool action = 0; // 1交换位置，0加flavor
 
 	while(T > 0.1) {
 		for(int loop = 0; loop < inner_loop; ++loop) {
 			SA_solution_server.clear(); // 记得清空
 			int i, j, k;
-			action = Rand.Random_Int(1, 100) > 50;
+			action = Rand.Random_Int(1, 100) > 20; // 比率
 
 			if(action) {
 				i = Rand.Random_Int(0, sfv.size() - 1), j = Rand.Random_Int(0, sfv.size() - 1);
@@ -218,7 +223,8 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 				std::swap(sfv[i], sfv[j]); // 随机交换两个flavor的位置
 			} else {
 				k = Rand.Random_Int(0, sfv.size() - 1); // 选一个flavor加或者减
-				++sfv[k].second;
+//				++sfv[k].second;
+				sfv.push_back(std::make_pair(sfv[k].first, 1));
 			}
 
 			servers = std::move(first_fit(sfv, SA_solution_server));
@@ -231,7 +237,10 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 				last_deploy_ratio = cur_deploy_ratio;
 			} else { // reject
 				if(action) std::swap(sfv[i], sfv[j]); // 换回去
-				else --sfv[k].second;
+				else {
+//					--sfv[k].second;
+					sfv.pop_back();
+				}
 			}
 
 			if(best_deploy_ratio < 0 || best_deploy_ratio < cur_deploy_ratio) {
@@ -243,8 +252,12 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 		T *= delta;
 	}
 
-	for(const auto& sf: sfv)
-		solution_flavor[sf.first] = sf.second;
+	for(auto& sf: solution_flavor) sf.second = 0;
+
+	for(const auto& sf: sfv) {
+//		solution_flavor[sf.first] = sf.second;
+		++solution_flavor[sf.first];
+	}
 
 }
 
@@ -253,7 +266,9 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
                       int inner_loop, double T, double delta) {
 	// 退火
 	std::vector<std::pair<string, int>> sfv;
-	for(const auto & sf: solution_flavor) sfv.push_back(sf);
+	for(const auto & sf: solution_flavor)
+		for(int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
+
 	std::vector<std::map<string, int>> SA_solution_server;
 	std::vector<server> servers = std::move(first_fit(sfv, SA_solution_server)), best_servers;
 	solution_server = SA_solution_server;
@@ -300,6 +315,7 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 	 * flavor MEM/CPU > server MEM/CPU => flavor.MEM * server.CPU > flavor.CPU * server.MEM
 	 ****/
 
+	/*
 	std::vector<string> fill_flavors_name(best_servers.size());
 
 	for (size_t j = 0; j < best_servers.size(); ++j) {
@@ -342,6 +358,7 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 			else solution_server[i][fill_vm_name] = 1;
 		}
 	}
+	 */
 
 
 }
@@ -481,17 +498,19 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 
 	/*** 部署测试begin ***/
+
 	/*
 	data[2][3] = 0;
 	target = strcmp(data[2], "CPU") == 0 ? CPU:MEM;
 	solution_flavor = std::move(read_deploy_test_cases(data, data_num));
 	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);
 	get_deploy_ratio(solution_flavor, solution_server);
-
 	 */
+
 	/*** 部署测试end ***/
 
 	/*** 正赛begin ***/
+
 	flavors = std::move(read_flavors(data, data_num));
 
 	interval_predict(solution_flavor);
@@ -505,6 +524,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	deploy_server_SA_fill(solution_flavor, solution_server, 1, 100.0, 0.9999);
 
 	get_deploy_ratio(solution_flavor, solution_server);
+
 	/*** 正赛end ***/
 
 

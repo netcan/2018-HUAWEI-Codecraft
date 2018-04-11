@@ -50,6 +50,5 @@ double get_deploy_ratio(const SF &solution_flavor, const std::vector<std::map<st
 #ifdef _DEBUG
 	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
 #endif
-	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
 	return r * 1.0 / R;
 }

@@ -35,18 +35,26 @@ void xjb_predict(std::map<string, int>& solution_flavor) {
 void linear_regression_predict(std::map<string, int>& solution_flavor) {
 	linear_regression LinearReg;
 	for(const auto &f: predict_flavors_info) { // predict per vm
-		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+
+		std::vector<int> by_day = std::move(denoising(f.first)); // 去噪
+		std::vector<int> Y_count = merge_cnt_day_by_interval(by_day, during_days);
+
+//		std::vector<int> Y_count = get_per_flavor_count_by_interval(f.first, during_days);
+
 		std::vector<int> X;
 		int x = 1;
 		for(size_t i = 0; i < Y_count.size(); ++i) {
-			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
+//			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
 			X.push_back(x++);
 		}
 
 		LinearReg.train(X, Y_count);
 
-		solution_flavor[f.first] = int(lround(LinearReg.predict(x) -
-		                                      LinearReg.predict(x - 1)));
+		solution_flavor[f.first] = std::max(0, int(lround(LinearReg.predict(x))));
+
+
+//		solution_flavor[f.first] = int(lround(LinearReg.predict(x) -
+//		                                      LinearReg.predict(x - 1)));
 
 #ifdef _DEBUG
 		printf("%s predict_x=%d\n", f.first.c_str(), x);
@@ -65,7 +73,11 @@ void linear_regression_predict(std::map<string, int>& solution_flavor) {
 void polynomial_regression_predict(std::map<string, int>& solution_flavor) {
 	polynomial_regression PolyReg(2);
 	for(const auto &f: predict_flavors_info) { // predict per vm
-		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+		std::vector<int> by_day = std::move(denoising(f.first)); // 去噪
+		std::vector<int> Y_count = merge_cnt_day_by_interval(by_day, during_days);
+
+//		std::vector<int> Y_count = get_per_flavor_count_by_interval(f.first, during_days);
+
 		std::vector<int> X;
 		int x = 1;
 		for(size_t i = 0; i < Y_count.size(); ++i) {
@@ -117,7 +129,7 @@ double cv_expontential_smoothing_predict() {
 	for(int alpha = 0; alpha <= max_alpha; ++alpha) {
 		exponential_smoothing ExpSmooth(alpha * 1.0 / max_alpha);
 		for (const auto &f: predict_flavors_info) { // predict per vm
-			std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+			std::vector<int> Y_count = get_per_flavor_count_by_interval(f.first, during_days);
 			real_solution_flavor[f.first] = Y_count.back(); Y_count.pop_back();
 //			for(size_t i = 0; i < Y_count.size(); ++i)
 //				Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
@@ -146,7 +158,15 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 	exponential_smoothing ExpSmooth(0.60);
 //	exponential_smoothing ExpSmooth(0.99);
 	for(const auto &f: predict_flavors_info) { // predict per vm
-		std::vector<int> Y_count = get_per_flavor_per_interval_count(f.first);
+//		std::vector<int> by_day = get_per_flavor_count_by_interval(f.first, 1);
+
+		std::vector<int> by_day = std::move(denoising(f.first)); // 去噪
+		std::vector<int> Y_count = merge_cnt_day_by_interval(by_day, during_days);
+
+//		std::vector<int> Y_count = get_per_flavor_count_by_interval(f.first, during_days);
+//		std::vector<int> Y2_count = merge_cnt_day_by_interval(by_day, during_days);
+//		assert(Y_count == Y2_count);
+
 //		for(size_t i = 0; i < Y_count.size(); ++i)
 //			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
 		ExpSmooth.train(Y_count);
@@ -513,11 +533,11 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 	flavors = std::move(read_flavors(data, data_num));
 
-	interval_predict(solution_flavor);
+//	interval_predict(solution_flavor);
 //	xjb_predict(solution_flavor);
 //	linear_regression_predict(solution_flavor);
 //	polynomial_regression_predict(solution_flavor);
-//	exponential_smoothing_predict(solution_flavor);
+	exponential_smoothing_predict(solution_flavor);
 
 //	fill_deploy_server(solution_flavor, solution_server);
 //	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);

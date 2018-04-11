@@ -58,11 +58,12 @@ struct flavor {
 int read_flavors_info(char * info[MAX_INFO_NUM]);
 std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int data_num);
 std::map<string, int> read_deploy_test_cases(char *data[MAX_DATA_NUM], int data_num);
-int get_interval_flavors_count(string vm_name, const Date start_date, int during_days);
-string get_interval_popular_flavor(const Date start_date, int during_days); // return popular flavor's name
-std::vector<int> get_per_flavor_per_interval_count(std::string vm_name);
+int get_interval_flavors_count(const string& vm_name, const Date& start_date, int interval);
+string get_interval_popular_flavor(const Date& start_date, int interval); // return popular flavor's name
+std::vector<int> get_per_flavor_count_by_interval(const std::string &vm_name, int interval);
+std::vector<int> denoising(const std::string& vm_name) ;
+std::vector<int> merge_cnt_day_by_interval(const std::vector<int> & by_day, int interval);
 
 extern std::map<string, flavor_info> predict_flavors_info; // vm_name -> info
 extern std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
 extern std::pair<datetime, datetime> predict_interval;
-extern int during_days;

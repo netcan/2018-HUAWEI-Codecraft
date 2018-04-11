@@ -7,10 +7,12 @@
  ****************************************************************************/
 
 #include "flavor.h"
+#include "server.h"
 
 using std::string;
 std::map<string, flavor_info> predict_flavors_info;
 std::map<string, std::vector<flavor>> flavors;
+
 
 int read_flavors_info(char * info[MAX_INFO_NUM]) {
 	int flavors_num;
@@ -37,6 +39,24 @@ std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int
 		}
 	}
 	return flavors;
+}
+
+std::map<string, int> read_deploy_test_cases(char *data[MAX_DATA_NUM], int data_num) {
+	std::map<string, int> solution_flavor; // vm_name: count
+	int line = 0;
+	sscanf(data[line], "%d %d %d", &server::cpu_count, &server::mem_size, &server::disk_size);
+	int flavor_num = 0;
+	sscanf(data[line + 4], "%d", &flavor_num);
+	server::mem_size *= 1024; // covert to MB
+	line += 6;
+	char flavor_name[20];
+	int cnt;
+	for(int i = 0; i < flavor_num; ++i) {
+		sscanf(data[line+i], "%[^:]:%d", flavor_name, &cnt);
+//		printf("%s %d\n", flavor_name, cnt);
+		solution_flavor[flavor_name] = cnt;
+	}
+	return solution_flavor;
 }
 
 int get_interval_flavors_count(string vm_name, const Date start_date, int during_days) {

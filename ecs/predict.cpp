@@ -167,13 +167,17 @@ std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv,
 		const string& vm_name = sf.first;
 		int vm_count = sf.second;
 		const flavor_info& flv = predict_flavors_info[vm_name];
-		for (int f_count = 0; f_count < vm_count; ++f_count) {
+		for (int f_count = 0; f_count < vm_count; ) {
 			for(size_t i = 0; i < servers.size(); ++i) { // first fit
 				if (flv <= servers[i]) {
-					servers[i] -= flv;
+					int vnum = servers[i] / flv;
+					if(vnum + f_count > vm_count) vnum = vm_count - f_count;
+					f_count += vnum;
+					servers[i] -= flv * vnum;
+
 					if(solution_server[i].find(vm_name) != solution_server[i].end())
-						++solution_server[i][vm_name];
-					else solution_server[i][vm_name] = 1;
+						solution_server[i][vm_name] += vnum;
+					else solution_server[i][vm_name] = vnum;
 					break;
 				} else if(i == servers.size() - 1) { // new server
 					solution_server.emplace_back();
@@ -266,7 +270,7 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 			std::swap(sfv[i], sfv[j]); // 随机交换两个flavor的位置
 
 			servers = std::move(first_fit(sfv, SA_solution_server));
-			cur_server_num = servers.size() - 1.0 + (target == CPU ? servers.back().get_cpu_usage_ratio(): servers.back().get_mem_usage_ratio());
+			cur_server_num = servers.size() - 1.0 + servers.back().get_usage_ratio(target == CPU);
 
 			double dc = cur_server_num - last_server_num;
 			if(std::min(1.0, exp(-dc / T)) > Rand.Random_Real(0, 1)) { // 接受
@@ -283,6 +287,10 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 		}
 		T *= delta;
 	}
+	printf("best_server_num = %ld\n", best_servers.size());
+	for(const auto& srv: best_servers)
+		printf("%10.4f%%", srv.get_usage_ratio(target == CPU) * 100);
+	puts("");
 
 	// 填充
 	/****
@@ -471,6 +479,19 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	predict_interval.second = datetime(info[line]);
 	during_days = predict_interval.second.date - predict_interval.first.date;
 
+
+	/*** 部署测试begin ***/
+	/*
+	data[2][3] = 0;
+	target = strcmp(data[2], "CPU") == 0 ? CPU:MEM;
+	solution_flavor = std::move(read_deploy_test_cases(data, data_num));
+	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);
+	get_deploy_ratio(solution_flavor, solution_server);
+
+	 */
+	/*** 部署测试end ***/
+
+	/*** 正赛begin ***/
 	flavors = std::move(read_flavors(data, data_num));
 
 	interval_predict(solution_flavor);
@@ -484,6 +505,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	deploy_server_SA_fill(solution_flavor, solution_server, 1, 100.0, 0.9999);
 
 	get_deploy_ratio(solution_flavor, solution_server);
+	/*** 正赛end ***/
 
 
 	// 直接调用输出文件的方法输出到指定文件中(ps请注意格式的正确性，如果有解，第一行只有一个数据；第二行为空；第三行开始才是具体的数据，数据之间用一个空格分隔开)

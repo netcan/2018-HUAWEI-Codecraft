@@ -27,3 +27,13 @@ server &server::operator-=(const flavor_info & f) {
 	remain_mem_size -= f.mem_size;
 	return *this;
 }
+server &server::operator/=(const flavor_info & f) {
+	int k = this->operator/(f);
+	remain_cpu_count -= k * f.cpu_count;
+	remain_mem_size -= k * f.mem_size;
+	return *this;
+}
+
+int server::operator/(const flavor_info & f) {
+	return std::min(remain_cpu_count / f.cpu_count, remain_mem_size / f.mem_size);
+}

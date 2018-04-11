@@ -18,12 +18,18 @@
 struct flavor_info {
 	std::string vm_name;
 	int cpu_count,
-			mem_size; // mem_size: MB
+		mem_size; // mem_size: MB
 	bool operator<(const flavor_info &b) const {
 		return this->vm_name < b.vm_name;
 	}
 	bool operator==(const flavor_info &b) const {
 		return this->vm_name == b.vm_name;
+	}
+	flavor_info operator*(int num) const {
+		flavor_info tmp(*this);
+		tmp.cpu_count *= num;
+		tmp.mem_size *= num;
+		return tmp;
 	}
 	flavor_info() = default;
 	flavor_info(const char *vm_name, int cpu_count = 0, int mem_size = 0):
@@ -51,6 +57,7 @@ struct flavor {
 
 int read_flavors_info(char * info[MAX_INFO_NUM]);
 std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int data_num);
+std::map<string, int> read_deploy_test_cases(char *data[MAX_DATA_NUM], int data_num);
 int get_interval_flavors_count(string vm_name, const Date start_date, int during_days);
 string get_interval_popular_flavor(const Date start_date, int during_days); // return popular flavor's name
 std::vector<int> get_per_flavor_per_interval_count(std::string vm_name);

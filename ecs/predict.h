@@ -38,7 +38,7 @@ extern int during_days;
 extern std::string init_f;
 
 template <class SF>
-double get_deploy_ratio(const SF &solution_flavor,const std::vector<std::map<string, int>> &solution_server) {
+double get_deploy_ratio(const SF &solution_flavor, const std::vector<std::map<string, int>> &solution_server) {
 	int r = 0, R;
 	for(const auto& sf: solution_flavor)
 		r += (target == CPU?
@@ -50,5 +50,6 @@ double get_deploy_ratio(const SF &solution_flavor,const std::vector<std::map<str
 #ifdef _DEBUG
 	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
 #endif
+	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
 	return r * 1.0 / R;
 }

@@ -67,3 +67,4 @@ std::vector<int> merge_cnt_day_by_interval(const std::vector<int> & by_day, int 
 extern std::map<string, flavor_info> predict_flavors_info; // vm_name -> info
 extern std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
 extern std::pair<datetime, datetime> predict_interval;
+extern datetime train_end_time;

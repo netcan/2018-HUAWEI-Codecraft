@@ -219,8 +219,8 @@ public:
 #endif
 	}
 	template <class T>
-	double predict(T Y) {
-		return at + bt;
+	double predict(T t) {
+		return at + t*bt;
 	}
 
 };

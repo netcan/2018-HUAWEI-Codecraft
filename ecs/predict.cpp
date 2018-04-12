@@ -5,12 +5,13 @@ int during_days = 0;
 std::string init_f;
 
 std::pair<datetime, datetime> predict_interval;
+datetime train_end_time;
 char result[20 * 20 * 10000];
 
 void interval_predict(std::map<string, int>& solution_flavor) {
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		int	s = get_interval_flavors_count(
-			f.first, predict_interval.first.date + (-during_days), during_days
+			f.first, train_end_time.date + 1 + (-during_days), during_days
 		);
 		solution_flavor[f.first] = s;
 	}
@@ -171,7 +172,9 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 //			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
 		ExpSmooth.train(Y_count);
 //		solution_flavor[f.first] = std::max(int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back(), 0);
-		solution_flavor[f.first] = std::max(0, int(lround(ExpSmooth.predict(Y_count.back()))));
+
+		double t = (predict_interval.second.date - train_end_time.date - 1)*1.0 / during_days;
+		solution_flavor[f.first] = std::max(0, int(lround(ExpSmooth.predict(t))));
 	}
 
 }

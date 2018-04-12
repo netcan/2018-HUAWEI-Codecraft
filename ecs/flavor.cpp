@@ -36,6 +36,7 @@ std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int
 		if(predict_flavors_info.find(vm_name) != predict_flavors_info.end()) {
 			flavor f(vm_id, date_time, &predict_flavors_info[vm_name]);
 			flavors[vm_name].push_back(f);
+			train_end_time = std::max(train_end_time, datetime(date_time));
 		}
 	}
 	return flavors;
@@ -97,7 +98,7 @@ string get_interval_popular_flavor(const Date& start_date, int interval) { // re
 std::vector<int> get_per_flavor_count_by_interval(const std::string &vm_name, int interval) {
 	std::vector<int> Y_count;
 	int cnt = 0;
-	for(Date d = predict_interval.first.date + (-interval);
+	for(Date d = train_end_time.date + 1 + (-interval);
 	    (cnt = get_interval_flavors_count(vm_name, d, interval))!= -1;
 	    d += -interval) {
 		Y_count.push_back(cnt);

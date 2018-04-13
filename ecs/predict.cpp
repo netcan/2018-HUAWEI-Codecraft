@@ -6,7 +6,28 @@ std::string init_f;
 
 std::pair<datetime, datetime> predict_interval;
 datetime train_end_time;
+bool runing = true;
 char result[20 * 20 * 10000];
+
+typedef void (sigFunc)(int);
+
+// 定时器begin
+sigFunc *
+Signal(int signo, sigFunc *func) {
+	struct sigaction	act, oact;
+	act.sa_handler = func;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	if (sigaction(signo, &act, &oact) < 0)
+		return(SIG_ERR);
+	return(oact.sa_handler);
+}
+// 定时器end
+void timeOutHandler(int signo) {
+	runing = false;
+	return;
+}
+
 
 void interval_predict(std::map<string, int>& solution_flavor) {
 	for(const auto &f: predict_flavors_info) { // predict per vm
@@ -234,8 +255,8 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 			cur_deploy_ratio = 0.0, best_deploy_ratio = -1;
 	bool action = 0; // 1交换位置，0加flavor
 
-	while(T > 0.1) {
-		for(int loop = 0; loop < inner_loop; ++loop) {
+	while(runing && T > 0.1) {
+		for(int loop = 0; loop < inner_loop && runing; ++loop) {
 			SA_solution_server.clear(); // 记得清空
 			int i, j, k;
 			action = Rand.Random_Int(1, 100) > 20; // 比率
@@ -299,8 +320,8 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 	double last_server_num = servers.size() - 1.0 + (target == CPU ? servers.back().get_cpu_usage_ratio(): servers.back().get_mem_usage_ratio()),
 			cur_server_num = 0.0, best_server_num = -1;
 
-	while(T > 0.1) {
-		for(int loop = 0; loop < inner_loop; ++loop) {
+	while(runing && T > 0.1) {
+		for(int loop = 0; loop < inner_loop && runing; ++loop) {
 			SA_solution_server.clear(); // 记得清空
 			int i = Rand.Random_Int(0, sfv.size() - 1),
 				j = Rand.Random_Int(0, sfv.size() - 1);
@@ -503,6 +524,11 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 //你要完成的功能总入口
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename)
 {
+
+	Signal(SIGALRM, timeOutHandler);
+	// 定时器
+	alarm(58);
+
 	int line = 0;
 	std::map<string, int> solution_flavor; // vm_name: count
 	std::vector<std::map<string, int>> solution_server;
@@ -521,15 +547,15 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 
 	/*** 部署测试begin ***/
-
 	/*
+
 	data[2][3] = 0;
 	target = strcmp(data[2], "CPU") == 0 ? CPU:MEM;
 	solution_flavor = std::move(read_deploy_test_cases(data, data_num));
-	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);
+	deploy_server_SA(solution_flavor, solution_server, 1, 80.0, 0.9999);
 	get_deploy_ratio(solution_flavor, solution_server);
-	 */
 
+	 */
 	/*** 部署测试end ***/
 
 	/*** 正赛begin ***/
@@ -543,8 +569,8 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	exponential_smoothing_predict(solution_flavor);
 
 //	fill_deploy_server(solution_flavor, solution_server);
-//	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);
-	deploy_server_SA_fill(solution_flavor, solution_server, 1, 100.0, 0.9999);
+//	deploy_server_SA(solution_flavor, solution_server, 1, 80.0, 0.9999);
+	deploy_server_SA_fill(solution_flavor, solution_server, 1, 80.0, 0.9999);
 
 	get_deploy_ratio(solution_flavor, solution_server);
 

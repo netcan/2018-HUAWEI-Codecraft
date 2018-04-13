@@ -9,3 +9,4 @@
 #include "random.h"
 
 Random Rand;
+//Random Rand(12140523);

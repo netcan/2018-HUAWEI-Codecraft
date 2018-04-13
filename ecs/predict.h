@@ -6,6 +6,8 @@
 #include "datetime.h"
 #include "random.h"
 #include "prediction_model.h"
+#include <signal.h>
+#include <unistd.h>
 #include <ctime>
 #include <cmath>
 #include <algorithm>

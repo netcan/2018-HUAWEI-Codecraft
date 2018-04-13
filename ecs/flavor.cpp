@@ -116,7 +116,8 @@ std::vector<int> denoising(const std::string& vm_name) {
 
 
 	std::sort(by_day_sort.begin(), by_day_sort.end()); // 从小到大排序
-	double Q1, Q2, Q3, IQR, max_outlier, min_outlier;
+	double Q1, Q2, Q3, IQR, max_outlier, min_outlier,
+			k=3.0;
 	int max_cnt = -1;
 	int pos = 0, n = int(by_day_sort.size());
 	// Q2
@@ -133,8 +134,8 @@ std::vector<int> denoising(const std::string& vm_name) {
 	pos = int((n+1)*3/4.0-1);
 	Q3 = 0.75 * by_day_sort[pos] + 0.25 * by_day_sort[pos + 1];
 	IQR = Q3 - Q1;
-	max_outlier = Q3 + 1.5 * IQR;
-	min_outlier = Q1 - 1.5 * IQR;
+	max_outlier = Q3 + k * IQR;
+	min_outlier = Q1 - k * IQR;
 
 	for(auto cnt: by_day_sort)
 		if(cnt <= max_outlier) max_cnt = std::max(max_cnt, cnt);

@@ -17,6 +17,7 @@ private:
 
 public:
 	Random(): generator(r()) {}
+	Random(unsigned seed): generator(seed) {}
 	inline uint32_t Random_Int(uint32_t min, uint32_t max) { // [min, max]
 		return std::uniform_int_distribution<uint32_t>{min, max}(generator);
 	}

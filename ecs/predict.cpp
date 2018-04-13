@@ -235,7 +235,7 @@ std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv,
 
 void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
                       std::vector<std::map<string, int>>& solution_server,
-                      int inner_loop, double T, double delta) {
+                      int inner_loop, double T, double Tmin, double delta) {
 
 	// 退火
 	std::vector<std::pair<string, int>> sfv;
@@ -255,7 +255,7 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 			cur_deploy_ratio = 0.0, best_deploy_ratio = -1;
 	bool action = 0; // 1交换位置，0加flavor
 
-	while(runing && T > 0.1) {
+	while(runing && T > Tmin) {
 		for(int loop = 0; loop < inner_loop && runing; ++loop) {
 			SA_solution_server.clear(); // 记得清空
 			int i, j, k;
@@ -307,7 +307,7 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 
 void deploy_server_SA(std::map<string, int> &solution_flavor,
                       std::vector<std::map<string, int>>& solution_server,
-                      int inner_loop, double T, double delta) {
+                      int inner_loop, double T, double Tmin, double delta) {
 	// 退火
 	std::vector<std::pair<string, int>> sfv;
 	for(const auto & sf: solution_flavor)
@@ -320,7 +320,7 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 	double last_server_num = servers.size() - 1.0 + (target == CPU ? servers.back().get_cpu_usage_ratio(): servers.back().get_mem_usage_ratio()),
 			cur_server_num = 0.0, best_server_num = -1;
 
-	while(runing && T > 0.1) {
+	while(runing && T > Tmin) {
 		for(int loop = 0; loop < inner_loop && runing; ++loop) {
 			SA_solution_server.clear(); // 记得清空
 			int i = Rand.Random_Int(0, sfv.size() - 1),
@@ -547,15 +547,15 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 
 	/*** 部署测试begin ***/
-	/*
 
+	/*
 	data[2][3] = 0;
 	target = strcmp(data[2], "CPU") == 0 ? CPU:MEM;
 	solution_flavor = std::move(read_deploy_test_cases(data, data_num));
-	deploy_server_SA(solution_flavor, solution_server, 1, 80.0, 0.9999);
+	deploy_server_SA(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
 	get_deploy_ratio(solution_flavor, solution_server);
-
 	 */
+
 	/*** 部署测试end ***/
 
 	/*** 正赛begin ***/
@@ -569,8 +569,8 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	exponential_smoothing_predict(solution_flavor);
 
 //	fill_deploy_server(solution_flavor, solution_server);
-//	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);
-	deploy_server_SA_fill(solution_flavor, solution_server, 1, 100.0, 0.9999);
+//	deploy_server_SA(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
+	deploy_server_SA_fill(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
 
 	get_deploy_ratio(solution_flavor, solution_server);
 

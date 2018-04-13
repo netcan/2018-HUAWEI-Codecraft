@@ -23,13 +23,47 @@ def get_submit_count(username, password):
     print(str)
     return cnt
 
-
 def get_score(username, password):
     global s
     if not s: s = login(username, password)
     html = fromstring(s.get("http://codecraft.devcloud.huaweicloud.com/home/mycenter").text)
     return float(html.cssselect('.pcSroceBox .my-race-td3')[1].text_content())
 
+
+def submit(username, password):
+    global s
+    if not s: s = login(username, password)
+    url = 'http://codecraft.devcloud.huaweicloud.com/OtherSystem/DevCloudProjectSubmit'
+
+    rvt = fromstring(s.get('http://codecraft.devcloud.huaweicloud.com/home/mycenter').text)
+
+    try:
+        rvt = rvt.cssselect('.myteam input[name=__RequestVerificationToken]')[0].value
+    except IndexError:
+        s = login(username, password)
+
+    res = s.post(url, data=[
+        # my repositoryId
+        ('repositoryId', 195412),
+        ('__RequestVerificationToken', rvt)
+    ], headers={
+        'Referer': 'http://codecraft.devcloud.huaweicloud.com/home/mycenter',
+        'DNT': '1',
+    }).json()
+    print(res)
+
+
+def auto_submit(username, password, score=84.7):
+    while True:
+        try:
+            now_score = get_score(username, password)
+            if now_score > score:
+                break
+            else:
+                print(now_score)
+                submit(username, password)
+        except ValueError:
+            time.sleep(1)
 
 
 if __name__ == '__main__':

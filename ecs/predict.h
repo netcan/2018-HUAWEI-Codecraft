@@ -30,8 +30,8 @@ double cv_expontential_smoothing_predict();
 
 std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv, std::vector<std::map<string, int>>& solution_server);
 void fill_deploy_server(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>> &solution_server);
-void deploy_server_SA(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>>& solution_server, int inner_loop = 10, double T = 20.0, double delta = 0.99999);
-void deploy_server_SA_fill(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>>& solution_server, int inner_loop = 10, double T = 20.0, double delta = 0.99999);
+void deploy_server_SA(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>>& solution_server, int inner_loop = 10, double T = 20.0, double Tmin=0.1, double delta = 0.99999);
+void deploy_server_SA_fill(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>>& solution_server, int inner_loop = 10, double T = 20.0, double Tmin=0.1, double delta = 0.99999);
 char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server);
 bool solution_flavor_cmp(std::pair<string, int>& a, std::pair<string, int>& b);
 

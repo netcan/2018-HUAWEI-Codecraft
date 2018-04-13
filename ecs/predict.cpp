@@ -569,8 +569,8 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	exponential_smoothing_predict(solution_flavor);
 
 //	fill_deploy_server(solution_flavor, solution_server);
-//	deploy_server_SA(solution_flavor, solution_server, 1, 80.0, 0.9999);
-	deploy_server_SA_fill(solution_flavor, solution_server, 1, 80.0, 0.9999);
+//	deploy_server_SA(solution_flavor, solution_server, 1, 100.0, 0.9999);
+	deploy_server_SA_fill(solution_flavor, solution_server, 1, 100.0, 0.9999);
 
 	get_deploy_ratio(solution_flavor, solution_server);
 

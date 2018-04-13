@@ -2,7 +2,6 @@
 
 int during_days = 0;
 
-std::string init_f;
 
 std::pair<datetime, datetime> predict_interval;
 datetime train_end_time;
@@ -36,21 +35,6 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 		);
 		solution_flavor[f.first] = s;
 	}
-}
-
-void xjb_predict(std::map<string, int>& solution_flavor) {
-	char *d[MAX_DATA_NUM]; int dln = read_file(d, MAX_DATA_NUM, init_f.c_str());
-	std::map<string, std::vector<flavor>> flvs = read_flavors(d, dln);
-	for(const auto &f: predict_flavors_info) { // predict per vm
-		string vm_name = f.first;
-		int s = 0;
-		flavor flavor_end_date(datetime(predict_interval.first.date + during_days + 1));
-		for(std::vector<flavor>::iterator f_it = std::lower_bound(
-				flvs[vm_name].begin(), flvs[vm_name].end(), flavor(datetime(predict_interval.first.date))
-		); f_it < flvs[vm_name].end() && *f_it < flavor_end_date; ++f_it, ++s);
-		solution_flavor[f.first] = s;
-	}
-	release_buff(d, dln);
 }
 
 
@@ -563,7 +547,6 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	flavors = std::move(read_flavors(data, data_num));
 
 //	interval_predict(solution_flavor);
-//	xjb_predict(solution_flavor);
 //	linear_regression_predict(solution_flavor);
 //	polynomial_regression_predict(solution_flavor);
 	exponential_smoothing_predict(solution_flavor);

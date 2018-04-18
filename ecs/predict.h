@@ -22,6 +22,7 @@ void xjb_predict(std::map<string, int>& solution_flavor);
 void linear_regression_predict(std::map<string, int>& solution_flavor);
 void polynomial_regression_predict(std::map<string, int>& solution_flavor);
 void exponential_smoothing_predict(std::map<string, int>& solution_flavor);
+void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor);
 double shell_coefficient(const std::map<string, int>& predict_solution_flavor,const std::map<string, int>& real_solution_flavor);
 double cv_expontential_smoothing_predict();
 
@@ -35,6 +36,7 @@ bool solution_flavor_cmp(std::pair<string, int>& a, std::pair<string, int>& b);
 
 extern std::pair<datetime, datetime> predict_interval;
 extern int during_days;
+extern std::string init_f;
 
 template <class SF>
 double get_deploy_ratio(const SF &solution_flavor, const std::vector<server> & servers) {

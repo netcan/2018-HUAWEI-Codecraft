@@ -200,22 +200,22 @@ public:
 		std::vector<double> S1(X.size()), S2(X.size()), F(X.size());
 
 		S1[0] = S2[0] = X[0];
-		double tmp_at = 2 * S1[0] - S2[0],
-				tmp_bt = alpha * (S1[0] - S2[0]) / (max_weight - alpha);
+		double tmp_at = 2.0 * S1[0] - S2[0],
+				tmp_bt = alpha * 1.0 * (S1[0] - S2[0]) / (max_weight - alpha);
 		F[0] = tmp_at;
 
 		for(size_t t = 1; t < X.size(); ++t) {
 			S1[t] = weight_sum(alpha, X[t], S1[t-1]);
 			S2[t] = weight_sum(alpha, S1[t], S2[t-1]);
 			F[t] = tmp_at + tmp_bt;
-			tmp_at = 2 * S1[t] - S2[t];
-			tmp_bt = alpha * (S1[t] - S2[t]) / (max_weight - alpha);
+			tmp_at = 2.0 * S1[t] - S2[t];
+			tmp_bt = alpha * 1.0 * (S1[t] - S2[t]) / (max_weight - alpha);
 		}
 
 		at = tmp_at, bt = tmp_bt;
 #ifdef _DEBUG
 		double sse = SSE(F, X);
-//		printf("alpha = %lf sse=%lf\n", alpha * 1.0 / max_weight, sse);
+		printf("alpha = %lf sse=%lf\n", alpha * 1.0 / max_weight, sse);
 #endif
 	}
 	template <class T>

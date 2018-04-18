@@ -2,6 +2,7 @@
 
 int during_days = 0;
 
+std::string init_f;
 
 std::pair<datetime, datetime> predict_interval;
 datetime train_end_time;
@@ -37,6 +38,20 @@ void interval_predict(std::map<string, int>& solution_flavor) {
 	}
 }
 
+void xjb_predict(std::map<string, int>& solution_flavor) {
+	char *d[MAX_DATA_NUM]; int dln = read_file(d, MAX_DATA_NUM, init_f.c_str());
+	std::map<string, std::vector<flavor>> flvs = read_flavors(d, dln);
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		string vm_name = f.first;
+		int s = 0;
+		flavor flavor_end_date(datetime(predict_interval.first.date + during_days + 1));
+		for(std::vector<flavor>::iterator f_it = std::lower_bound(
+				flvs[vm_name].begin(), flvs[vm_name].end(), flavor(datetime(predict_interval.first.date))
+		); f_it < flvs[vm_name].end() && *f_it < flavor_end_date; ++f_it, ++s);
+		solution_flavor[f.first] = s;
+	}
+	release_buff(d, dln);
+}
 
 void linear_regression_predict(std::map<string, int>& solution_flavor) {
 	linear_regression LinearReg;
@@ -133,7 +148,7 @@ double cv_expontential_smoothing_predict() {
 	double best_accuracy = -1;
 	const int max_alpha = 10000;
 
-	double t = (predict_interval.second.date - train_end_time.date - 1)*1.0 / during_days;
+	double t = 1.0;
 	for(int alpha = 0; alpha <= max_alpha; ++alpha) {
 		exponential_smoothing ExpSmooth(alpha * 1.0 / max_alpha);
 		for (const auto &f: predict_flavors_info) { // predict per vm
@@ -178,6 +193,8 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 
 //		for(size_t i = 0; i < Y_count.size(); ++i)
 //			Y_count[i] = Y_count[i] + (i > 0 ? Y_count[i-1] : 0);
+
+		printf("%s\n", f.first.c_str());
 		ExpSmooth.train(Y_count);
 //		solution_flavor[f.first] = std::max(int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back(), 0);
 
@@ -185,6 +202,20 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 		solution_flavor[f.first] = std::max(0, int(lround(ExpSmooth.predict(t))));
 	}
 
+}
+
+
+void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor) {
+	exponential_smoothing ExpSmooth(0.11);
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		std::vector<int> by_day = std::move(denoising(f.first)); // 去噪
+		ExpSmooth.train(by_day);
+		int cnt = 0;
+		for(int t = predict_interval.first.date - train_end_time.date, d = 0; d < during_days; ++t, ++d)
+			cnt += std::max(0, int(lround(ExpSmooth.predict(t))));
+		printf("%s: %d\n", f.first.c_str(), cnt);
+		solution_flavor[f.first] = cnt;
+	}
 }
 
 std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv) {
@@ -552,9 +583,11 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	flavors = std::move(read_flavors(data, data_num));
 
 //	interval_predict(solution_flavor);
+//	xjb_predict(solution_flavor);
 //	linear_regression_predict(solution_flavor);
 //	polynomial_regression_predict(solution_flavor);
-	exponential_smoothing_predict(solution_flavor);
+//	exponential_smoothing_predict(solution_flavor);
+	exponential_smoothing_predict_by_day(solution_flavor);
 
 //	fill_deploy_server(solution_flavor, solution_server);
 //	deploy_server_SA(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);

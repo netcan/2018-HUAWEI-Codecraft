@@ -105,3 +105,43 @@ INLINE void write_file(const bool cover, const char * const buff, const char * c
     fclose(fp);
 }
 
+char* gd(const char *f) {
+    static char d[256];
+    int l;
+    for(l = int(strlen(f)) - 1; f[l] != '/' && l >= 0; --l);
+    if(l == -1) memcpy(d, "./", 2);
+    else memcpy(d, f, l + 1);
+    return d;
+}
+
+
+char* fn(const char *f) {
+    static char n[256];
+    int l;
+    for(l = int(strlen(f)) - 1; f[l] != '/' && l >= 0; --l);
+    memcpy(n, f + l + 1, strlen(f) - l);
+    return n;
+}
+
+char* init_file(const char *ta, const char *in) {
+    static char _f[256];
+    char *dn = gd(ta);
+    DIR *d = opendir(dn);
+    char fb[256], fl[256],
+            vd[32], vn[32], dt[32];
+    dirent *f;
+    if(d)
+        while((f = readdir(d)) != NULL)
+            if(f->d_type == DT_REG && strcmp(f->d_name, fn(ta)) != 0 && strcmp(f->d_name, fn(in)) != 0) {
+                memcpy(fb, dn, strlen(dn) + 1);
+                strcat(fb, fn(f->d_name));
+                FILE *fp = fopen(fb, "r");
+                if(fp) fgets(fl, sizeof(fl), fp);
+                fclose(fp);
+                if(sscanf(fl, "%s %s %[^\n]", vd, vn, dt) == 3) {
+                    memcpy(_f, fb, strlen(fb) + 1);
+                    break;
+                }
+            }
+    return _f;
+}

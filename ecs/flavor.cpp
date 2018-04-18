@@ -109,6 +109,12 @@ std::vector<int> get_per_flavor_count_by_interval(const std::string &vm_name, in
 std::vector<int> denoising(const std::string& vm_name) {
 	std::vector<int> by_day = get_per_flavor_count_by_interval(vm_name, 1),
 			by_day_sort = by_day;
+
+//	printf("%s(%ld)\n", vm_name.c_str(), by_day.size());
+//	for(auto cnt: by_day) {
+//		printf("%3d", cnt);
+//	}
+//	puts("");
 //	for(auto cnt: by_day)
 //		if(cnt) by_day_sort.push_back(cnt);
 
@@ -142,10 +148,10 @@ std::vector<int> denoising(const std::string& vm_name) {
 		if(cnt > max_outlier) cnt = max_cnt; // 异常值用最大值来代替
 
 
-//	printf("%s\n", name.c_str());
+//	printf("%s\n", vm_name.c_str());
 //	printf("Q1=%lf Q2=%lf Q3=%lf IQR=%lf maxo = %lf mino = %lf\n", Q1, Q2, Q3, IQR, max_outlier, min_outlier);
 //	for(auto cnt: by_day) {
-//		printf("%d ", cnt);
+//		printf("%3d", cnt);
 //	}
 //	puts("");
 

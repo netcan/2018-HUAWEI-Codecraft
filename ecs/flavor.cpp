@@ -17,12 +17,12 @@ std::map<string, std::vector<flavor>> flavors;
 int read_flavors_info(char * info[MAX_INFO_NUM]) {
 	int flavors_num;
 	char vm_name[20];
-	sscanf(info[2], "%d", &flavors_num);
+	sscanf(info[0], "%d", &flavors_num);
 	int line;
-	for(line = 3; flavors_num--; ++line) {
+	for(line = 1; flavors_num--; ++line) {
 		flavor_info f_inf;
 		sscanf(info[line], "%s %d %d", vm_name, &f_inf.cpu_count, &f_inf.mem_size);
-		f_inf.vm_name = vm_name;
+		f_inf.name = vm_name;
 		predict_flavors_info[vm_name] = f_inf;
 	}
 	return ++line;
@@ -30,7 +30,7 @@ int read_flavors_info(char * info[MAX_INFO_NUM]) {
 
 std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int data_num) {
 	char vm_id[32], vm_name[32], date_time[32];
-	std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
+	std::map<string, std::vector<flavor>> flavors; // name -> flavors
 	for(int i = 0; i < data_num; ++i) {
 		sscanf(data[i], "%s %s %[^\n]", vm_id, vm_name, date_time);
 		if(predict_flavors_info.find(vm_name) != predict_flavors_info.end()) {
@@ -43,12 +43,10 @@ std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int
 }
 
 std::map<string, int> read_deploy_test_cases(char *data[MAX_DATA_NUM], int data_num) {
-	std::map<string, int> solution_flavor; // vm_name: count
+	std::map<string, int> solution_flavor; // name: count
 	int line = 0;
-	sscanf(data[line], "%d %d %d", &server::cpu_count, &server::mem_size, &server::disk_size);
 	int flavor_num = 0;
 	sscanf(data[line + 4], "%d", &flavor_num);
-	server::mem_size *= 1024; // covert to MB
 	line += 6;
 	char flavor_name[20];
 	int cnt;
@@ -144,7 +142,7 @@ std::vector<int> denoising(const std::string& vm_name) {
 		if(cnt > max_outlier) cnt = max_cnt; // 异常值用最大值来代替
 
 
-//	printf("%s\n", vm_name.c_str());
+//	printf("%s\n", name.c_str());
 //	printf("Q1=%lf Q2=%lf Q3=%lf IQR=%lf maxo = %lf mino = %lf\n", Q1, Q2, Q3, IQR, max_outlier, min_outlier);
 //	for(auto cnt: by_day) {
 //		printf("%d ", cnt);

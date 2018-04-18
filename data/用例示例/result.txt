@@ -1,10 +1,19 @@
-30
-flavor1 4
-flavor2 0
-flavor3 0
-flavor4 0
-flavor5 26
+232
+flavor1 36
+flavor2 58
+flavor4 12
+flavor5 31
+flavor8 95
 
-1
-1 flavor1 4 flavor5 26
+General 10
+General-1 flavor1 34 flavor2 18 flavor8 1
+General-2 flavor2 40 flavor4 8
+General-3 flavor4 4 flavor5 24
+General-4 flavor1 2 flavor5 7 flavor8 10
+General-5 flavor8 14
+General-6 flavor8 14
+General-7 flavor8 14
+General-8 flavor8 14
+General-9 flavor8 14
+General-10 flavor8 14
 

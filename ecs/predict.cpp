@@ -132,6 +132,8 @@ double cv_expontential_smoothing_predict() {
 	int best_alpha = 0;
 	double best_accuracy = -1;
 	const int max_alpha = 10000;
+
+	double t = (predict_interval.second.date - train_end_time.date - 1)*1.0 / during_days;
 	for(int alpha = 0; alpha <= max_alpha; ++alpha) {
 		exponential_smoothing ExpSmooth(alpha * 1.0 / max_alpha);
 		for (const auto &f: predict_flavors_info) { // predict per vm
@@ -142,7 +144,8 @@ double cv_expontential_smoothing_predict() {
 
 			ExpSmooth.train(Y_count);
 //			predict_solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back()))) - Y_count.back();
-			predict_solution_flavor[f.first] = int(lround(ExpSmooth.predict(Y_count.back())));
+
+			predict_solution_flavor[f.first] = std::max(0, int(lround(ExpSmooth.predict(t))));
 		}
 		double sc = shell_coefficient(predict_solution_flavor,
 		                              real_solution_flavor);
@@ -161,7 +164,7 @@ double cv_expontential_smoothing_predict() {
 
 void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 //	exponential_smoothing ExpSmooth(cv_expontential_smoothing_predict());
-	exponential_smoothing ExpSmooth(0.60);
+	exponential_smoothing ExpSmooth(0.51);
 //	exponential_smoothing ExpSmooth(0.99);
 	for(const auto &f: predict_flavors_info) { // predict per vm
 //		std::vector<int> by_day = get_per_flavor_count_by_interval(f.first, 1);
@@ -184,11 +187,9 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 
 }
 
-std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv,
-                              std::vector<std::map<string, int>>& solution_server) {
+std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv) {
 	// solution_server is empty
 	std::vector<server> servers;
-	solution_server.emplace_back();
 	servers.emplace_back();
 	// first fit
 	for(const auto & sf: sfv) { // sfv是排过序了的版本
@@ -201,14 +202,9 @@ std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv,
 					int vnum = servers[i] / flv;
 					if(vnum + f_count > vm_count) vnum = vm_count - f_count;
 					f_count += vnum;
-					servers[i] -= flv * vnum;
-
-					if(solution_server[i].find(vm_name) != solution_server[i].end())
-						solution_server[i][vm_name] += vnum;
-					else solution_server[i][vm_name] = vnum;
+					servers[i].place_flavor(flv, vnum);
 					break;
 				} else if(i == servers.size() - 1) { // new server
-					solution_server.emplace_back();
 					servers.emplace_back();
 				}
 			}
@@ -217,9 +213,9 @@ std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv,
 	return servers;
 }
 
-void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
-                      std::vector<std::map<string, int>>& solution_server,
-                      int inner_loop, double T, double Tmin, double delta) {
+void deploy_server_SA_tradeoff(std::map<string, int> &solution_flavor,
+                               std::vector<server> &solution_server,
+                               int inner_loop, double T, double Tmin, double delta) {
 
 	// 退火
 	std::vector<std::pair<string, int>> sfv;
@@ -229,23 +225,23 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 	for(const auto & sf: solution_flavor)
 		for(int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
 
-	std::vector<std::map<string, int>> SA_solution_server;
-	std::vector<server> servers = std::move(first_fit(sfv, SA_solution_server));
+	std::vector<server> servers = std::move(first_fit(sfv)),
+	best_servers = servers;
 	int servers_num = servers.size();
 
-	solution_server = SA_solution_server;
+	solution_server = servers;
 
-	double last_deploy_ratio = get_deploy_ratio(solution_flavor, SA_solution_server),
+	double last_deploy_ratio = get_deploy_ratio(solution_flavor, servers),
 			cur_deploy_ratio = 0.0, best_deploy_ratio = -1;
 	bool action = 0; // 1交换位置，0加flavor
 
 	while(runing && T > Tmin) {
 		for(int loop = 0; loop < inner_loop && runing; ++loop) {
-			SA_solution_server.clear(); // 记得清空
 			int i, j, k;
-			action = Rand.Random_Int(1, 100) > 20; // 比率
+			action = Rand.Random_Int(1, 100) > 60; // 比率
+//			action = Rand.Random_Int(1, 100) > 0; // 比率
 
-			if(action) {
+			if(action) { // 交换
 				i = Rand.Random_Int(0, sfv.size() - 1), j = Rand.Random_Int(0, sfv.size() - 1);
 				while(i == j) i = Rand.Random_Int(0, sfv.size() - 1);
 				std::swap(sfv[i], sfv[j]); // 随机交换两个flavor的位置
@@ -255,8 +251,8 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 				sfv.push_back(std::make_pair(sfv[k].first, 1));
 			}
 
-			servers = std::move(first_fit(sfv, SA_solution_server));
-			cur_deploy_ratio = get_deploy_ratio(sfv, SA_solution_server);
+			servers = std::move(first_fit(sfv));
+			cur_deploy_ratio = get_deploy_ratio(sfv, servers);
 
 			double dc = last_deploy_ratio - cur_deploy_ratio;
 			if(std::min(1.0, exp(-dc / T)) > Rand.Random_Real(0, 1) && servers_num >= servers.size()) { // 接受
@@ -273,7 +269,7 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 
 			if(best_deploy_ratio < 0 || best_deploy_ratio < cur_deploy_ratio) {
 				best_deploy_ratio = cur_deploy_ratio;
-				solution_server = std::move(SA_solution_server);
+				best_servers = servers;
 			}
 
 		}
@@ -286,7 +282,9 @@ void deploy_server_SA_fill(std::map<string, int> &solution_flavor,
 //		solution_flavor[sf.first] = sf.second;
 		++solution_flavor[sf.first];
 	}
+	solution_server = best_servers;
 
+	get_deploy_ratio(solution_flavor, best_servers);
 }
 
 void deploy_server_SA(std::map<string, int> &solution_flavor,
@@ -298,10 +296,10 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 		for(int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
 
 	std::vector<std::map<string, int>> SA_solution_server;
-	std::vector<server> servers = std::move(first_fit(sfv, SA_solution_server)), best_servers;
+	std::vector<server> servers = std::move(first_fit(sfv)), best_servers;
 	solution_server = SA_solution_server;
 
-	double last_server_num = servers.size() - 1.0 + (target == CPU ? servers.back().get_cpu_usage_ratio(): servers.back().get_mem_usage_ratio()),
+	double last_server_num = servers.size() - 1.0 + servers.back().get_ratio(),
 			cur_server_num = 0.0, best_server_num = -1;
 
 	while(runing && T > Tmin) {
@@ -312,8 +310,8 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 			while(i == j) i = Rand.Random_Int(0, sfv.size() - 1);
 			std::swap(sfv[i], sfv[j]); // 随机交换两个flavor的位置
 
-			servers = std::move(first_fit(sfv, SA_solution_server));
-			cur_server_num = servers.size() - 1.0 + servers.back().get_usage_ratio(target == CPU);
+			servers = std::move(first_fit(sfv));
+			cur_server_num = servers.size() - 1.0 + servers.back().get_ratio();
 
 			double dc = cur_server_num - last_server_num;
 			if(std::min(1.0, exp(-dc / T)) > Rand.Random_Real(0, 1)) { // 接受
@@ -331,9 +329,6 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 		T *= delta;
 	}
 	printf("best_server_num = %ld\n", best_servers.size());
-	for(const auto& srv: best_servers)
-		printf("%10.4f%%", srv.get_usage_ratio(target == CPU) * 100);
-	puts("");
 
 	// 填充
 	/****
@@ -401,20 +396,13 @@ void fill_deploy_server(std::map<string, int> &solution_flavor, std::vector<std:
 	std::sort(sfv.begin(), sfv.end(), [=](const std::pair<string, int> &lhs, const std::pair<string, int> &rhs) -> bool {
 		const auto & flv_inf_lhs = predict_flavors_info[lhs.first],
 					flv_inf_rhs = predict_flavors_info[rhs.first];
-		if(target == CPU) {
-			if(flv_inf_lhs.cpu_count == flv_inf_rhs.cpu_count)
-				return flv_inf_lhs.mem_size < flv_inf_rhs.mem_size;
-			return flv_inf_lhs.cpu_count < flv_inf_rhs.cpu_count;
-		}
-		else {
-			if(flv_inf_lhs.mem_size == flv_inf_rhs.mem_size)
-				return flv_inf_lhs.cpu_count < flv_inf_rhs.cpu_count;
+		if(flv_inf_lhs.cpu_count == flv_inf_rhs.cpu_count)
 			return flv_inf_lhs.mem_size < flv_inf_rhs.mem_size;
-		}
+		return flv_inf_lhs.cpu_count < flv_inf_rhs.cpu_count;
 	});
 
 
-	std::vector<server> servers = std::move(first_fit(sfv, solution_server));
+	std::vector<server> servers = std::move(first_fit(sfv));
 
 	// +C，提高希尔系数（精度）
 
@@ -457,7 +445,7 @@ void fill_deploy_server(std::map<string, int> &solution_flavor, std::vector<std:
 			}
 		}
 
-		double deploy_ratio = get_deploy_ratio(fill_solution_flavor, fill_solution_server);
+		double deploy_ratio = get_deploy_ratio(fill_solution_flavor, fill_servers);
 		if(deploy_ratio > best_deploy_ratio) {
 			best_deploy_ratio = deploy_ratio;
 			servers = fill_servers;
@@ -471,13 +459,14 @@ void fill_deploy_server(std::map<string, int> &solution_flavor, std::vector<std:
 }
 
 
-char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server) {
+char* get_result(std::map<string, int>& solution_flavor, std::vector<server>& solution_server) {
 	char buffer[20 * 20];
 	char *pr = result, *pb = buffer;
 	int flavor_count = 0;
 	for(const auto & flv: solution_flavor)
 		flavor_count += flv.second;
 
+	// flavors num
 	snprintf(buffer, sizeof(buffer), "%d\n", flavor_count);
 
 	pb = buffer; while(*pb && (*pr++ = *pb++));
@@ -486,18 +475,38 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<st
 		pb = buffer; while(*pb && (*pr++ = *pb++));
 	}
 
-	snprintf(buffer, sizeof(buffer), "\n%ld\n", solution_server.size());
-	pb = buffer; while(*pb && (*pr++ = *pb++));
-
+	std::map<std::string, std::vector<int>> server_result;
 	for(size_t i = 0; i < solution_server.size(); ++i) {
-		snprintf(buffer, sizeof(buffer), "%ld", i + 1);
-		pb = buffer; while(*pb && (*pr++ = *pb++));
-		for(const auto & flv: solution_server[i]) {
-			snprintf(buffer, sizeof(buffer), " %s %d", flv.first.c_str(), flv.second);
-			pb = buffer; while(*pb && (*pr++ = *pb++));
-		}
-		*pr++ = '\n';
+		server_result[solution_server[i].info->name].push_back(i);
 	}
+
+	for(const auto& sr: server_result) {
+		// specify server num
+		snprintf(buffer, sizeof(buffer), "\n%s %ld", sr.first.c_str(), sr.second.size());
+		pb = buffer; while(*pb && (*pr++ = *pb++));
+		for(size_t i = 0; i < sr.second.size(); ++i) {
+			snprintf(buffer, sizeof(buffer), "\n%s-%ld", sr.first.c_str(), i + 1);
+			pb = buffer; while(*pb && (*pr++ = *pb++));
+			for(const auto& flv: solution_server[sr.second[i]].flavors) {
+				snprintf(buffer, sizeof(buffer), " %s %d", flv.first.c_str(), flv.second);
+				pb = buffer; while(*pb && (*pr++ = *pb++));
+			}
+		}
+		snprintf(buffer, sizeof(buffer), "\n");
+		pb = buffer; while(*pb && (*pr++ = *pb++));
+	}
+
+//	pb = buffer; while(*pb && (*pr++ = *pb++));
+//
+//	for(size_t i = 0; i < solution_server.size(); ++i) {
+//		snprintf(buffer, sizeof(buffer), "%ld", i + 1);
+//		pb = buffer; while(*pb && (*pr++ = *pb++));
+//		for(const auto & flv: solution_server[i]) {
+//			snprintf(buffer, sizeof(buffer), " %s %d", flv.first.c_str(), flv.second);
+//			pb = buffer; while(*pb && (*pr++ = *pb++));
+//		}
+//		*pr++ = '\n';
+//	}
 
 	return result;
 }
@@ -511,23 +520,19 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 	Signal(SIGALRM, timeOutHandler);
 	// 定时器
-	alarm(58);
+	alarm(88);
 
 	int line = 0;
-	std::map<string, int> solution_flavor; // vm_name: count
-	std::vector<std::map<string, int>> solution_server;
+	std::map<string, int> solution_flavor; // name: count
+	std::vector<server> solution_server;
+	line += read_servers_info(info);
 
-	sscanf(info[line], "%d %d %d", &server::cpu_count, &server::mem_size, &server::disk_size);
-	server::mem_size *= 1024; // covert to MB
-	line = read_flavors_info(info);
-
-	info[line][3] = 0;
-	target = strcmp(info[line], "CPU") == 0 ? CPU:MEM;
-	line += 2;
+	line += read_flavors_info(info + line);
 
 	predict_interval.first = datetime(info[line++]);
 	predict_interval.second = datetime(info[line]);
 	during_days = predict_interval.second.date - predict_interval.first.date;
+	if(predict_interval.second.time.hour >= 23) ++during_days;
 
 
 	/*** 部署测试begin ***/
@@ -553,9 +558,18 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 //	fill_deploy_server(solution_flavor, solution_server);
 //	deploy_server_SA(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
-	deploy_server_SA_fill(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
+	deploy_server_SA_tradeoff(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
 
-	get_deploy_ratio(solution_flavor, solution_server);
+	// 利用率
+	printf("%.3f\n", get_deploy_ratio(solution_flavor, solution_server));
+	for(const auto &srv: solution_server)
+		printf("%10s %5.3lf%%(%.3lf%% %.3lf%%)",
+		       srv.info->name.c_str(),
+		       srv.get_ratio() * 100.0, srv.get_cpu_usage_ratio()*100, srv.get_mem_usage_ratio() * 100
+		);
+	puts("");
+
+//	get_deploy_ratio(solution_flavor, solution_server);
 
 	/*** 正赛end ***/
 

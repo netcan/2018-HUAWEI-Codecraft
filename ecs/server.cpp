@@ -8,14 +8,17 @@
 
 #include "server.h"
 
-int server::cpu_count = 0;
-int server::mem_size = 0; // covert to MB
-int server::disk_size = 0;
+server::server(const server_info * info) :
+		info(info), remain_cpu_count(0),
+		remain_mem_size(0),
+		remain_disk_size(0) {
+	if(info) {
+		remain_cpu_count = info->cpu_count;
+		remain_mem_size = info->mem_size;
+		remain_disk_size = info->disk_size;
+	}
 
-server::server(int remain_cpu_count, int remain_mem_size, int remain_disk_size) :
-		remain_cpu_count(remain_cpu_count),
-		remain_mem_size(remain_mem_size),
-		remain_disk_size(remain_disk_size) {}
+}
 
 bool operator<=(const flavor_info & f, const server& srv) {
 	return f.cpu_count <= srv.remain_cpu_count &&
@@ -37,3 +40,28 @@ server &server::operator/=(const flavor_info & f) {
 int server::operator/(const flavor_info & f) {
 	return std::min(remain_cpu_count / f.cpu_count, remain_mem_size / f.mem_size);
 }
+
+void server::place_flavor(const flavor_info &flv, int flv_num) {
+	this->operator-=(flv * flv_num);
+	if(flavors.find(flv.name) != flavors.end())
+		flavors[flv.name] += flv_num;
+	else flavors[flv.name] = flv_num;
+}
+
+std::vector<server_info> servers_info; // name -> info
+
+int read_servers_info(char * info[MAX_INFO_NUM]) {
+	int servers_info_num;
+	char server_name[20];
+	sscanf(info[0], "%d", &servers_info_num);
+	int line;
+	for(line = 1; servers_info_num--; ++line) {
+		server_info srv_inf;
+		sscanf(info[line], "%s %d %d %d", server_name, &srv_inf.cpu_count, &srv_inf.mem_size, &srv_inf.disk_size);
+		srv_inf.mem_size *= 1024; // covert GB to MB
+		srv_inf.name = server_name;
+		servers_info.push_back(srv_inf);
+	}
+	return ++line;
+}
+

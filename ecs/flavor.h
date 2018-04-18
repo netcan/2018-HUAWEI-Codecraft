@@ -14,16 +14,23 @@
 #include "lib_io.h"
 #include "datetime.h"
 
-
-struct flavor_info {
-	std::string vm_name;
+struct base_info {
+	std::string name;
 	int cpu_count,
-		mem_size; // mem_size: MB
+		mem_size, // mem size: MB
+		disk_size;
+
+	base_info() = default;
+	base_info(const char*name, int cpu_count = 0, int mem_size = 0, int disk_size = 0):
+			name(name), cpu_count(cpu_count), mem_size(mem_size), disk_size(disk_size) {}
+};
+
+struct flavor_info : base_info {
 	bool operator<(const flavor_info &b) const {
-		return this->vm_name < b.vm_name;
+		return this->name < b.name;
 	}
 	bool operator==(const flavor_info &b) const {
-		return this->vm_name == b.vm_name;
+		return this->name == b.name;
 	}
 	flavor_info operator*(int num) const {
 		flavor_info tmp(*this);
@@ -31,9 +38,6 @@ struct flavor_info {
 		tmp.mem_size *= num;
 		return tmp;
 	}
-	flavor_info() = default;
-	flavor_info(const char *vm_name, int cpu_count = 0, int mem_size = 0):
-			vm_name(vm_name), cpu_count(cpu_count), mem_size(mem_size) {}
 };
 
 struct flavor {
@@ -64,7 +68,7 @@ std::vector<int> get_per_flavor_count_by_interval(const std::string &vm_name, in
 std::vector<int> denoising(const std::string& vm_name) ;
 std::vector<int> merge_cnt_day_by_interval(const std::vector<int> & by_day, int interval);
 
-extern std::map<string, flavor_info> predict_flavors_info; // vm_name -> info
-extern std::map<string, std::vector<flavor>> flavors; // vm_name -> flavors
+extern std::map<string, flavor_info> predict_flavors_info; // name -> info
+extern std::map<string, std::vector<flavor>> flavors; // name -> flavors
 extern std::pair<datetime, datetime> predict_interval;
 extern datetime train_end_time;

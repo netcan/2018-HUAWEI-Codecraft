@@ -54,13 +54,14 @@ def submit(username, password):
 
 
 def auto_submit(username, password, score=84.7):
+    submit(username, password)
     while True:
         try:
             now_score = get_score(username, password)
+            print(now_score)
             if now_score > score:
                 break
             else:
-                print(now_score)
                 submit(username, password)
         except ValueError:
             time.sleep(1)

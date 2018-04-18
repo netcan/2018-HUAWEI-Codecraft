@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 	
     char *input_file = argv[2];
 
+
     info_line_num = read_file(info, MAX_INFO_NUM, input_file);
 
     printf("input file line num is :%d \n", info_line_num);

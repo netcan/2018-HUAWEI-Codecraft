@@ -15,9 +15,6 @@
 #include <cstdio>
 #include <cstring>
 
-enum {
-	CPU, MEM
-} target;
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename);
 
 void interval_predict(std::map<string, int>& solution_flavor);
@@ -28,28 +25,32 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor);
 double shell_coefficient(const std::map<string, int>& predict_solution_flavor,const std::map<string, int>& real_solution_flavor);
 double cv_expontential_smoothing_predict();
 
-std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv, std::vector<std::map<string, int>>& solution_server);
+std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv);
 void fill_deploy_server(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>> &solution_server);
 void deploy_server_SA(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>>& solution_server, int inner_loop = 10, double T = 20.0, double Tmin=0.1, double delta = 0.99999);
-void deploy_server_SA_fill(std::map<string, int> &solution_flavor, std::vector<std::map<string, int>>& solution_server, int inner_loop = 10, double T = 20.0, double Tmin=0.1, double delta = 0.99999);
-char* get_result(std::map<string, int>& solution_flavor, std::vector<std::map<string, int>>& solution_server);
+void deploy_server_SA_tradeoff(std::map<string, int> &solution_flavor, std::vector<server> &solution_server,
+                               int inner_loop = 10, double T = 20.0, double Tmin = 0.1, double delta = 0.99999);
+char* get_result(std::map<string, int>& solution_flavor, std::vector<server>& solution_server);
 bool solution_flavor_cmp(std::pair<string, int>& a, std::pair<string, int>& b);
 
 extern std::pair<datetime, datetime> predict_interval;
 extern int during_days;
 
 template <class SF>
-double get_deploy_ratio(const SF &solution_flavor, const std::vector<std::map<string, int>> &solution_server) {
-	int r = 0, R;
-	for(const auto& sf: solution_flavor)
-		r += (target == CPU?
-		      predict_flavors_info[sf.first].cpu_count:
-		      predict_flavors_info[sf.first].mem_size) * sf.second;
-	R = int(solution_server.size()) * (target == CPU?
-	                                   server::cpu_count:
-	                                   server::mem_size);
+double get_deploy_ratio(const SF &solution_flavor, const std::vector<server> & servers) {
+	int rCpu = 0, rMem = 0, RCpu = 0, RMem = 0;
+	for(const auto& sf: solution_flavor) {
+		rCpu += predict_flavors_info[sf.first].cpu_count * sf.second;
+		rMem += predict_flavors_info[sf.first].mem_size * sf.second;
+	}
+	for(const auto& srv: servers) {
+		RCpu += srv.info->cpu_count;
+		RMem += srv.info->mem_size;
+	}
+
 #ifdef _DEBUG
-	printf("%d/%d = %.2f\n", r, R, r * 1.0/R);
+	printf("(%d/%d + %d/%d)/2= %.2f\n", rCpu, RCpu, rMem, RMem, (rMem * 1.0 / RMem + rCpu * 1.0 / RCpu) / 2.0);
 #endif
-	return r * 1.0 / R;
+//	printf("(%d/%d + %d/%d)/2= %.2f\n", rCpu, RCpu, rMem, RMem, (rMem * 1.0 / RMem + rCpu * 1.0 / RCpu) / 2.0);
+	return (rMem * 1.0 / RMem + rCpu * 1.0 / RCpu) / 2.0;
 }

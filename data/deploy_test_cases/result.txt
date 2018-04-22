@@ -1,33 +1,50 @@
-206
-flavor1 32
-flavor10 3
-flavor11 17
-flavor12 7
-flavor13 3
-flavor14 4
-flavor15 3
-flavor2 19
-flavor3 3
-flavor4 13
-flavor5 37
-flavor6 3
-flavor7 7
-flavor8 41
-flavor9 14
+729
+flavor1 9
+flavor10 64
+flavor11 66
+flavor13 156
+flavor4 247
+flavor5 187
 
-14
-1 flavor1 2 flavor11 2 flavor2 1 flavor3 1 flavor4 2 flavor5 6 flavor8 3 flavor9 2
-2 flavor1 4 flavor11 1 flavor12 1 flavor2 5 flavor3 1 flavor4 1 flavor5 4 flavor7 1 flavor8 4
-3 flavor1 4 flavor11 1 flavor12 1 flavor4 1 flavor5 3 flavor8 7
-4 flavor10 2 flavor11 1 flavor5 3 flavor6 1 flavor7 1 flavor8 1 flavor9 4
-5 flavor1 1 flavor11 2 flavor14 1 flavor2 1 flavor5 1 flavor8 3 flavor9 2
-6 flavor1 1 flavor10 1 flavor11 2 flavor12 1 flavor14 1 flavor2 1 flavor5 1 flavor9 1
-7 flavor1 4 flavor11 1 flavor2 1 flavor3 1 flavor4 2 flavor5 2 flavor6 1 flavor7 3 flavor8 2 flavor9 3
-8 flavor1 2 flavor13 1 flavor15 1 flavor2 4 flavor4 1 flavor5 4 flavor8 2
-9 flavor1 2 flavor11 2 flavor12 1 flavor4 1 flavor5 2 flavor7 1 flavor8 4 flavor9 1
-10 flavor11 2 flavor14 1 flavor5 2 flavor8 4 flavor9 1
-11 flavor1 1 flavor11 1 flavor12 1 flavor2 3 flavor5 4 flavor8 7
-12 flavor1 7 flavor11 1 flavor15 1 flavor2 1 flavor4 3 flavor5 3 flavor7 1 flavor8 2
-13 flavor1 3 flavor13 1 flavor14 1 flavor15 1 flavor2 1 flavor4 1 flavor6 1
-14 flavor1 1 flavor11 1 flavor12 2 flavor13 1 flavor2 1 flavor4 1 flavor5 2 flavor8 2
+High-Performance 40
+High-Performance-1 flavor10 2 flavor11 2 flavor13 4 flavor4 5 flavor5 3
+High-Performance-2 flavor10 2 flavor11 2 flavor13 3 flavor4 9 flavor5 7
+High-Performance-3 flavor1 1 flavor10 2 flavor13 5 flavor4 3 flavor5 4
+High-Performance-4 flavor10 1 flavor11 3 flavor13 3 flavor4 8 flavor5 7
+High-Performance-5 flavor10 1 flavor11 1 flavor13 5 flavor4 5 flavor5 1
+High-Performance-6 flavor10 1 flavor11 2 flavor13 4 flavor4 7 flavor5 5
+High-Performance-7 flavor11 1 flavor13 6 flavor4 2 flavor5 2
+High-Performance-8 flavor11 2 flavor13 5 flavor4 3 flavor5 4
+High-Performance-9 flavor10 3 flavor11 1 flavor13 4 flavor4 5 flavor5 3
+High-Performance-10 flavor1 1 flavor10 1 flavor13 5 flavor4 7 flavor5 4
+High-Performance-11 flavor10 1 flavor11 3 flavor13 4 flavor4 4 flavor5 4
+High-Performance-12 flavor10 2 flavor11 2 flavor13 3 flavor4 11 flavor5 5
+High-Performance-13 flavor10 1 flavor13 5 flavor4 2 flavor5 5
+High-Performance-14 flavor10 3 flavor11 1 flavor13 4 flavor4 4 flavor5 4
+High-Performance-15 flavor13 5 flavor4 12 flavor5 4
+High-Performance-16 flavor11 1 flavor13 4 flavor4 13 flavor5 7
+High-Performance-17 flavor10 4 flavor13 4 flavor4 3 flavor5 5
+High-Performance-18 flavor10 2 flavor11 1 flavor13 3 flavor4 10 flavor5 8
+High-Performance-19 flavor10 2 flavor11 2 flavor13 3 flavor4 10 flavor5 6
+High-Performance-20 flavor1 1 flavor10 1 flavor11 2 flavor13 4 flavor4 7 flavor5 2
+High-Performance-21 flavor10 2 flavor13 4 flavor4 6 flavor5 9
+High-Performance-22 flavor10 3 flavor11 3 flavor13 3 flavor4 6 flavor5 2
+High-Performance-23 flavor1 1 flavor10 2 flavor11 1 flavor13 4 flavor4 6 flavor5 5
+High-Performance-24 flavor10 1 flavor13 6 flavor4 1 flavor5 3
+High-Performance-25 flavor10 2 flavor11 4 flavor13 3 flavor4 4 flavor5 3
+High-Performance-26 flavor1 1 flavor11 4 flavor13 4 flavor4 3 flavor5 4
+High-Performance-27 flavor10 1 flavor11 1 flavor13 4 flavor4 4 flavor5 8
+High-Performance-28 flavor10 1 flavor11 1 flavor13 5 flavor4 6 flavor5 2
+High-Performance-29 flavor10 1 flavor11 3 flavor13 3 flavor4 9 flavor5 5
+High-Performance-30 flavor10 3 flavor11 2 flavor13 3 flavor4 8 flavor5 4
+High-Performance-31 flavor10 3 flavor11 2 flavor13 3 flavor4 3 flavor5 9
+High-Performance-32 flavor1 1 flavor10 3 flavor11 2 flavor13 3 flavor4 6 flavor5 5
+High-Performance-33 flavor11 2 flavor13 5 flavor4 5 flavor5 3
+High-Performance-34 flavor1 2 flavor10 1 flavor11 1 flavor13 5 flavor4 2 flavor5 2
+High-Performance-35 flavor10 2 flavor11 2 flavor13 3 flavor4 8 flavor5 2
+High-Performance-36 flavor10 1 flavor11 2 flavor13 4 flavor4 6 flavor5 6
+High-Performance-37 flavor1 1 flavor10 1 flavor11 3 flavor13 3 flavor4 5 flavor5 10
+High-Performance-38 flavor10 3 flavor11 3 flavor13 3 flavor4 6 flavor5 2
+High-Performance-39 flavor10 2 flavor11 2 flavor13 3 flavor4 10 flavor5 6
+High-Performance-40 flavor10 3 flavor11 2 flavor13 2 flavor4 13 flavor5 7
 

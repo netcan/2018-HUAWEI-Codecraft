@@ -38,6 +38,16 @@ double mean(const std::vector<T> &X) {
 	return m;
 }
 
+// 计算标准差
+template<class T>
+double SD(const std::vector<T> &X) {
+	double m = mean(X);
+	double sd = 0;
+	for(T x: X) sd += (x - m) * (x - m);
+	sd = sqrt(sd / X.size());
+	return sd;
+}
+
 template <class T>
 std::vector<double> normalize(const std::vector<T> &X, double &x_mean, double &x_diff) {
 	x_mean = x_diff = 0;

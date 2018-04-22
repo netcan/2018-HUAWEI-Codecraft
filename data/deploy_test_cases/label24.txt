@@ -1,0 +1,11 @@
+flavor1 208
+flavor2 116
+flavor6 174
+flavor7 220
+flavor8 30
+flavor9 9
+flavor10 236
+flavor11 104
+flavor12 233
+flavor17 285
+flavor18 172

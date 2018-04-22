@@ -1,0 +1,10 @@
+30
+flavor1 2
+flavor2 10
+flavor4 6
+flavor5 8
+flavor8 4
+
+General 1
+General-1 flavor1 2 flavor2 10 flavor4 6 flavor5 8 flavor8 4
+

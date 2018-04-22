@@ -62,6 +62,15 @@ int read_servers_info(char * info[MAX_INFO_NUM]) {
 		srv_inf.name = server_name;
 		servers_info.push_back(srv_inf);
 	}
+
+	// 排序
+
+	std::sort(servers_info.begin(), servers_info.end(), [=](const server_info &lhs, const server_info &rhs) -> bool {
+		if(lhs.cpu_count == rhs.cpu_count)
+			return lhs.mem_size < rhs.mem_size;
+		return lhs.cpu_count < rhs.cpu_count;
+	});
+
 	return ++line;
 }
 

@@ -44,14 +44,11 @@ std::map<string, std::vector<flavor>> read_flavors(char *data[MAX_DATA_NUM], int
 
 std::map<string, int> read_deploy_test_cases(char *data[MAX_DATA_NUM], int data_num) {
 	std::map<string, int> solution_flavor; // name: count
-	int line = 0;
 	int flavor_num = 0;
-	sscanf(data[line + 4], "%d", &flavor_num);
-	line += 6;
 	char flavor_name[20];
 	int cnt;
-	for(int i = 0; i < flavor_num; ++i) {
-		sscanf(data[line+i], "%[^:]:%d", flavor_name, &cnt);
+	for(int line = 0; data[line]; ++line) {
+		sscanf(data[line], "%s %d", flavor_name, &cnt);
 //		printf("%s %d\n", flavor_name, cnt);
 		solution_flavor[flavor_name] = cnt;
 	}
@@ -106,57 +103,6 @@ std::vector<int> get_per_flavor_count_by_interval(const std::string &vm_name, in
 }
 
 
-std::vector<int> denoising(const std::string& vm_name) {
-	std::vector<int> by_day = get_per_flavor_count_by_interval(vm_name, 1),
-			by_day_sort = by_day;
-
-//	printf("%s(%ld)\n", vm_name.c_str(), by_day.size());
-//	for(auto cnt: by_day) {
-//		printf("%3d", cnt);
-//	}
-//	puts("");
-//	for(auto cnt: by_day)
-//		if(cnt) by_day_sort.push_back(cnt);
-
-
-	std::sort(by_day_sort.begin(), by_day_sort.end()); // 从小到大排序
-	double Q1, Q2, Q3, IQR, max_outlier, min_outlier,
-			k=3.0;
-	int max_cnt = -1;
-	int pos = 0, n = int(by_day_sort.size());
-	// Q2
-	if(n & 1)  // 奇数个
-		Q2 = by_day_sort[n/2];
-	else {
-		pos = (n - 1) / 2;
-		Q2 = (by_day_sort[pos] + by_day_sort[pos + 1]) / 2.0;
-	}
-	// Q1
-	pos = int((n+1)/4.0-1);
-	Q1 = 0.25 * by_day_sort[pos] + 0.75 * by_day_sort[pos + 1];
-	// Q3
-	pos = int((n+1)*3/4.0-1);
-	Q3 = 0.75 * by_day_sort[pos] + 0.25 * by_day_sort[pos + 1];
-	IQR = Q3 - Q1;
-	max_outlier = Q3 + k * IQR;
-	min_outlier = Q1 - k * IQR;
-
-	for(auto cnt: by_day_sort)
-		if(cnt <= max_outlier) max_cnt = std::max(max_cnt, cnt);
-
-	for(auto &cnt: by_day)
-		if(cnt > max_outlier) cnt = max_cnt; // 异常值用最大值来代替
-
-
-//	printf("%s\n", vm_name.c_str());
-//	printf("Q1=%lf Q2=%lf Q3=%lf IQR=%lf maxo = %lf mino = %lf\n", Q1, Q2, Q3, IQR, max_outlier, min_outlier);
-//	for(auto cnt: by_day) {
-//		printf("%3d", cnt);
-//	}
-//	puts("");
-
-	return by_day;
-}
 
 std::vector<int> merge_cnt_day_by_interval(const std::vector<int> & by_day, int interval) {
 	int cnt = 0;

@@ -15,9 +15,5 @@ extern void write_result(const char * const buff,const char * const filename);
 //释放读文件的缓冲区
 extern void release_buff(char ** const buff, const int valid_item_num);
 
-char* gd(const char *f);
-char* fn(const char *f);
-char* init_file(const char *ta, const char *in);
-
 #endif
 

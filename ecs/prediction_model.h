@@ -14,6 +14,11 @@
 #include <string>
 #include <limits>
 #include <cassert>
+#include "random.h"
+#include <algorithm>
+using std::vector;
+using std::pair;
+using std::make_pair;
 
 template <class T1, class T2>
 double SSE(const std::vector<T1> &X, const std::vector<T2> &X_real) {
@@ -235,5 +240,36 @@ public:
 
 };
 
+class BP_Network {
+private:
+	vector<int> sizes;
+	int num_layers;
+	vector<vector<double>> biases;
+	vector<vector<vector<double>>> weights;
+	double sigmoid(double z) const {
+		return 1.0 / (1.0 + exp(-z));
+		return z;
+	}
+	double sigmoid_prime(double z) const { // sigmoid的导数
+		return sigmoid(z) * (1.0 - sigmoid(z));
+		return 1.0;
+	}
 
+	vector<double> sigmoid(const vector<double> &v) const;
+	vector<double> sigmoid_prime(const vector<double> &v) const;
+	vector<double> dot(const vector<vector<double>>& w, const vector<double>& a) const;
+	vector<vector<double>> dot(const vector<double>& a, const vector<double>& b) const;
+	vector<double> add(const vector<double>& _dot, const vector<double>& b) const;
+	vector<double> mul(const vector<double>& a, const vector<double>& b) const;
+	vector<double> cost_derivative(const vector<double> &output_activations, const vector<double> &y) const;
+	vector<vector<double>> transpose(const vector<vector<double>> &t) const;
+	pair<vector<vector<double>>, vector<vector<vector<double>>>> backprop(const vector<double> &x, const vector<double> &y);
+
+public:
+	BP_Network(std::initializer_list<int> sz);
+	void update_mini_batch(vector<pair<vector<double>, vector<double>>>& mini_batch, double eta);
+	void SGD(vector<pair<vector<double>, vector<double>>>& train_data, int epochs, int mini_batch_size, double eta);
+	vector<double> feedforward(const vector<double> &a) const;
+
+};
 

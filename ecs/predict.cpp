@@ -166,9 +166,10 @@ double cv_expontential_smoothing_predict() {
 
 void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 //	exponential_smoothing ExpSmooth(cv_expontential_smoothing_predict());
-	exponential_smoothing ExpSmooth(0.51);
+	// 0.5, 1.8
+	exponential_smoothing ExpSmooth(0.91);
 //	exponential_smoothing ExpSmooth(0.99);
-	double c = 1.8; // 系数！
+	double c = 1.7; // 系数！
 	for(const auto &f: predict_flavors_info) { // predict per vm
 //		std::vector<int> by_day = get_per_flavor_count_by_interval(f.first, 1);
 		// print per vm
@@ -196,7 +197,8 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 
 
 void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor) {
-	exponential_smoothing ExpSmooth(0.11);
+	// 0.3 best
+	exponential_smoothing ExpSmooth(0.30);
 	double c = 1.0;
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		// best: k = 3.0
@@ -208,6 +210,27 @@ void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor
 			cnt += std::max(0, int(lround(ExpSmooth.predict(t))));
 		solution_flavor[f.first] = int(lround(cnt * c));
 	}
+}
+
+void bp_predict(std::map<string, int>& solution_flavor) {
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		std::vector<int> by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), 3.0)); // 去噪
+		BP_Network bp({1, 10, 1});
+		vector<pair<vector<double>, vector<double>>> train_data;
+		int day = 0;
+		for(day = 0; day < by_day.size(); ++day)
+			train_data.emplace_back(vector<double>(1, day * 1.0), vector<double>(1, by_day[day] * 1.0));
+
+		bp.SGD(train_data, 50, during_days, 3.0);
+		double cnt = 0;
+		day += predict_interval.first.date - train_end_time.date - 1;
+		for(int d = 0; d < during_days; ++d, ++day)
+			cnt += bp.feedforward({day * 1.0})[0];
+
+		solution_flavor[f.first] = std::max(int(lround(cnt)), 0);
+
+	}
+
 }
 
 void avg_predict(std::map<string, int>& solution_flavor) {
@@ -542,7 +565,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	solution_server = std::move(first_fit(sfv));
 
 	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9999);
-	 */
+	*/
 
 	/*** 部署测试end ***/
 
@@ -552,9 +575,10 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	interval_predict(solution_flavor);
 //	linear_regression_predict(solution_flavor);
 //	polynomial_regression_predict(solution_flavor);
-//	exponential_smoothing_predict(solution_flavor);
+	exponential_smoothing_predict(solution_flavor);
 //	exponential_smoothing_predict_by_day(solution_flavor);
-	avg_predict(solution_flavor);
+//	bp_predict(solution_flavor);
+//	avg_predict(solution_flavor);
 
 	for(const auto & sf: solution_flavor)
 		printf("%s: %d\n", sf.first.c_str(), sf.second);
@@ -567,6 +591,24 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	assert(get_deploy_ratio(solution_flavor, solution_server) > 0.90);
 
 	/*** 正赛end ***/
+
+	/** 测试begin **/
+	/*
+	BP_Network bp_network({1, 4, 1});
+	vector<pair<vector<double>, vector<double>>> mini_batch({
+		make_pair<vector<double>, vector<double>>({3}, {1}),
+		make_pair<vector<double>, vector<double>>({2}, {2}),
+		make_pair<vector<double>, vector<double>>({1}, {3})
+	});
+	bp_network.SGD(mini_batch, 30, 3, 3.0);
+	for(auto y: bp_network.feedforward({7})) {
+		printf("%lf ", y);
+	}
+	puts("");
+	 */
+
+	/** 测试end **/
+
 
 	for(const auto &srv: solution_server) {
 		printf("%18s %5.3lf%%(%6.3lf%% %6.3lf%%)\n",

@@ -19,7 +19,7 @@ def get_submit_count(username, password):
 
     score = get_score(username, password) / 100
     str = '今日提交次数：{}/100，{:.5}²='.format(cnt, math.sqrt(score) * 100)
-    change_moto(username, password, str)
+    # change_moto(username, password, str)
     print(str)
     return cnt
 

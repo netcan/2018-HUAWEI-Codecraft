@@ -13,9 +13,9 @@
 class Random {
 private:
 	std::random_device r;
-	std::default_random_engine generator;
 
 public:
+	std::default_random_engine generator;
 	Random(): generator(r()) {}
 	Random(unsigned seed): generator(seed) {}
 	inline uint32_t Random_Int(uint32_t min, uint32_t max) { // [min, max]
@@ -23,6 +23,9 @@ public:
 	}
 	inline double Random_Real(double min, double max) { // [min, max)
 		return std::uniform_real_distribution<double>{min, max}(generator);
+	}
+	inline double Random_Norm(double mean = 0.0, double std = 1.0) {
+		return std::normal_distribution<double>{mean, std}(generator);
 	}
 };
 

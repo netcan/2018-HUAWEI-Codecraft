@@ -7,6 +7,7 @@
 #include "random.h"
 #include "prediction_model.h"
 #include <signal.h>
+#include "matrix.h"
 #include <unistd.h>
 #include <ctime>
 #include <cmath>

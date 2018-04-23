@@ -570,6 +570,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	/*** 部署测试end ***/
 
 	/*** 正赛begin ***/
+	/*
 	flavors = std::move(read_flavors(data, data_num));
 
 //	interval_predict(solution_flavor);
@@ -590,6 +591,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	// 利用率
 //	assert(get_deploy_ratio(solution_flavor, solution_server) > 0.90);
 
+	 */
 	/*** 正赛end ***/
 
 	/** 测试begin **/
@@ -606,6 +608,19 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	}
 	puts("");
 	 */
+
+	vector<vector<double>> tst = {
+			{1,2,3},
+			{4,5,4},
+			{7,8,9},
+	};
+	vector<vector<double>> tst2 = {
+			{4,5,4},
+			{7,8,9},
+			{1,2,3},
+	};
+	Matrix mat1(tst), mat2(tst2);
+	(mat1 / 2).show();
 
 	/** 测试end **/
 

@@ -248,11 +248,9 @@ private:
 	vector<vector<vector<double>>> weights;
 	double sigmoid(double z) const {
 		return 1.0 / (1.0 + exp(-z));
-		return z;
 	}
 	double sigmoid_prime(double z) const { // sigmoid的导数
 		return sigmoid(z) * (1.0 - sigmoid(z));
-		return 1.0;
 	}
 
 	vector<double> sigmoid(const vector<double> &v) const;

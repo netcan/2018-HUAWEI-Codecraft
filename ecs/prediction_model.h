@@ -44,30 +44,29 @@ double mean(const std::vector<T> &X) {
 	return m;
 }
 
+// 计算方差
+template<class T>
+double variance(const std::vector<T> &X) {
+	double m = mean(X);
+	double var = 0;
+	for(T x: X) var += (x - m) * (x - m);
+	var = var / X.size();
+	return var;
+}
+
 // 计算标准差
 template<class T>
 double SD(const std::vector<T> &X) {
-	double m = mean(X);
-	double sd = 0;
-	for(T x: X) sd += (x - m) * (x - m);
-	sd = sqrt(sd / X.size());
-	return sd;
+	return sqrt(variance(X));
 }
 
 template <class T>
-std::vector<double> normalize(const std::vector<T> &X, double &x_mean, double &x_diff) {
-	x_mean = x_diff = 0;
-	T x_min = X[0], x_max = X[0];
-	for(size_t i = 0; i < X.size(); ++i) {
-		x_mean += X[i];
-		x_min = std::min(x_min, X[i]);
-		x_max = std::max(x_max, X[i]);
-	}
-	x_mean /= X.size();
-	x_diff = x_max - x_min;
+std::vector<double> normalize(const std::vector<T> &X, double &x_mean, double &x_sd) {
+	x_mean = mean(X);
+	x_sd = SD(X);
 	std::vector<double> X_normalize(X.size());
 	for(size_t i = 0; i < X_normalize.size(); ++i)
-		X_normalize[i] = (X[i] - x_mean) / x_diff;
+		X_normalize[i] = (X[i] - x_mean) / x_sd;
 	return X_normalize;
 }
 
@@ -284,8 +283,9 @@ public:
 		}
 //		weights.show();
 		// 归一化
-		double Y_mean, Y_diff;
-		vector<double> Y_norm = normalize(Y, Y_mean, Y_diff);
+		double Y_mean, Y_sd;
+		vector<double> Y_norm = normalize(Y, Y_mean, Y_sd);
+
 
 		for(size_t i = 0; i < Y.size(); ++i)
 			yMat.mat[i][0] = Y_norm[i];
@@ -293,7 +293,7 @@ public:
 		Matrix xTx = xMat.T() * (weights * xMat),
 				ws = xTx.I() * (xMat.T() * (weights * yMat));
 		double predictY = predictX * ws.mat[1][0] + ws.mat[0][0];
-		predictY = predictY * Y_diff + Y_mean;
+		predictY = predictY * Y_sd + Y_mean;
 		return predictY;
 	}
 

@@ -196,13 +196,14 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
 }
 
 
-void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor) {
+// c: 预测*倍数
+void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor, double noiseK = 3.0, double alpha = 0.3, double c = 1.0) {
 	// 0.3 best
-	exponential_smoothing ExpSmooth(0.30);
-	double c = 1.0;
+	exponential_smoothing ExpSmooth(alpha);
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		// best: k = 3.0
-		std::vector<int> by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), 3.0)); // 去噪
+		std::vector<int> by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), noiseK)); // 去噪
+
 		ExpSmooth.train(by_day);
 		// 参数
 		int cnt = 0;
@@ -233,10 +234,10 @@ void bp_predict(std::map<string, int>& solution_flavor) {
 
 }
 
-void lwlr_predict(std::map<string, int>& solution_flavor) {
+void lwlr_predict(std::map<string, int>& solution_flavor, double noiseK = 3.0, double k = 9.5) { // 去噪参数，权重参数k
 	LWLR lwlr;
 	for(const auto &f: predict_flavors_info) { // predict per vm
-		std::vector<int> cnt_by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), 3.0)); // 去噪, Y
+		std::vector<int> cnt_by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), noiseK)); // 去噪, Y
 		std::vector<int> days(cnt_by_day.size()); // X
 		int day;
 		for(day = 0; day < days.size(); ++day) days[day] = day;
@@ -247,7 +248,7 @@ void lwlr_predict(std::map<string, int>& solution_flavor) {
 
 		for(int d = 0; d < during_days; ++d, ++day) {
 //			printf("d=%d\n", day);
-			cnt += lwlr.predict(days, cnt_by_day, day, 9.5);
+			cnt += lwlr.predict(days, cnt_by_day, day, k);
 		}
 
 		solution_flavor[f.first] = std::max(int(lround(cnt)), 0);
@@ -273,10 +274,16 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 		avg /= days;
 
 		double cnt = avg * during_days;
-		if(during_days >= 8) cnt *= 1.60;
-		else cnt *= 0.60;
+		double p = 1.0;
 
-		cnt += Rand.Random_Int(0, 5);
+		if(during_days >= 8) p = 1.60;
+		else p = 0.60;
+
+
+		cnt *= p;
+
+
+//		cnt += Rand.Random_Int(0, 5);
 
 		solution_flavor[f.first] = int(lround(cnt));
 	}
@@ -598,7 +605,6 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<server>& so
 //你要完成的功能总入口
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename)
 {
-	assert(predict_interval.first.date - train_end_time.date < 7);
 
 	Signal(SIGALRM, timeOutHandler);
 	// 定时器
@@ -618,7 +624,6 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 		predict_interval.second.time = Time(0, 0, 0);
 	}
 	during_days = predict_interval.second.date - predict_interval.first.date;
-
 
 	/*** 部署测试begin ***/
 	/*
@@ -645,7 +650,16 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	polynomial_regression_predict(solution_flavor);
 //	exponential_smoothing_predict(solution_flavor);
 //	exponential_smoothing_predict_by_day(solution_flavor); // 效果较好，70分
-	lwlr_predict(solution_flavor);
+
+	bool GAP = (predict_interval.first.date - train_end_time.date >= 7);
+	if(! GAP) {
+		lwlr_predict(solution_flavor, 3.0, 5.0); // 33.26
+//		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.3, 1.0); // 33.364
+	} else {
+		lwlr_predict(solution_flavor, 3.0, 9.5); // 37.935
+//		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.22, 1.3); // 40.415
+	}
+
 //	bp_predict(solution_flavor);
 //	avg_predict(solution_flavor);
 

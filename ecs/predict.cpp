@@ -30,7 +30,7 @@ void timeOutHandler(int signo) {
 void interval_predict(std::map<string, int>& solution_flavor) {
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		int	s = get_interval_flavors_count(
-			f.first, train_end_time.date + 1 + (-during_days), during_days
+				f.first, train_end_time.date + 1 + (-during_days), during_days
 		);
 		solution_flavor[f.first] = s;
 	}
@@ -118,7 +118,7 @@ double shell_coefficient(const std::map<string, int>& predict_solution_flavor,
 	for(const auto &vm: predict_solution_flavor) {
 		const string & vm_name = vm.first;
 		int yi = const_cast<std::map<string, int> &>(predict_solution_flavor)[vm_name],
-			Yi = const_cast<std::map<string, int> &>(real_solution_flavor)[vm_name];
+				Yi = const_cast<std::map<string, int> &>(real_solution_flavor)[vm_name];
 		rmse += (yi - Yi) * (yi - Yi);
 		rsy += yi * yi;
 		rsY += Yi * Yi;
@@ -233,6 +233,28 @@ void bp_predict(std::map<string, int>& solution_flavor) {
 
 }
 
+void lwlr_predict(std::map<string, int>& solution_flavor) {
+	LWLR lwlr;
+	for(const auto &f: predict_flavors_info) { // predict per vm
+		std::vector<int> cnt_by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), 3.0)); // 去噪, Y
+		std::vector<int> days(cnt_by_day.size()); // X
+		int day;
+		for(day = 0; day < days.size(); ++day) days[day] = day;
+
+		double cnt = 0;
+		day += predict_interval.first.date - train_end_time.date - 1;
+
+
+		for(int d = 0; d < during_days; ++d, ++day) {
+//			printf("d=%d\n", day);
+			cnt += lwlr.predict(days, cnt_by_day, day, 9.5);
+		}
+
+		solution_flavor[f.first] = std::max(int(lround(cnt)), 0);
+	}
+
+}
+
 void avg_predict(std::map<string, int>& solution_flavor) {
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		std::vector<int> cnt_by_day = get_per_flavor_count_by_interval(f.first, 1); // 获取当天数据
@@ -240,7 +262,7 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 
 		double m = mean(cnt_by_day), sd = SD(cnt_by_day);
 
-		 // 滤3.5标准差
+		// 滤3.5标准差
 //		for(auto &cnt: cnt_by_day)
 //			if(cnt > 3.5 * sd) cnt = int(lround(m));
 
@@ -261,10 +283,11 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 
 }
 
-std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv) {
+std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv, size_t *low_ratio_srv_loc = NULL) {
 	// solution_server is empty
 	std::vector<server> servers;
 	int flavor_k_num = 0;
+	double low_ratio = -1;
 	for(size_t i = 0; i < sfv.size(); ) {
 		server best_srv;
 		double max_usage_ratio = -1;
@@ -299,7 +322,14 @@ std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv) {
 				cur_k_num = k_num;
 			}
 		}
+
+		if(low_ratio_srv_loc && (low_ratio < 0 || low_ratio > best_srv.get_ratio())) {
+			low_ratio = best_srv.get_ratio();
+			*low_ratio_srv_loc = servers.size();
+		}
+
 		servers.push_back(best_srv);
+
 		if(i == best_k) flavor_k_num += cur_k_num;
 		else flavor_k_num = cur_k_num;
 		i = best_k;
@@ -444,6 +474,7 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 	for(const auto & sf: solution_flavor)
 		for(int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
 
+	size_t low_ratio_srv_loc = 0;
 	std::vector<server> servers = std::move(first_fit(sfv)), best_servers;
 	solution_server = servers;
 
@@ -455,16 +486,18 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 			servers.clear(); // 记得清空
 			sfv_reduced.clear();
 			int i = Rand.Random_Int(0, sfv.size() - 1),
-				j = Rand.Random_Int(0, sfv.size() - 1);
+					j = Rand.Random_Int(0, sfv.size() - 1);
 			while(sfv[i].first == sfv[j].first) i = Rand.Random_Int(0, sfv.size() - 1);
 			std::swap(sfv[i], sfv[j]); // 随机交换两个flavor的位置
 
 			sfv_reduced.emplace_back(sfv.begin()->first, 1);
-			for(size_t sfv_i = 1; sfv_i < sfv.size(); ++sfv_i)
-				if(sfv[sfv_i] == sfv[sfv_i - 1])  ++sfv_reduced.back().second;
+			for(size_t sfv_i = 1; sfv_i < sfv.size(); ++sfv_i) {
+				if (sfv[sfv_i] == sfv[sfv_i - 1]) ++sfv_reduced.back().second;
 				else sfv_reduced.emplace_back(sfv[sfv_i].first, 1);
+			}
+			size_t cur_low_ratio_srv_loc = 0;
 
-			servers = std::move(first_fit(sfv_reduced));
+			servers = std::move(first_fit(sfv_reduced, &cur_low_ratio_srv_loc));
 			cur_deploy_ratio = get_deploy_ratio(solution_flavor, servers);
 
 			double dc = last_deploy_ratio - cur_deploy_ratio;
@@ -476,12 +509,46 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 			if(best_deploy_ratio < 0 || best_deploy_ratio < cur_deploy_ratio) {
 				best_deploy_ratio = cur_deploy_ratio;
 				best_servers = servers;
+				low_ratio_srv_loc = cur_low_ratio_srv_loc;
 			}
 
 		}
 		T *= delta;
 	}
-	solution_server = best_servers;
+	solution_server = std::move(best_servers);
+
+	auto &low_srv = solution_server[low_ratio_srv_loc];
+
+	if(solution_server.size() > 1 && low_srv.get_ratio() < 0.8) {// remove
+		printf("remove: %lf\n", low_srv.get_ratio());
+		for(const auto &flvs: low_srv.flavors)
+			solution_flavor[flvs.first] -= flvs.second;
+		solution_server.erase(solution_server.begin() + low_ratio_srv_loc);
+	}
+	else { // fill
+		printf("fill: %lf\n", low_srv.get_ratio());
+		flavor_info best_flv;
+		double best_ratio = -1;
+		for(const auto& sf: solution_flavor) {
+			const auto &flv = predict_flavors_info[sf.first];
+			if(flv <= low_srv) {
+				server srv = low_srv;
+				int flv_num = srv / flv;
+				srv.place_flavor(flv, flv_num);
+				double ratio = srv.get_ratio();
+				if(best_ratio < ratio) {
+					best_ratio = ratio;
+					best_flv = flv;
+				}
+			}
+		}
+		if(best_ratio > 0) {
+			int flv_num = low_srv / best_flv;
+			low_srv.place_flavor(best_flv, flv_num);
+			solution_flavor[best_flv.name] += flv_num;
+		}
+		printf("fill end: %lf\n", low_srv.get_ratio());
+	}
 }
 
 
@@ -531,6 +598,7 @@ char* get_result(std::map<string, int>& solution_flavor, std::vector<server>& so
 //你要完成的功能总入口
 void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int data_num, char * filename)
 {
+	assert(predict_interval.first.date - train_end_time.date < 7);
 
 	Signal(SIGALRM, timeOutHandler);
 	// 定时器
@@ -565,19 +633,19 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	solution_server = std::move(first_fit(sfv));
 
 	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9999);
-	*/
+	 */
 
 	/*** 部署测试end ***/
 
 	/*** 正赛begin ***/
-	/*
 	flavors = std::move(read_flavors(data, data_num));
 
 //	interval_predict(solution_flavor);
 //	linear_regression_predict(solution_flavor);
 //	polynomial_regression_predict(solution_flavor);
-	exponential_smoothing_predict(solution_flavor);
-//	exponential_smoothing_predict_by_day(solution_flavor);
+//	exponential_smoothing_predict(solution_flavor);
+//	exponential_smoothing_predict_by_day(solution_flavor); // 效果较好，70分
+	lwlr_predict(solution_flavor);
 //	bp_predict(solution_flavor);
 //	avg_predict(solution_flavor);
 
@@ -590,8 +658,6 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 
 	// 利用率
 //	assert(get_deploy_ratio(solution_flavor, solution_server) > 0.90);
-
-	 */
 	/*** 正赛end ***/
 
 	/** 测试begin **/
@@ -607,7 +673,6 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 		printf("%lf ", y);
 	}
 	puts("");
-	 */
 
 	vector<vector<double>> tst = {
 			{1,2,3},
@@ -621,6 +686,18 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	};
 	Matrix mat1(tst), mat2(tst2);
 	(mat1 / 2).show();
+	LWLR lwlr;
+	vector<double> X, Y;
+	for(int i = 0; i < 100; ++i) {
+		X.push_back(i);
+		Y.push_back(10 * sin(0.3 * i));
+	}
+
+	for(int i = 0; i < 100; ++i) {
+		lwlr.predict(X, Y, i, 0.14);
+	}
+	 */
+
 
 	/** 测试end **/
 

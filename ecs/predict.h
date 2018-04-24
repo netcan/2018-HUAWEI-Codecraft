@@ -7,7 +7,6 @@
 #include "random.h"
 #include "prediction_model.h"
 #include <signal.h>
-#include "matrix.h"
 #include <unistd.h>
 #include <ctime>
 #include <cmath>
@@ -26,6 +25,7 @@ void exponential_smoothing_predict(std::map<string, int>& solution_flavor);
 void exponential_smoothing_predict_by_day(std::map<string, int>& solution_flavor);
 void bp_predict(std::map<string, int>& solution_flavor);
 void avg_predict(std::map<string, int>& solution_flavor);
+void lwlr_predict(std::map<string, int>& solution_flavor);
 double shell_coefficient(const std::map<string, int>& predict_solution_flavor,const std::map<string, int>& real_solution_flavor);
 double cv_expontential_smoothing_predict();
 

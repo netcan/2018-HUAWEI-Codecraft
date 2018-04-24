@@ -15,6 +15,7 @@
 #include <limits>
 #include <cassert>
 #include "random.h"
+#include "matrix.h"
 #include <algorithm>
 using std::vector;
 using std::pair;
@@ -268,6 +269,33 @@ public:
 	void update_mini_batch(vector<pair<vector<double>, vector<double>>>& mini_batch, double eta);
 	void SGD(vector<pair<vector<double>, vector<double>>>& train_data, int epochs, int mini_batch_size, double eta);
 	vector<double> feedforward(const vector<double> &a) const;
+
+};
+
+class LWLR {
+public:
+	template <class T>
+	double predict(const vector<T> &X, const vector<T> &Y, int predictX, double k = 1.0) {
+		Matrix xMat(X.size(), 2), yMat(Y.size(), 1), weights(X.size(), X.size());
+		for(size_t i = 0; i < X.size(); ++i) {
+			xMat.mat[i][0] = 1.0;
+			xMat.mat[i][1] = X[i];
+			weights.mat[i][i] = exp((X[i] - predictX) * (X[i] - predictX) * 1.0 / (-2.0 * k * k));
+		}
+//		weights.show();
+		// 归一化
+		double Y_mean, Y_diff;
+		vector<double> Y_norm = normalize(Y, Y_mean, Y_diff);
+
+		for(size_t i = 0; i < Y.size(); ++i)
+			yMat.mat[i][0] = Y_norm[i];
+
+		Matrix xTx = xMat.T() * (weights * xMat),
+				ws = xTx.I() * (xMat.T() * (weights * yMat));
+		double predictY = predictX * ws.mat[1][0] + ws.mat[0][0];
+		predictY = predictY * Y_diff + Y_mean;
+		return predictY;
+	}
 
 };
 

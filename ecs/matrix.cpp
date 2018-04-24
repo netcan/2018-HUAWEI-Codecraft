@@ -7,10 +7,8 @@
  ****************************************************************************/
 
 #include "matrix.h"
-#include <assert.h>
-#include "math.h"
 
-const double Matrix::eps = 1e-6;
+const double Matrix::eps = 1e-30;
 
 Matrix Matrix::T() {
 	Matrix ret(mat[0].size(), mat.size());
@@ -95,7 +93,7 @@ Matrix adjoint(const Matrix &m) {
 
 	for(size_t i = 0; i < ret.row; ++i)
 		for (size_t j = 0; j < ret.col; ++j)
-			ret[i][j] = ((i + j)&1?-1:1) * det(cofactor(m, i, j));
+			ret.mat[i][j] = ((i + j)&1?-1:1) * det(cofactor(m, i, j));
 
 	return ret;
 }
@@ -105,16 +103,16 @@ Matrix Matrix::I() {
 	Matrix ret(*this);
 	assert(row == col);
 	if(fabs(D) < eps) {
-		printf("Singular matrix, can't find its inverse\n");
+		printf("Singular matrix, can't find its inverse:\n");
 		return ret;
 	}
+
 	Matrix adj = std::move(adjoint(*this));
-	adj.show();
-	puts("");
 
 	for(int i = 0; i < row; ++i)
 		for(int j = 0; j < row; ++j)
-			ret[j][i] = adj.mat[i][j] / D;
+			ret.mat[j][i] = adj.mat[i][j] / D;
+
 
 	return ret;
 }

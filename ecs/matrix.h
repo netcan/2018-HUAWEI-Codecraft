@@ -9,6 +9,9 @@
 #pragma once
 
 #include <vector>
+#include <cassert>
+#include <cmath>
+#include <cstdio>
 
 using std::vector;
 
@@ -19,27 +22,14 @@ private:
 	const static double eps;
 
 public:
-	class Row {
-		friend Matrix;
-	private:
-		Matrix &parent;
-		size_t row;
-		Row(Matrix &parent, int row): parent(parent), row(row) {}
-	public:
-		double &operator[](size_t col) {
-			return parent.mat[row][col];
-		}
-	};
 
 	Matrix(size_t row, size_t col): row(row), col(col), mat(row, vector<double>(col, 0.0)) {}
 	Matrix(const vector<vector<double>> m): row(m.size()), col(m[0].size()), mat(m) {}
 
-	Row operator[](size_t row)  {
-		return Row(*this, row);
-	}
 
 	friend Matrix cofactor(const Matrix &m, size_t r, size_t c);
 	friend Matrix adjoint(const Matrix &m);
+	friend class LWLR;
 
 	friend double det(Matrix t);
 

@@ -1,0 +1,877 @@
+7562
+flavor1 420
+flavor2 420
+flavor3 420
+flavor4 420
+flavor5 420
+flavor6 420
+flavor7 420
+flavor8 420
+flavor9 420
+flavor10 420
+flavor11 420
+flavor12 420
+flavor13 421
+flavor14 420
+flavor15 421
+flavor16 420
+flavor17 420
+flavor18 420
+
+General 72
+General-1 flavor4 16 flavor6 12
+General-2 flavor4 16 flavor6 12
+General-3 flavor4 16 flavor6 12
+General-4 flavor4 16 flavor6 12
+General-5 flavor4 16 flavor6 12
+General-6 flavor4 16 flavor6 12
+General-7 flavor4 16 flavor6 12
+General-8 flavor4 16 flavor6 12
+General-9 flavor4 16 flavor6 12
+General-10 flavor4 16 flavor6 12
+General-11 flavor4 16 flavor6 12
+General-12 flavor4 16 flavor6 12
+General-13 flavor4 16 flavor6 12
+General-14 flavor4 16 flavor6 12
+General-15 flavor4 16 flavor6 12
+General-16 flavor1 24 flavor4 4 flavor6 12
+General-17 flavor1 24 flavor5 6 flavor6 10
+General-18 flavor3 8 flavor5 24
+General-19 flavor3 8 flavor5 24
+General-20 flavor4 16 flavor6 12
+General-21 flavor6 4 flavor8 12
+General-22 flavor6 4 flavor8 12
+General-23 flavor6 4 flavor8 12
+General-24 flavor6 4 flavor8 12
+General-25 flavor6 10 flavor7 6 flavor8 3
+General-26 flavor6 12 flavor7 8
+General-27 flavor4 16 flavor6 12
+General-28 flavor4 16 flavor6 12
+General-29 flavor2 24 flavor13 1 flavor15 1
+General-30 flavor4 16 flavor6 12
+General-31 flavor4 16 flavor6 12
+General-32 flavor4 16 flavor6 12
+General-33 flavor4 16 flavor6 12
+General-34 flavor4 16 flavor6 12
+General-35 flavor4 16 flavor6 12
+General-36 flavor4 16 flavor6 12
+General-37 flavor4 16 flavor6 12
+General-38 flavor2 54 flavor3 2
+General-39 flavor1 32 flavor3 24
+General-40 flavor1 32 flavor3 24
+General-41 flavor1 32 flavor3 24
+General-42 flavor1 32 flavor3 24
+General-43 flavor1 32 flavor3 24
+General-44 flavor1 32 flavor3 24
+General-45 flavor1 32 flavor3 24
+General-46 flavor1 28 flavor2 6 flavor3 22
+General-47 flavor3 8 flavor5 24
+General-48 flavor2 56
+General-49 flavor2 56
+General-50 flavor2 56
+General-51 flavor2 56
+General-52 flavor2 56
+General-53 flavor2 56
+General-54 flavor18 1
+General-55 flavor3 8 flavor5 24
+General-56 flavor1 32 flavor3 24
+General-57 flavor1 32 flavor3 24
+General-58 flavor3 8 flavor5 24
+General-59 flavor3 8 flavor5 24
+General-60 flavor3 8 flavor5 24
+General-61 flavor3 8 flavor5 24
+General-62 flavor3 8 flavor5 24
+General-63 flavor3 8 flavor5 24
+General-64 flavor3 8 flavor5 24
+General-65 flavor3 8 flavor5 24
+General-66 flavor3 8 flavor5 24
+General-67 flavor3 8 flavor5 24
+General-68 flavor3 8 flavor5 24
+General-69 flavor3 8 flavor5 24
+General-70 flavor1 24 flavor3 20 flavor5 6
+General-71 flavor1 32 flavor3 24
+General-72 flavor3 8 flavor5 24
+
+Large-Memory 419
+Large-Memory-1 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-2 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-3 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-4 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-5 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-6 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-7 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-8 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-9 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-10 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-11 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-12 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-13 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-14 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-15 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-16 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-17 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-18 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-19 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-20 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-21 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-22 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-23 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-24 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-25 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-26 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-27 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-28 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-29 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-30 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-31 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-32 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-33 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-34 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-35 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-36 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-37 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-38 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-39 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-40 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-41 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-42 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-43 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-44 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-45 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-46 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-47 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-48 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-49 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-50 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-51 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-52 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-53 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-54 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-55 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-56 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-57 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-58 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-59 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-60 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-61 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-62 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-63 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-64 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-65 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-66 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-67 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-68 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-69 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-70 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-71 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-72 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-73 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-74 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-75 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-76 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-77 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-78 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-79 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-80 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-81 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-82 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-83 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-84 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-85 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-86 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-87 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-88 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-89 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-90 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-91 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-92 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-93 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-94 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-95 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-96 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-97 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-98 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-99 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-100 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-101 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-102 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-103 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-104 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-105 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-106 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-107 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-108 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-109 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-110 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-111 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-112 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-113 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-114 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-115 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-116 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-117 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-118 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-119 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-120 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-121 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-122 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-123 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-124 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-125 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-126 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-127 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-128 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-129 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-130 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-131 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-132 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-133 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-134 flavor8 1 flavor10 3 flavor12 3 flavor18 1
+Large-Memory-135 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-136 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-137 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-138 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-139 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-140 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-141 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-142 flavor8 1 flavor10 3 flavor12 1 flavor15 1 flavor18 1
+Large-Memory-143 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-144 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-145 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-146 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-147 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-148 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-149 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-150 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-151 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-152 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-153 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-154 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-155 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-156 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-157 flavor6 6 flavor8 10 flavor18 1
+Large-Memory-158 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-159 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-160 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-161 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-162 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-163 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-164 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-165 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-166 flavor7 6 flavor8 1 flavor9 6 flavor18 1
+Large-Memory-167 flavor7 2 flavor8 1 flavor9 4 flavor11 3 flavor18 1
+Large-Memory-168 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-169 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-170 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-171 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-172 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-173 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-174 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-175 flavor9 3 flavor11 5 flavor18 1
+Large-Memory-176 flavor8 1 flavor10 3 flavor12 3 flavor18 1
+Large-Memory-177 flavor8 1 flavor10 3 flavor12 3 flavor18 1
+Large-Memory-178 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-179 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-180 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-181 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-182 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-183 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-184 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-185 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-186 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-187 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-188 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-189 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-190 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-191 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-192 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-193 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-194 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-195 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-196 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-197 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-198 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-199 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-200 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-201 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-202 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-203 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-204 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-205 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-206 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-207 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-208 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-209 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-210 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-211 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-212 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-213 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-214 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-215 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-216 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-217 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-218 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-219 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-220 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-221 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-222 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-223 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-224 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-225 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-226 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-227 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-228 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-229 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-230 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-231 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-232 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-233 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-234 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-235 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-236 flavor8 1 flavor10 1 flavor12 1 flavor13 1 flavor15 1 flavor18 1
+Large-Memory-237 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-238 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-239 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-240 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-241 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-242 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-243 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-244 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-245 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-246 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-247 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-248 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-249 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-250 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-251 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-252 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-253 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-254 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-255 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-256 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-257 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-258 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-259 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-260 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-261 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-262 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-263 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-264 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-265 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-266 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-267 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-268 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-269 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-270 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-271 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-272 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-273 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-274 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-275 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-276 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-277 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-278 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-279 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-280 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-281 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-282 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-283 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-284 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-285 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-286 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-287 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-288 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-289 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-290 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-291 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-292 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-293 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-294 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-295 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-296 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-297 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-298 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-299 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-300 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-301 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-302 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-303 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-304 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-305 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-306 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-307 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-308 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-309 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-310 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-311 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-312 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-313 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-314 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-315 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-316 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-317 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-318 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-319 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-320 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-321 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-322 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-323 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-324 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-325 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-326 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-327 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-328 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-329 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-330 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-331 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-332 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-333 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-334 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-335 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-336 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-337 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-338 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-339 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-340 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-341 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-342 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-343 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-344 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-345 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-346 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-347 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-348 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-349 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-350 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-351 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-352 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-353 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-354 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-355 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-356 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-357 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-358 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-359 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-360 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-361 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-362 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-363 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-364 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-365 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-366 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-367 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-368 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-369 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-370 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-371 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-372 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-373 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-374 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-375 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-376 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-377 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-378 flavor9 1 flavor13 1 flavor14 1 flavor15 1 flavor18 1
+Large-Memory-379 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-380 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-381 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-382 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-383 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-384 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-385 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-386 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-387 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-388 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-389 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-390 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-391 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-392 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-393 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-394 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-395 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-396 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-397 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-398 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-399 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-400 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-401 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-402 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-403 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-404 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-405 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-406 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-407 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-408 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-409 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-410 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-411 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-412 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-413 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-414 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-415 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-416 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-417 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-418 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+Large-Memory-419 flavor9 1 flavor11 1 flavor12 1 flavor17 1 flavor18 1
+
+High-Performance 359
+High-Performance-1 flavor7 8 flavor8 20
+High-Performance-2 flavor14 1 flavor16 1 flavor17 2
+High-Performance-3 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-4 flavor14 1 flavor16 1 flavor17 2
+High-Performance-5 flavor14 1 flavor16 1 flavor17 2
+High-Performance-6 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-7 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-8 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-9 flavor7 8 flavor8 20
+High-Performance-10 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-11 flavor14 1 flavor16 1 flavor17 2
+High-Performance-12 flavor7 16 flavor8 8 flavor9 4
+High-Performance-13 flavor14 1 flavor16 1 flavor17 2
+High-Performance-14 flavor14 1 flavor16 1 flavor17 2
+High-Performance-15 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-16 flavor7 20 flavor8 2 flavor9 6
+High-Performance-17 flavor14 1 flavor16 1 flavor17 2
+High-Performance-18 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-19 flavor14 1 flavor16 1 flavor17 2
+High-Performance-20 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-21 flavor14 1 flavor16 1 flavor17 2
+High-Performance-22 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-23 flavor7 20 flavor8 2 flavor9 6
+High-Performance-24 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-25 flavor14 1 flavor16 1 flavor17 2
+High-Performance-26 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-27 flavor14 1 flavor16 1 flavor17 2
+High-Performance-28 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-29 flavor7 8 flavor8 20
+High-Performance-30 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-31 flavor14 1 flavor16 1 flavor17 2
+High-Performance-32 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-33 flavor14 1 flavor16 1 flavor17 2
+High-Performance-34 flavor14 1 flavor16 1 flavor17 2
+High-Performance-35 flavor7 8 flavor8 20
+High-Performance-36 flavor14 1 flavor16 1 flavor17 2
+High-Performance-37 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-38 flavor7 8 flavor8 20
+High-Performance-39 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-40 flavor14 1 flavor16 1 flavor17 2
+High-Performance-41 flavor14 1 flavor16 1 flavor17 2
+High-Performance-42 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-43 flavor7 8 flavor11 10
+High-Performance-44 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-45 flavor14 1 flavor16 1 flavor17 2
+High-Performance-46 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-47 flavor14 1 flavor16 1 flavor17 2
+High-Performance-48 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-49 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-50 flavor7 8 flavor8 20
+High-Performance-51 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-52 flavor14 1 flavor16 1 flavor17 2
+High-Performance-53 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-54 flavor7 8 flavor8 20
+High-Performance-55 flavor14 1 flavor16 1 flavor17 2
+High-Performance-56 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-57 flavor14 1 flavor16 1 flavor17 2
+High-Performance-58 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-59 flavor14 1 flavor16 1 flavor17 2
+High-Performance-60 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-61 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-62 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-63 flavor14 1 flavor16 1 flavor17 2
+High-Performance-64 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-65 flavor7 8 flavor11 10
+High-Performance-66 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-67 flavor14 1 flavor16 1 flavor17 2
+High-Performance-68 flavor14 1 flavor16 1 flavor17 2
+High-Performance-69 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-70 flavor7 8 flavor11 10
+High-Performance-71 flavor7 8 flavor11 10
+High-Performance-72 flavor14 1 flavor16 1 flavor17 2
+High-Performance-73 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-74 flavor7 8 flavor11 10
+High-Performance-75 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-76 flavor14 1 flavor16 1 flavor17 2
+High-Performance-77 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-78 flavor10 10 flavor11 1 flavor12 3
+High-Performance-79 flavor7 8 flavor11 10
+High-Performance-80 flavor14 1 flavor16 1 flavor17 2
+High-Performance-81 flavor7 16 flavor11 4 flavor12 2
+High-Performance-82 flavor14 1 flavor16 1 flavor17 2
+High-Performance-83 flavor7 18 flavor10 1 flavor11 1 flavor12 3
+High-Performance-84 flavor14 1 flavor16 1 flavor17 2
+High-Performance-85 flavor7 8 flavor11 10
+High-Performance-86 flavor7 8 flavor11 10
+High-Performance-87 flavor14 1 flavor16 1 flavor17 2
+High-Performance-88 flavor10 10 flavor11 1 flavor12 3
+High-Performance-89 flavor14 1 flavor16 1 flavor17 2
+High-Performance-90 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-91 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-92 flavor14 1 flavor16 1 flavor17 2
+High-Performance-93 flavor14 1 flavor16 1 flavor17 2
+High-Performance-94 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-95 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-96 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-97 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-98 flavor14 1 flavor16 1 flavor17 2
+High-Performance-99 flavor14 1 flavor16 1 flavor17 2
+High-Performance-100 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-101 flavor7 20 flavor8 2 flavor9 6
+High-Performance-102 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-103 flavor14 1 flavor16 1 flavor17 2
+High-Performance-104 flavor7 20 flavor8 2 flavor9 6
+High-Performance-105 flavor7 20 flavor8 2 flavor9 6
+High-Performance-106 flavor10 4 flavor11 1 flavor12 1 flavor13 3 flavor15 1
+High-Performance-107 flavor14 1 flavor16 1 flavor17 2
+High-Performance-108 flavor14 1 flavor16 1 flavor17 2
+High-Performance-109 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-110 flavor14 1 flavor16 1 flavor17 2
+High-Performance-111 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-112 flavor7 20 flavor8 2 flavor9 6
+High-Performance-113 flavor14 1 flavor16 1 flavor17 2
+High-Performance-114 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-115 flavor7 20 flavor8 2 flavor9 6
+High-Performance-116 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-117 flavor14 1 flavor16 1 flavor17 2
+High-Performance-118 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-119 flavor14 1 flavor16 1 flavor17 2
+High-Performance-120 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-121 flavor14 1 flavor16 1 flavor17 2
+High-Performance-122 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-123 flavor7 20 flavor8 2 flavor9 6
+High-Performance-124 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-125 flavor7 20 flavor8 2 flavor9 6
+High-Performance-126 flavor14 1 flavor16 1 flavor17 2
+High-Performance-127 flavor10 10 flavor11 1 flavor12 1 flavor15 1
+High-Performance-128 flavor14 1 flavor16 1 flavor17 2
+High-Performance-129 flavor14 2 flavor15 1 flavor16 2
+High-Performance-130 flavor14 2 flavor15 1 flavor16 2
+High-Performance-131 flavor14 1 flavor16 1 flavor17 2
+High-Performance-132 flavor14 2 flavor15 1 flavor16 2
+High-Performance-133 flavor14 2 flavor15 1 flavor16 2
+High-Performance-134 flavor14 1 flavor16 1 flavor17 2
+High-Performance-135 flavor14 2 flavor15 1 flavor16 2
+High-Performance-136 flavor14 2 flavor15 1 flavor16 2
+High-Performance-137 flavor14 1 flavor16 1 flavor17 2
+High-Performance-138 flavor14 2 flavor15 1 flavor16 2
+High-Performance-139 flavor14 2 flavor15 1 flavor16 2
+High-Performance-140 flavor14 1 flavor16 1 flavor17 2
+High-Performance-141 flavor14 2 flavor15 1 flavor16 2
+High-Performance-142 flavor14 2 flavor15 1 flavor16 2
+High-Performance-143 flavor14 1 flavor16 1 flavor17 2
+High-Performance-144 flavor14 2 flavor15 1 flavor16 2
+High-Performance-145 flavor14 2 flavor15 1 flavor16 2
+High-Performance-146 flavor14 1 flavor16 1 flavor17 2
+High-Performance-147 flavor14 2 flavor15 1 flavor16 2
+High-Performance-148 flavor14 2 flavor15 1 flavor16 2
+High-Performance-149 flavor14 1 flavor16 1 flavor17 2
+High-Performance-150 flavor14 2 flavor15 1 flavor16 2
+High-Performance-151 flavor14 2 flavor15 1 flavor16 2
+High-Performance-152 flavor14 1 flavor16 1 flavor17 2
+High-Performance-153 flavor14 2 flavor15 1 flavor16 2
+High-Performance-154 flavor14 2 flavor15 1 flavor16 2
+High-Performance-155 flavor14 1 flavor16 1 flavor17 2
+High-Performance-156 flavor14 2 flavor15 1 flavor16 2
+High-Performance-157 flavor14 2 flavor15 1 flavor16 2
+High-Performance-158 flavor14 2 flavor15 1 flavor16 2
+High-Performance-159 flavor14 1 flavor16 1 flavor17 2
+High-Performance-160 flavor14 2 flavor15 1 flavor16 2
+High-Performance-161 flavor14 2 flavor15 1 flavor16 2
+High-Performance-162 flavor14 1 flavor16 1 flavor17 2
+High-Performance-163 flavor14 2 flavor15 1 flavor16 2
+High-Performance-164 flavor14 2 flavor15 1 flavor16 2
+High-Performance-165 flavor14 1 flavor16 1 flavor17 2
+High-Performance-166 flavor14 2 flavor15 1 flavor16 2
+High-Performance-167 flavor14 2 flavor15 1 flavor16 2
+High-Performance-168 flavor14 1 flavor16 1 flavor17 2
+High-Performance-169 flavor14 2 flavor15 1 flavor16 2
+High-Performance-170 flavor14 2 flavor15 1 flavor16 2
+High-Performance-171 flavor14 1 flavor16 1 flavor17 2
+High-Performance-172 flavor14 2 flavor15 1 flavor16 2
+High-Performance-173 flavor14 2 flavor15 1 flavor16 2
+High-Performance-174 flavor14 1 flavor16 1 flavor17 2
+High-Performance-175 flavor14 2 flavor15 1 flavor16 2
+High-Performance-176 flavor14 2 flavor15 1 flavor16 2
+High-Performance-177 flavor14 1 flavor16 1 flavor17 2
+High-Performance-178 flavor14 2 flavor15 1 flavor16 2
+High-Performance-179 flavor14 2 flavor15 1 flavor16 2
+High-Performance-180 flavor14 1 flavor16 1 flavor17 2
+High-Performance-181 flavor14 2 flavor15 1 flavor16 2
+High-Performance-182 flavor14 2 flavor15 1 flavor16 2
+High-Performance-183 flavor14 1 flavor16 1 flavor17 2
+High-Performance-184 flavor14 2 flavor15 1 flavor16 2
+High-Performance-185 flavor14 2 flavor15 1 flavor16 2
+High-Performance-186 flavor14 2 flavor15 1 flavor16 2
+High-Performance-187 flavor14 2 flavor15 1 flavor16 2
+High-Performance-188 flavor14 1 flavor16 1 flavor17 2
+High-Performance-189 flavor14 2 flavor15 1 flavor16 2
+High-Performance-190 flavor14 2 flavor15 1 flavor16 2
+High-Performance-191 flavor14 1 flavor16 1 flavor17 2
+High-Performance-192 flavor14 2 flavor15 1 flavor16 2
+High-Performance-193 flavor14 2 flavor15 1 flavor16 2
+High-Performance-194 flavor14 1 flavor16 1 flavor17 2
+High-Performance-195 flavor14 2 flavor15 1 flavor16 2
+High-Performance-196 flavor14 2 flavor15 1 flavor16 2
+High-Performance-197 flavor14 1 flavor16 1 flavor17 2
+High-Performance-198 flavor14 2 flavor15 1 flavor16 2
+High-Performance-199 flavor14 2 flavor15 1 flavor16 2
+High-Performance-200 flavor14 1 flavor16 1 flavor17 2
+High-Performance-201 flavor14 2 flavor15 1 flavor16 2
+High-Performance-202 flavor14 2 flavor15 1 flavor16 2
+High-Performance-203 flavor14 1 flavor16 1 flavor17 2
+High-Performance-204 flavor14 2 flavor15 1 flavor16 2
+High-Performance-205 flavor14 2 flavor15 1 flavor16 2
+High-Performance-206 flavor14 2 flavor15 1 flavor16 2
+High-Performance-207 flavor14 2 flavor15 1 flavor16 2
+High-Performance-208 flavor14 2 flavor15 1 flavor16 2
+High-Performance-209 flavor14 2 flavor15 1 flavor16 2
+High-Performance-210 flavor14 2 flavor15 1 flavor16 2
+High-Performance-211 flavor14 2 flavor15 1 flavor16 2
+High-Performance-212 flavor14 2 flavor15 1 flavor16 2
+High-Performance-213 flavor14 2 flavor15 1 flavor16 2
+High-Performance-214 flavor14 2 flavor15 1 flavor16 2
+High-Performance-215 flavor14 2 flavor15 1 flavor16 2
+High-Performance-216 flavor14 1 flavor16 1 flavor17 2
+High-Performance-217 flavor14 2 flavor15 1 flavor16 2
+High-Performance-218 flavor14 2 flavor15 1 flavor16 2
+High-Performance-219 flavor14 1 flavor16 1 flavor17 2
+High-Performance-220 flavor14 2 flavor15 1 flavor16 2
+High-Performance-221 flavor14 2 flavor15 1 flavor16 2
+High-Performance-222 flavor14 1 flavor16 1 flavor17 2
+High-Performance-223 flavor14 2 flavor15 1 flavor16 2
+High-Performance-224 flavor14 2 flavor15 1 flavor16 2
+High-Performance-225 flavor14 1 flavor16 1 flavor17 2
+High-Performance-226 flavor14 2 flavor15 1 flavor16 2
+High-Performance-227 flavor14 2 flavor15 1 flavor16 2
+High-Performance-228 flavor14 1 flavor16 1 flavor17 2
+High-Performance-229 flavor14 2 flavor15 1 flavor16 2
+High-Performance-230 flavor14 2 flavor15 1 flavor16 2
+High-Performance-231 flavor14 1 flavor16 1 flavor17 2
+High-Performance-232 flavor14 2 flavor15 1 flavor16 2
+High-Performance-233 flavor14 2 flavor15 1 flavor16 2
+High-Performance-234 flavor14 1 flavor16 1 flavor17 2
+High-Performance-235 flavor14 2 flavor15 1 flavor16 2
+High-Performance-236 flavor14 2 flavor15 1 flavor16 2
+High-Performance-237 flavor14 1 flavor16 1 flavor17 2
+High-Performance-238 flavor14 2 flavor15 1 flavor16 2
+High-Performance-239 flavor14 2 flavor15 1 flavor16 2
+High-Performance-240 flavor14 1 flavor16 1 flavor17 2
+High-Performance-241 flavor14 2 flavor15 1 flavor16 2
+High-Performance-242 flavor14 2 flavor15 1 flavor16 2
+High-Performance-243 flavor14 1 flavor16 1 flavor17 2
+High-Performance-244 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-245 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-246 flavor14 1 flavor16 1 flavor17 2
+High-Performance-247 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-248 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-249 flavor14 1 flavor16 1 flavor17 2
+High-Performance-250 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-251 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-252 flavor14 1 flavor16 1 flavor17 2
+High-Performance-253 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-254 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-255 flavor14 1 flavor16 1 flavor17 2
+High-Performance-256 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-257 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-258 flavor14 1 flavor16 1 flavor17 2
+High-Performance-259 flavor14 2 flavor15 1 flavor16 2
+High-Performance-260 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-261 flavor14 1 flavor16 1 flavor17 2
+High-Performance-262 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-263 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-264 flavor14 1 flavor16 1 flavor17 2
+High-Performance-265 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-266 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-267 flavor14 1 flavor16 1 flavor17 2
+High-Performance-268 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-269 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-270 flavor14 1 flavor16 1 flavor17 2
+High-Performance-271 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-272 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-273 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-274 flavor14 1 flavor16 1 flavor17 2
+High-Performance-275 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-276 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-277 flavor14 1 flavor16 1 flavor17 2
+High-Performance-278 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-279 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-280 flavor14 1 flavor16 1 flavor17 2
+High-Performance-281 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-282 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-283 flavor14 1 flavor16 1 flavor17 2
+High-Performance-284 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-285 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-286 flavor14 1 flavor16 1 flavor17 2
+High-Performance-287 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-288 flavor14 1 flavor16 1 flavor17 2
+High-Performance-289 flavor14 1 flavor16 1 flavor17 2
+High-Performance-290 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-291 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-292 flavor14 1 flavor16 1 flavor17 2
+High-Performance-293 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-294 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-295 flavor14 1 flavor16 1 flavor17 2
+High-Performance-296 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-297 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-298 flavor14 1 flavor16 1 flavor17 2
+High-Performance-299 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-300 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-301 flavor14 1 flavor16 1 flavor17 2
+High-Performance-302 flavor14 2 flavor15 1 flavor16 2
+High-Performance-303 flavor14 1 flavor16 1 flavor17 2
+High-Performance-304 flavor14 2 flavor15 1 flavor16 2
+High-Performance-305 flavor14 2 flavor15 1 flavor16 2
+High-Performance-306 flavor14 1 flavor16 1 flavor17 2
+High-Performance-307 flavor14 2 flavor15 1 flavor16 2
+High-Performance-308 flavor14 2 flavor15 1 flavor16 2
+High-Performance-309 flavor14 1 flavor16 1 flavor17 2
+High-Performance-310 flavor14 2 flavor15 1 flavor16 2
+High-Performance-311 flavor14 2 flavor15 1 flavor16 2
+High-Performance-312 flavor14 1 flavor16 1 flavor17 2
+High-Performance-313 flavor14 2 flavor15 1 flavor16 2
+High-Performance-314 flavor14 2 flavor15 1 flavor16 2
+High-Performance-315 flavor14 1 flavor16 1 flavor17 2
+High-Performance-316 flavor14 2 flavor15 1 flavor16 2
+High-Performance-317 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-318 flavor14 1 flavor16 1 flavor17 2
+High-Performance-319 flavor14 2 flavor15 1 flavor16 2
+High-Performance-320 flavor14 2 flavor15 1 flavor16 2
+High-Performance-321 flavor14 1 flavor16 1 flavor17 2
+High-Performance-322 flavor14 2 flavor15 1 flavor16 2
+High-Performance-323 flavor14 2 flavor15 1 flavor16 2
+High-Performance-324 flavor14 1 flavor16 1 flavor17 2
+High-Performance-325 flavor14 2 flavor15 1 flavor16 2
+High-Performance-326 flavor14 2 flavor15 1 flavor16 2
+High-Performance-327 flavor14 1 flavor16 1 flavor17 2
+High-Performance-328 flavor14 2 flavor15 1 flavor16 2
+High-Performance-329 flavor14 2 flavor15 1 flavor16 2
+High-Performance-330 flavor14 1 flavor16 1 flavor17 2
+High-Performance-331 flavor14 1 flavor16 1 flavor17 2
+High-Performance-332 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-333 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-334 flavor14 1 flavor16 1 flavor17 2
+High-Performance-335 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-336 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-337 flavor14 1 flavor16 1 flavor17 2
+High-Performance-338 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-339 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-340 flavor14 1 flavor16 1 flavor17 2
+High-Performance-341 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-342 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-343 flavor14 1 flavor16 1 flavor17 2
+High-Performance-344 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-345 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-346 flavor11 1 flavor12 1 flavor13 5 flavor15 1
+High-Performance-347 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-348 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-349 flavor14 1 flavor16 1 flavor17 2
+High-Performance-350 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-351 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-352 flavor14 1 flavor16 1 flavor17 2
+High-Performance-353 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-354 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-355 flavor14 1 flavor16 1 flavor17 2
+High-Performance-356 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-357 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+High-Performance-358 flavor14 1 flavor16 1 flavor17 2
+High-Performance-359 flavor11 1 flavor12 1 flavor13 1 flavor15 1 flavor16 2
+
+

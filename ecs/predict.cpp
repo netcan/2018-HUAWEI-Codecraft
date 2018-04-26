@@ -164,19 +164,18 @@ double cv_expontential_smoothing_predict() {
 	return best_alpha * 1.0 / max_alpha;
 }
 
-void exponential_smoothing_predict(std::map<string, int>& solution_flavor) {
+void exponential_smoothing_predict(std::map<string, int>& solution_flavor, double noiseK = 3.0, double alpha = 0.91, double c = 1.0) {
 //	exponential_smoothing ExpSmooth(cv_expontential_smoothing_predict());
 	// 0.5, 1.8
-	exponential_smoothing ExpSmooth(0.91);
+	exponential_smoothing ExpSmooth(alpha);
 //	exponential_smoothing ExpSmooth(0.99);
-	double c = 1.7; // 系数！
 	for(const auto &f: predict_flavors_info) { // predict per vm
 //		std::vector<int> by_day = get_per_flavor_count_by_interval(f.first, 1);
 		// print per vm
 		printf("%s\n", f.first.c_str());
 
-		std::vector<int> by_day = denoising(get_per_flavor_count_by_interval(f.first, 1), 3.0); // 去噪
-		std::vector<int> Y_count = denoising(merge_cnt_day_by_interval(by_day, during_days), 3.0);
+		std::vector<int> by_day = denoising(get_per_flavor_count_by_interval(f.first, 1), noiseK); // 去噪
+		std::vector<int> Y_count = denoising(merge_cnt_day_by_interval(by_day, during_days), noiseK);
 
 //		std::vector<int> Y_count = get_per_flavor_count_by_interval(f.first, during_days);
 //		std::vector<int> Y2_count = merge_cnt_day_by_interval(by_day, during_days);
@@ -234,7 +233,7 @@ void bp_predict(std::map<string, int>& solution_flavor) {
 
 }
 
-void lwlr_predict(std::map<string, int>& solution_flavor, double noiseK = 3.0, double k = 9.5) { // 去噪参数，权重参数k
+void lwlr_predict(std::map<string, int>& solution_flavor, double noiseK = 3.0, double k = 9.5, double c = 1.0) { // 去噪参数，权重参数k
 	LWLR lwlr;
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		std::vector<int> cnt_by_day = std::move(denoising(get_per_flavor_count_by_interval(f.first, 1), noiseK)); // 去噪, Y
@@ -251,7 +250,7 @@ void lwlr_predict(std::map<string, int>& solution_flavor, double noiseK = 3.0, d
 			cnt += lwlr.predict(days, cnt_by_day, day, k);
 		}
 
-		solution_flavor[f.first] = std::max(int(lround(cnt)), 0);
+		solution_flavor[f.first] = std::max(int(lround(cnt * c)), 0);
 	}
 
 }
@@ -268,6 +267,8 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 //			if(cnt > 3.5 * sd) cnt = int(lround(m));
 
 		// 去最后10天数据的平均值
+		bool GAP = (predict_interval.first.date - train_end_time.date >= 7);
+
 		double avg = 0;
 		for(int i = 0; i < days; ++i)
 			avg += cnt_by_day[cnt_by_day.size() - 1 - i];
@@ -276,8 +277,11 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 		double cnt = avg * during_days;
 		double p = 1.0;
 
-		if(during_days >= 8) p = 1.60;
-		else p = 0.60;
+		if(!GAP) {
+			p = 0.53;
+		} else {
+			p = 1.57;
+		}
 
 
 		cnt *= p;
@@ -345,51 +349,35 @@ std::vector<server> first_fit(const std::vector<std::pair<string, int>>& sfv, si
 	return servers;
 }
 
+double get_flavors_mem_cpu_ratio(const std::map<string, int> & flavors_num) {
+	int cpu = 0, mem = 0;
+	for(const auto &fn: flavors_num) {
+		const flavor_info& flv = predict_flavors_info[fn.first];
+		cpu += flv.cpu_count * fn.second;
+		mem += flv.mem_size * fn.second;
+	}
+	return mem * 1.0 / cpu;
+}
+
+bool check_remain_flavors_full(const std::map<string, int> & flavors_num) {
+	bool full = false;
+	for(const auto &fn: flavors_num)
+		full = full || fn.second;
+	return full;
+}
+
 void deploy_server_fit(const std::map<string, int> &solution_flavor, std::vector<server> &solution_server) {
 	// General(0), High-Memory(1), High-Performance(2)
-	for(size_t i = 0; i < servers_info.size(); ++i)
-		solution_server.emplace_back(&servers_info[i]);
+	auto remain_flavors = solution_flavor;
+	bool empty = false;
+	double mem_cpu_ratio = get_flavors_mem_cpu_ratio(remain_flavors);
+	while(check_remain_flavors_full(remain_flavors)) {
 
-	for(const auto& sf: solution_flavor) {
-		// find the best location
-		const string & vm_name = sf.first;
-		int vm_count = sf.second;
-
-		const flavor_info& flv = predict_flavors_info[vm_name];
-		double vm_ratio = flv.mem_size * 1.0 / flv.cpu_count;
-		for (int f_count = 0; f_count < vm_count; ) {
-			int srv_loc = -1;
-			double min_diff = -1;
-			for (int loc = 0; loc < solution_server.size(); ++loc) {
-				if (flv <= solution_server[loc]) { // 能装下
-					double srv_ratio = solution_server[loc].remain_mem_size * 1.0 / solution_server[loc].remain_cpu_count;
-					double diff = fabs(srv_ratio - vm_ratio);
-					if (min_diff < 0 || min_diff > diff) {
-						min_diff = diff;
-						srv_loc = loc;
-					}
-				}
-			}
-
-			if(srv_loc != -1) { // 找到合适的位置
-				int vnum = solution_server[srv_loc] / flv;
-				if(vnum + f_count > vm_count) vnum = vm_count - f_count;
-				f_count += vnum;
-				solution_server[srv_loc].place_flavor(flv, vnum);
-			} else { // 开辟新空间
-				min_diff = -1;
-				for(int loc = 0; loc < servers_info.size(); ++loc) {
-					double srv_ratio = servers_info[loc].mem_size * 1.0 / servers_info[loc].cpu_count;
-					double diff = fabs(srv_ratio - vm_ratio);
-					if (min_diff < 0 || min_diff > diff) {
-						min_diff = diff;
-						srv_loc = loc;
-					}
-				}
-				solution_server.emplace_back(&servers_info[srv_loc]);
-			}
-		}
 	}
+
+
+
+
 
 }
 
@@ -478,15 +466,20 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
                       int inner_loop, double T, double Tmin, double delta) {
 	// 退火
 	std::vector<std::pair<string, int>> sfv, sfv_reduced;
-	for(const auto & sf: solution_flavor)
-		for(int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
+	for(const auto & sf: solution_flavor) {
+		sfv_reduced.push_back(std::make_pair(sf.first, sf.second));
+		for (int i = 0; i < sf.second; ++i) sfv.push_back(std::make_pair(sf.first, 1));
+	}
 
 	size_t low_ratio_srv_loc = 0;
-	std::vector<server> servers = std::move(first_fit(sfv)), best_servers;
+	std::vector<server> servers = std::move(first_fit(sfv_reduced)), best_servers;
 	solution_server = servers;
 
 	double last_deploy_ratio = get_deploy_ratio(solution_flavor, servers),
 			cur_deploy_ratio = 0.0, best_deploy_ratio = -1;
+	int accept = 0, reject = 0;
+
+	printf("begin T: %lf\n", T);
 
 	while(runing && T > Tmin) {
 		for(int loop = 0; loop < inner_loop && runing; ++loop) {
@@ -511,7 +504,11 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 			if(std::min(1.0, exp(-dc / T)) > Rand.Random_Real(0, 1)) { // 接受
 //				printf("%f\n", std::min(1.0, exp(-dc / T)));
 				last_deploy_ratio = cur_deploy_ratio;
-			} else std::swap(sfv[i], sfv[j]); // 换回去
+				++accept;
+			} else {
+				std::swap(sfv[i], sfv[j]); // 换回去
+				++reject;
+			}
 
 			if(best_deploy_ratio < 0 || best_deploy_ratio < cur_deploy_ratio) {
 				best_deploy_ratio = cur_deploy_ratio;
@@ -522,8 +519,12 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 		}
 		T *= delta;
 	}
+	printf("end T: %lf\n", T);
+	printf("accept = %d reject = %d\n", accept, reject);
+
 	solution_server = std::move(best_servers);
 
+	// 对最小的srv进行填充、删除操作
 	auto &low_srv = solution_server[low_ratio_srv_loc];
 
 	if(solution_server.size() > 1 && low_srv.get_ratio() < 0.8) {// remove
@@ -556,6 +557,35 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 		}
 		printf("fill end: %lf\n", low_srv.get_ratio());
 	}
+
+	// 对其余的进行填充操作
+	/*
+	for(auto &srv: solution_server) {
+		printf("fill: %lf\n", srv.get_ratio());
+		flavor_info best_flv;
+		double best_ratio = -1;
+		for(const auto& sf: solution_flavor) {
+			const auto &flv = predict_flavors_info[sf.first];
+			if(flv <= srv) {
+				server _srv = srv;
+				int flv_num = _srv / flv;
+				_srv.place_flavor(flv, flv_num);
+				double ratio = _srv.get_ratio();
+				if(best_ratio < ratio) {
+					best_ratio = ratio;
+					best_flv = flv;
+				}
+			}
+		}
+		if(best_ratio > 0) {
+			int flv_num = srv / best_flv;
+			srv.place_flavor(best_flv, flv_num);
+			solution_flavor[best_flv.name] += flv_num;
+		}
+		printf("fill end: %lf\n", srv.get_ratio());
+	}
+	 */
+
 }
 
 
@@ -626,6 +656,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	during_days = predict_interval.second.date - predict_interval.first.date;
 
 	/*** 部署测试begin ***/
+
 	/*
 	solution_flavor = std::move(read_deploy_test_cases(data, data_num));
 	for(const auto & sf: solution_flavor)
@@ -637,12 +668,14 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //		sfv.emplace_back(sf.first, 1);
 //	solution_server = std::move(first_fit(sfv));
 
-	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9999);
+//	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9995);
+	deploy_server_fit(solution_flavor, solution_server);
 	 */
 
 	/*** 部署测试end ***/
 
 	/*** 正赛begin ***/
+
 	flavors = std::move(read_flavors(data, data_num));
 
 //	interval_predict(solution_flavor);
@@ -650,28 +683,34 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	polynomial_regression_predict(solution_flavor);
 //	exponential_smoothing_predict(solution_flavor);
 //	exponential_smoothing_predict_by_day(solution_flavor); // 效果较好，70分
+//	bp_predict(solution_flavor);
+	avg_predict(solution_flavor);
 
 	bool GAP = (predict_interval.first.date - train_end_time.date >= 7);
+
+	/*
 	if(! GAP) {
 		lwlr_predict(solution_flavor, 3.0, 5.0); // 33.26
 //		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.3, 1.0); // 33.364
 	} else {
-		lwlr_predict(solution_flavor, 3.0, 9.5); // 37.935
+		lwlr_predict(solution_flavor, 3.0, 9.5, 1.0); // 37.935
 //		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.22, 1.3); // 40.415
+//		exponential_smoothing_predict(solution_flavor, 3.0, 0.91, 1.7); // 41.795
 	}
+	 */
 
-//	bp_predict(solution_flavor);
-//	avg_predict(solution_flavor);
 
 	for(const auto & sf: solution_flavor)
 		printf("%s: %d\n", sf.first.c_str(), sf.second);
 
-	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9999);
+	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9995);
+
 //	deploy_server_SA_tradeoff(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
 //	deploy_server_fit(solution_flavor, solution_server);
 
 	// 利用率
-//	assert(get_deploy_ratio(solution_flavor, solution_server) > 0.90);
+//	assert(get_deploy_ratio(solution_flavor, solution_server) > 0.95);
+
 	/*** 正赛end ***/
 
 	/** 测试begin **/

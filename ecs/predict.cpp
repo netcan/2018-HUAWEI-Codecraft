@@ -255,7 +255,7 @@ void lwlr_predict(std::map<string, int>& solution_flavor, double noiseK = 3.0, d
 
 }
 
-void avg_predict(std::map<string, int>& solution_flavor) {
+void avg_predict(std::map<string, int>& solution_flavor, bool &full) {
 	for(const auto &f: predict_flavors_info) { // predict per vm
 		std::vector<int> cnt_by_day = get_per_flavor_count_by_interval(f.first, 1); // 获取当天数据
 		int days = 10;
@@ -268,6 +268,7 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 
 		// 去最后10天数据的平均值
 		bool GAP = (predict_interval.first.date - train_end_time.date >= 7);
+//		if(!GAP) days = 20;
 
 		double avg = 0;
 		for(int i = 0; i < days; ++i)
@@ -277,10 +278,18 @@ void avg_predict(std::map<string, int>& solution_flavor) {
 		double cnt = avg * during_days;
 		double p = 1.0;
 
-		if(!GAP) {
-			p = 0.53;
-		} else {
-			p = 1.57;
+		int predict_days_and_gap = predict_interval.second.date - train_end_time.date;
+		int gap = predict_interval.first.date - train_end_time.date;
+
+
+
+		if(gap <= 3) { // 初级
+			p = 0.53; // 33.88, 1.0
+		} else if(gap >= 3 && gap <= 8 && during_days <= 15) { // 中级
+			p = 1.57; // 45.251, 1.53
+		} else { // 高级
+			full = false;
+			p = 3.0;
 		}
 
 
@@ -463,7 +472,7 @@ double get_servers_avg_usage_ratio(const std::vector<server> &solution_server) {
 
 void deploy_server_SA(std::map<string, int> &solution_flavor,
                       std::vector<server> &solution_server,
-                      int inner_loop, double T, double Tmin, double delta) {
+                      int inner_loop, double T, double Tmin, double delta, bool full = true) {
 	// 退火
 	std::vector<std::pair<string, int>> sfv, sfv_reduced;
 	for(const auto & sf: solution_flavor) {
@@ -559,33 +568,32 @@ void deploy_server_SA(std::map<string, int> &solution_flavor,
 	}
 
 	// 对其余的进行填充操作
-	/*
-	for(auto &srv: solution_server) {
-		printf("fill: %lf\n", srv.get_ratio());
-		flavor_info best_flv;
-		double best_ratio = -1;
-		for(const auto& sf: solution_flavor) {
-			const auto &flv = predict_flavors_info[sf.first];
-			if(flv <= srv) {
-				server _srv = srv;
-				int flv_num = _srv / flv;
-				_srv.place_flavor(flv, flv_num);
-				double ratio = _srv.get_ratio();
-				if(best_ratio < ratio) {
-					best_ratio = ratio;
-					best_flv = flv;
+	if(full) {
+		for (auto &srv: solution_server) {
+			printf("fill: %lf\n", srv.get_ratio());
+			flavor_info best_flv;
+			double best_ratio = -1;
+			for (const auto &sf: solution_flavor) {
+				const auto &flv = predict_flavors_info[sf.first];
+				if (flv <= srv) {
+					server _srv = srv;
+					int flv_num = _srv / flv;
+					_srv.place_flavor(flv, flv_num);
+					double ratio = _srv.get_ratio();
+					if (best_ratio < ratio) {
+						best_ratio = ratio;
+						best_flv = flv;
+					}
 				}
 			}
+			if (best_ratio > 0) {
+				int flv_num = srv / best_flv;
+				srv.place_flavor(best_flv, flv_num);
+				solution_flavor[best_flv.name] += flv_num;
+			}
+			printf("fill end: %lf\n", srv.get_ratio());
 		}
-		if(best_ratio > 0) {
-			int flv_num = srv / best_flv;
-			srv.place_flavor(best_flv, flv_num);
-			solution_flavor[best_flv.name] += flv_num;
-		}
-		printf("fill end: %lf\n", srv.get_ratio());
 	}
-	 */
-
 }
 
 
@@ -684,18 +692,24 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 //	exponential_smoothing_predict(solution_flavor);
 //	exponential_smoothing_predict_by_day(solution_flavor); // 效果较好，70分
 //	bp_predict(solution_flavor);
-	avg_predict(solution_flavor);
-
-	bool GAP = (predict_interval.first.date - train_end_time.date >= 7);
+	bool full = true;
+	avg_predict(solution_flavor, full);
 
 	/*
-	if(! GAP) {
-		lwlr_predict(solution_flavor, 3.0, 5.0); // 33.26
-//		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.3, 1.0); // 33.364
-	} else {
-		lwlr_predict(solution_flavor, 3.0, 9.5, 1.0); // 37.935
+	int gap = predict_interval.first.date - train_end_time.date;
+	printf("%d\n", gap);
+
+	if(gap <= 3) { // 初级
+//		lwlr_predict(solution_flavor, 3.0, 5.0); // 33.26
+		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.3, 1.0); // 33.364
+	} else if(gap <= 8 && during_days >= 8 && during_days <= 15) { // 中级
+//		lwlr_predict(solution_flavor, 3.0, 9.5, 1.3); // 37.935
 //		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.22, 1.3); // 40.415
+		exponential_smoothing_predict(solution_flavor, 3.0, 0.91, 1.7); // 41.795
+	} else { // 高级
+//		lwlr_predict(solution_flavor, 3.0, 9.5, 3.0); // 37.935
 //		exponential_smoothing_predict(solution_flavor, 3.0, 0.91, 1.7); // 41.795
+		exponential_smoothing_predict_by_day(solution_flavor, 3.0, 0.22, 2.0); // 40.415
 	}
 	 */
 
@@ -703,7 +717,7 @@ void predict_server(char * info[MAX_INFO_NUM], char * data[MAX_DATA_NUM], int da
 	for(const auto & sf: solution_flavor)
 		printf("%s: %d\n", sf.first.c_str(), sf.second);
 
-	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9995);
+	deploy_server_SA(solution_flavor, solution_server, 1, 1e-2, 1e-5, 0.9995, full);
 
 //	deploy_server_SA_tradeoff(solution_flavor, solution_server, 1, 1.0, 0.001, 0.9999);
 //	deploy_server_fit(solution_flavor, solution_server);

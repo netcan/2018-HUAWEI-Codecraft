@@ -1,7 +1,6 @@
-3
+2
 General 56 128 1200
 Large-Memory 84 256 2400
-High-Performance 112 192 3600
 
 18
 flavor1  1  1024
